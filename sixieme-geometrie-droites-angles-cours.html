@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G&eacute;om&eacute;trie&nbsp;: droites et angles &mdash; 6&egrave;me</title>
+<meta name="description" content="Cours interactif de 6&egrave;me sur les droites et les angles, avec m&eacute;thodes, exercices, QCM et visualisations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+  :root{
+    --bg:#f5f2ed; --surface:#ffffff; --surface2:#ebe6de; --text:#2c2418;
+    --heading:#8b4513; --muted:#6b5a48; --border:#d4c8b8; --accent:#a0522d;
+    --accent-light:#faf5ef; --radius:8px; --shadow:0 2px 8px rgba(139,69,19,0.07);
+    --good:#2e7d32; --bad:#c0392b;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0;
+      --heading:#e0a868; --muted:#9a8878; --border:#403428; --accent:#d08840;
+      --accent-light:#1e1610; --shadow:0 2px 8px rgba(0,0,0,0.3);
+      --good:#5fbf6a; --bad:#e57a68;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0;
+    --heading:#e0a868; --muted:#9a8878; --border:#403428; --accent:#d08840;
+    --accent-light:#1e1610; --shadow:0 2px 8px rgba(0,0,0,0.3);
+    --good:#5fbf6a; --bad:#e57a68;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);transition:background .2s ease,color .2s ease;}
+  body{font-family:'Nunito Sans',system-ui,sans-serif;font-size:16px;line-height:1.65;padding-inline:16px;}
+  h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;color:var(--heading);font-weight:700;margin:0 0 .4em 0;}
+  h1{font-size:2rem;}
+  h2{font-size:1.5rem;border-bottom:2px solid var(--border);padding-bottom:.3em;margin-top:1.2em;}
+  h3{font-size:1.2rem;margin-top:1.3em;}
+  a{color:var(--accent);}
+  header{
+    position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);
+    margin:0 -16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);
+  }
+  .badge{
+    background:var(--accent);color:#fff8f0;font-family:'Cormorant Garamond',serif;font-weight:700;
+    font-size:.95rem;padding:4px 13px;border-radius:999px;letter-spacing:.03em;flex-shrink:0;white-space:nowrap;
+  }
+  header h1{flex:1;margin:0;font-size:1.25rem;}
+  #themeBtn{
+    background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);
+    padding:8px 11px;cursor:pointer;font-size:1.05rem;line-height:1;flex-shrink:0;
+  }
+  #themeBtn:hover{border-color:var(--accent);}
+  main{max-width:760px;margin:0 auto;padding:18px 0 60px;}
+  nav.tabs{
+    display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;position:sticky;top:57px;background:var(--bg);
+    z-index:10;padding:8px 0;
+  }
+  .tab-btn{
+    font-family:'Nunito Sans',sans-serif;font-weight:700;font-size:.82rem;background:var(--surface2);
+    color:var(--muted);border:1px solid var(--border);border-radius:var(--radius);padding:8px 11px;
+    cursor:pointer;transition:all .15s ease;white-space:nowrap;
+  }
+  .tab-btn:hover{color:var(--text);border-color:var(--accent);}
+  .tab-btn.active{background:var(--accent);color:#fff8f0;border-color:var(--accent);}
+  .tab-pane{display:none;}
+  .tab-pane.active{display:block;animation:fadeIn .25s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;
+    margin-bottom:16px;box-shadow:var(--shadow);
+  }
+  .card.accent{border-left:4px solid var(--accent);background:var(--accent-light);}
+  .def-box{
+    background:var(--accent-light);border:1px solid var(--border);border-left:4px solid var(--accent);
+    border-radius:var(--radius);padding:11px 15px;margin:12px 0;
+  }
+  .def-box strong{color:var(--heading);}
+  .prop-box{
+    background:var(--surface2);border-radius:var(--radius);padding:11px 15px;margin:12px 0;
+    border:1px dashed var(--accent);
+  }
+  .warn-box{
+    background:var(--surface2);border-left:4px solid var(--bad);border-radius:var(--radius);
+    padding:11px 15px;margin:12px 0;
+  }
+  .method-step{
+    display:flex;gap:12px;margin:10px 0;padding:10px 12px;background:var(--surface2);border-radius:var(--radius);
+  }
+  .method-step .num{
+    flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff8f0;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-family:'Cormorant Garamond',serif;
+  }
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92rem;}
+  th,td{border:1px solid var(--border);padding:7px 9px;text-align:left;}
+  th{background:var(--surface2);color:var(--heading);font-family:'Cormorant Garamond',serif;}
+  ul,ol{padding-left:1.3em;}
+  li{margin:.3em 0;}
+  canvas{
+    display:block;width:100%;max-width:520px;margin:14px auto;background:var(--surface2);
+    border-radius:10px;border:1px solid var(--border);touch-action:none;
+  }
+  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:center;margin:10px 0;}
+  .controls label{font-size:.83rem;color:var(--muted);font-weight:600;}
+  input[type=range]{accent-color:var(--accent);width:170px;}
+  .btn{
+    background:var(--accent);color:#fff8f0;border:none;border-radius:var(--radius);padding:9px 15px;
+    font-weight:700;font-family:'Nunito Sans',sans-serif;cursor:pointer;font-size:.86rem;
+  }
+  .btn:hover{opacity:.9;}
+  .btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+  .readout{
+    text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--heading);
+    font-weight:700;margin:6px 0;
+  }
+  .readout small{display:block;font-family:'Nunito Sans',sans-serif;font-size:.8rem;color:var(--muted);font-weight:600;}
+  details{
+    background:var(--surface2);border-radius:var(--radius);margin:10px 0;padding:8px 14px;border:1px solid var(--border);
+  }
+  summary{cursor:pointer;font-weight:700;color:var(--accent);padding:5px 0;}
+  details[open] summary{margin-bottom:6px;}
+  .exo-title{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--heading);font-size:1.1rem;}
+  .qcm-q{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .qcm-q:last-child{border-bottom:none;}
+  .qcm-opt{display:block;padding:8px 11px;margin:5px 0;border-radius:var(--radius);border:1px solid var(--border);
+    background:var(--surface2);cursor:pointer;}
+  .qcm-opt:hover{border-color:var(--accent);}
+  .qcm-opt input{margin-right:8px;accent-color:var(--accent);}
+  .qcm-opt.correct{border-color:var(--good);background:rgba(46,125,50,.12);}
+  .qcm-opt.incorrect{border-color:var(--bad);background:rgba(192,57,43,.12);}
+  #qcmScore{
+    text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;
+    color:var(--heading);margin:14px 0;
+  }
+  .badge-type{
+    display:inline-block;padding:2px 9px;border-radius:999px;font-size:.78rem;font-weight:700;
+    background:var(--accent);color:#fff8f0;
+  }
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media (max-width:480px){.grid2{grid-template-columns:1fr;}}
+  .checklist li{list-style:none;padding-left:1.6em;position:relative;}
+  .checklist li::before{content:"\2713";position:absolute;left:0;color:var(--good);font-weight:700;}
+  footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:30px;}
+  .example-box{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:11px 15px;margin:12px 0;
+  }
+  .example-box .lbl{
+    display:inline-block;font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--accent);
+    margin-bottom:4px;
+  }
+  .diagram-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:14px 0;}
+  .diagram-item{text-align:center;font-size:.8rem;color:var(--muted);font-weight:600;}
+  .diagram-item svg{display:block;margin:0 auto 4px;}
+  .diagram-item span{display:block;font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--heading);}
+</style>
+</head>
+<body>
+<header>
+  <span class="badge">Classe de 6&egrave;me</span>
+  <h1>G&eacute;om&eacute;trie&nbsp;: droites et angles</h1>
+  <button id="themeBtn" onclick="toggleTheme()" aria-label="Changer de th&egrave;me">&#9788;</button>
+</header>
+
+<main>
+  <nav class="tabs">
+    <button class="tab-btn" onclick="showTab(0)">Cours</button>
+    <button class="tab-btn" onclick="showTab(1)">M&eacute;thodes</button>
+    <button class="tab-btn" onclick="showTab(2)">Exercices</button>
+    <button class="tab-btn" onclick="showTab(3)">Approfondissement</button>
+    <button class="tab-btn" onclick="showTab(4)">QCM</button>
+    <button class="tab-btn" onclick="showTab(5)">Visualisation</button>
+    <button class="tab-btn" onclick="showTab(6)">Bilan</button>
+  </nav>
+
+  <!-- ================= 0. COURS ================= -->
+  <section class="tab-pane">
+    <div class="card">
+      <h2>1. Points, segments, droites, demi-droites</h2>
+      <p>En g&eacute;om&eacute;trie, on utilise un vocabulaire pr&eacute;cis pour d&eacute;crire les objets que l'on trace.</p>
+      <div class="def-box"><strong>Point&nbsp;:</strong> se note par une lettre majuscule (A, B, M...). Il n'a ni longueur ni largeur.</div>
+      <div class="def-box"><strong>Segment [AB]&nbsp;:</strong> portion de droite limit&eacute;e par deux points A et B, appel&eacute;s extr&eacute;mit&eacute;s. Il a une longueur, not&eacute;e AB.</div>
+      <div class="def-box"><strong>Droite (AB)&nbsp;:</strong> elle passe par A et B, et se prolonge &agrave; l'infini dans les deux sens. Elle n'a pas de longueur.</div>
+      <div class="def-box"><strong>Demi-droite [AB)&nbsp;:</strong> elle part du point A (origine), passe par B, et se prolonge &agrave; l'infini dans un seul sens.</div>
+      <table>
+        <tr><th>Objet</th><th>Notation</th><th>Limit&eacute; ?</th></tr>
+        <tr><td>Segment</td><td>[AB]</td><td>Deux extr&eacute;mit&eacute;s</td></tr>
+        <tr><td>Droite</td><td>(AB) ou (d)</td><td>Infinie des deux c&ocirc;t&eacute;s</td></tr>
+        <tr><td>Demi-droite</td><td>[AB)</td><td>Une origine, infinie d'un c&ocirc;t&eacute;</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>2. Positions relatives de deux droites</h2>
+      <div class="def-box"><strong>Droites s&eacute;cantes&nbsp;:</strong> deux droites qui se coupent en un seul point, appel&eacute; point d'intersection.</div>
+      <div class="def-box"><strong>Droites perpendiculaires&nbsp;:</strong> deux droites s&eacute;cantes qui forment un angle droit. On note (d) &perp; (d').</div>
+      <div class="def-box"><strong>Droites parall&egrave;les&nbsp;:</strong> deux droites qui ne se coupent jamais (m&ecirc;me &eacute;cart&eacute;es &agrave; l'infini). On note (d) // (d').</div>
+      <p>Pour v&eacute;rifier que deux droites sont perpendiculaires, on utilise une <strong>&eacute;querre</strong>. Pour v&eacute;rifier qu'elles sont parall&egrave;les, on utilise une <strong>r&egrave;gle et une &eacute;querre</strong> (ou un double-d&eacute;cim&egrave;tre gradu&eacute;).</p>
+      <div class="diagram-row">
+        <div class="diagram-item">
+          <svg width="110" height="80" viewBox="0 0 110 80"><line x1="10" y1="20" x2="100" y2="60" stroke="#a0522d" stroke-width="2.5"/><line x1="15" y1="65" x2="95" y2="15" stroke="#2c2418" stroke-width="2.5"/></svg>
+          <span>S&eacute;cantes</span>
+        </div>
+        <div class="diagram-item">
+          <svg width="110" height="80" viewBox="0 0 110 80"><line x1="55" y1="10" x2="55" y2="70" stroke="#a0522d" stroke-width="2.5"/><line x1="10" y1="40" x2="100" y2="40" stroke="#2c2418" stroke-width="2.5"/><rect x="55" y="30" width="10" height="10" fill="none" stroke="#8b4513" stroke-width="1.5"/></svg>
+          <span>Perpendiculaires</span>
+        </div>
+        <div class="diagram-item">
+          <svg width="110" height="80" viewBox="0 0 110 80"><line x1="10" y1="25" x2="100" y2="25" stroke="#a0522d" stroke-width="2.5"/><line x1="10" y1="55" x2="100" y2="55" stroke="#2c2418" stroke-width="2.5"/></svg>
+          <span>Parall&egrave;les</span>
+        </div>
+      </div>
+      <div class="prop-box">Deux droites perpendiculaires &agrave; une m&ecirc;me troisi&egrave;me droite sont parall&egrave;les entre elles.</div>
+      <div class="example-box"><span class="lbl">Exemple r&eacute;solu&nbsp;:</span> (d1) &perp; (d3) et (d2) &perp; (d3). Que peut-on dire de (d1) et (d2) ? &mdash; R&eacute;ponse&nbsp;: (d1) et (d2) sont perpendiculaires &agrave; la m&ecirc;me droite (d3), donc, d'apr&egrave;s la propri&eacute;t&eacute;, (d1) // (d2).</div>
+    </div>
+
+    <div class="card">
+      <h2>3. Distance d'un point &agrave; une droite</h2>
+      <p>La distance d'un point M &agrave; une droite (d) est la longueur du plus court segment reliant M &agrave; un point de (d). C'est toujours la longueur du segment <strong>perpendiculaire</strong> &agrave; (d) passant par M.</p>
+      <div class="def-box">La distance de M &agrave; (d) est &eacute;gale &agrave; MH, o&ugrave; H est le point de (d) tel que (MH) &perp; (d). H s'appelle le <strong>pied de la perpendiculaire</strong>.</div>
+      <div class="example-box"><span class="lbl">Exemple r&eacute;solu&nbsp;:</span> On trace [MH] perpendiculaire &agrave; (d), avec MH = 3,2&nbsp;cm, et un autre segment [MK] avec K sur (d) mais MK = 4,5&nbsp;cm. La distance de M &agrave; (d) est 3,2&nbsp;cm (la plus petite valeur, celle du segment perpendiculaire), et non 4,5&nbsp;cm.</div>
+    </div>
+
+    <div class="card">
+      <h2>4. M&eacute;diatrice d'un segment</h2>
+      <div class="def-box"><strong>D&eacute;finition&nbsp;:</strong> la m&eacute;diatrice d'un segment [AB] est la droite perpendiculaire &agrave; [AB] qui passe par son milieu.</div>
+      <div class="prop-box">Tout point de la m&eacute;diatrice de [AB] est situ&eacute; &agrave; &eacute;gale distance de A et de B (il est &eacute;quidistant).</div>
+      <p>On peut la construire de deux fa&ccedil;ons&nbsp;: avec une r&egrave;gle et une &eacute;querre (en passant par le milieu), ou avec un compas (voir onglet M&eacute;thodes).</p>
+      <div class="example-box"><span class="lbl">Exemple r&eacute;solu&nbsp;:</span> [AB] mesure 10&nbsp;cm. M est un point de la m&eacute;diatrice de [AB]. Si MA = 6,5&nbsp;cm, alors MB = 6,5&nbsp;cm &eacute;galement, car M est &eacute;quidistant de A et de B (propri&eacute;t&eacute; de la m&eacute;diatrice).</div>
+    </div>
+
+    <div class="card">
+      <h2>5. Vocabulaire des angles</h2>
+      <p>Un <strong>angle</strong> est form&eacute; par deux demi-droites de m&ecirc;me origine, appel&eacute;e <strong>sommet</strong>. Les deux demi-droites sont les <strong>c&ocirc;t&eacute;s</strong> de l'angle.</p>
+      <div class="def-box">L'angle de sommet O, form&eacute; par les demi-droites [OA) et [OB), se note <strong>&Acirc;OB</strong> ou <strong>AOB</strong> (avec un chapeau sur O), ou simplement <strong>&ocirc;</strong>. La lettre du sommet est toujours au milieu.</div>
+      <p>On mesure un angle en <strong>degr&eacute;s</strong> (symbole &deg;), &agrave; l'aide d'un <strong>rapporteur</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>6. Les diff&eacute;rents types d'angles</h2>
+      <table>
+        <tr><th>Type</th><th>Mesure</th><th>Exemple</th></tr>
+        <tr><td>Angle nul</td><td>0&deg;</td><td>Les deux c&ocirc;t&eacute;s sont confondus</td></tr>
+        <tr><td>Angle aigu</td><td>entre 0&deg; et 90&deg;</td><td>plus petit qu'un angle droit</td></tr>
+        <tr><td>Angle droit</td><td>exactement 90&deg;</td><td>marqu&eacute; par un petit carr&eacute;</td></tr>
+        <tr><td>Angle obtus</td><td>entre 90&deg; et 180&deg;</td><td>plus grand qu'un angle droit</td></tr>
+        <tr><td>Angle plat</td><td>exactement 180&deg;</td><td>les c&ocirc;t&eacute;s forment une droite</td></tr>
+      </table>
+      <div class="diagram-row">
+        <div class="diagram-item"><svg width="70" height="70" viewBox="0 0 70 70"><line x1="10" y1="60" x2="60" y2="60" stroke="#a0522d" stroke-width="2.5"/></svg><span>Nul</span></div>
+        <div class="diagram-item"><svg width="70" height="70" viewBox="0 0 70 70"><line x1="10" y1="60" x2="60" y2="60" stroke="#a0522d" stroke-width="2.5"/><line x1="10" y1="60" x2="45" y2="15" stroke="#2c2418" stroke-width="2.5"/></svg><span>Aigu</span></div>
+        <div class="diagram-item"><svg width="70" height="70" viewBox="0 0 70 70"><line x1="10" y1="60" x2="60" y2="60" stroke="#a0522d" stroke-width="2.5"/><line x1="10" y1="60" x2="10" y2="10" stroke="#2c2418" stroke-width="2.5"/><rect x="10" y="50" width="10" height="10" fill="none" stroke="#8b4513" stroke-width="1.5"/></svg><span>Droit</span></div>
+        <div class="diagram-item"><svg width="70" height="70" viewBox="0 0 70 70"><line x1="10" y1="60" x2="60" y2="60" stroke="#a0522d" stroke-width="2.5"/><line x1="10" y1="60" x2="25" y2="10" stroke="#2c2418" stroke-width="2.5"/></svg><span>Obtus</span></div>
+        <div class="diagram-item"><svg width="70" height="70" viewBox="0 0 70 70"><line x1="10" y1="45" x2="60" y2="45" stroke="#a0522d" stroke-width="2.5"/></svg><span>Plat</span></div>
+      </div>
+      <p>Va dans l'onglet <strong>Visualisation</strong> pour manipuler un rapporteur interactif et voir ces angles en direct !</p>
+    </div>
+
+    <div class="card">
+      <h2>7. Mesurer un angle au rapporteur</h2>
+      <p>Le rapporteur est un demi-disque gradu&eacute; de 0&deg; &agrave; 180&deg;. Pour mesurer un angle&nbsp;:</p>
+      <ol>
+        <li>On place le centre du rapporteur sur le sommet de l'angle.</li>
+        <li>On aligne la ligne de 0&deg; du rapporteur avec l'un des c&ocirc;t&eacute;s de l'angle.</li>
+        <li>On lit la graduation travers&eacute;e par le second c&ocirc;t&eacute; de l'angle.</li>
+      </ol>
+      <div class="warn-box">Attention&nbsp;: un rapporteur a souvent deux &eacute;chelles (une qui va de 0 &agrave; 180 dans un sens, une autre dans l'autre sens). Il faut choisir celle qui commence &agrave; 0&deg; sur le c&ocirc;t&eacute; align&eacute;.</div>
+      <div class="example-box"><span class="lbl">Exemple r&eacute;solu&nbsp;:</span> Apr&egrave;s avoir align&eacute; le rapporteur, le c&ocirc;t&eacute; [OB) traverse la graduation 65 sur l'&eacute;chelle qui d&eacute;marre &agrave; 0&deg; sur [OA). On lit donc directement&nbsp;: &Acirc;OB = 65&deg;. C'est un angle aigu, car 65&deg; &lt; 90&deg;.</div>
+    </div>
+
+    <div class="card">
+      <h2>8. Angles compl&eacute;mentaires et suppl&eacute;mentaires</h2>
+      <div class="def-box"><strong>Angles compl&eacute;mentaires&nbsp;:</strong> deux angles dont la somme des mesures est &eacute;gale &agrave; <strong>90&deg;</strong>.</div>
+      <div class="def-box"><strong>Angles suppl&eacute;mentaires&nbsp;:</strong> deux angles dont la somme des mesures est &eacute;gale &agrave; <strong>180&deg;</strong>.</div>
+      <p><em>Exemple&nbsp;:</em> un angle de 35&deg; et un angle de 55&deg; sont compl&eacute;mentaires (35 + 55 = 90). Un angle de 110&deg; et un angle de 70&deg; sont suppl&eacute;mentaires (110 + 70 = 180).</p>
+      <div class="example-box"><span class="lbl">Exemple r&eacute;solu&nbsp;:</span> Un angle mesure 48&deg;. Quel est son compl&eacute;ment ? Son suppl&eacute;ment ? &mdash; Compl&eacute;ment&nbsp;: 90 &minus; 48 = 42&deg;. Suppl&eacute;ment&nbsp;: 180 &minus; 48 = 132&deg;.</div>
+    </div>
+
+    <div class="card">
+      <h2>9. Bissectrice d'un angle</h2>
+      <div class="def-box"><strong>D&eacute;finition&nbsp;:</strong> la bissectrice d'un angle est la demi-droite qui partage cet angle en deux angles de m&ecirc;me mesure.</div>
+      <div class="prop-box">Si [Oz) est la bissectrice de l'angle &Acirc;OB, alors l'angle &Acirc;Oz = l'angle zOB = (&Acirc;OB) &divide; 2.</div>
+      <p><em>Exemple&nbsp;:</em> si un angle mesure 70&deg;, sa bissectrice le partage en deux angles de 35&deg; chacun.</p>
+      <div class="example-box"><span class="lbl">Exemple r&eacute;solu&nbsp;:</span> L'angle &Xcirc;OY mesure 118&deg;. [Oz) est sa bissectrice. Calcule &Xcirc;Oz. &mdash; &Xcirc;Oz = 118 &divide; 2 = 59&deg;. On v&eacute;rifie&nbsp;: 59 + 59 = 118&deg;. &#10003;</div>
+    </div>
+
+    <div class="card accent">
+      <h2>10. Synth&egrave;se&nbsp;: comment reconna&icirc;tre un angle en un coup d'&oelig;il ?</h2>
+      <p>Avant m&ecirc;me de sortir le rapporteur, on peut souvent estimer le type d'un angle&nbsp;:</p>
+      <ul>
+        <li>Si l'angle "ressemble" au coin d'une feuille de papier &rarr; probablement <strong>droit</strong> (90&deg;).</li>
+        <li>Si l'&eacute;cart entre les deux c&ocirc;t&eacute;s est tr&egrave;s petit &rarr; <strong>aigu</strong>.</li>
+        <li>Si l'&eacute;cart est tr&egrave;s grand, presque une ligne droite &rarr; <strong>obtus</strong>, voire <strong>plat</strong> s'il est totalement align&eacute;.</li>
+      </ul>
+      <p>Cette estimation permet ensuite de v&eacute;rifier que la mesure lue au rapporteur est coh&eacute;rente (par exemple, si tu estimes un angle aigu mais que tu lis 150&deg;, tu as probablement lu la mauvaise &eacute;chelle du rapporteur&nbsp;!).</p>
+    </div>
+  </section>
+
+  <!-- ================= 1. METHODES ================= -->
+  <section class="tab-pane">
+    <div class="card">
+      <h2>M&eacute;thode 1&nbsp;: mesurer un angle au rapporteur</h2>
+      <div class="method-step"><span class="num">1</span><span>Place le centre du rapporteur exactement sur le sommet de l'angle.</span></div>
+      <div class="method-step"><span class="num">2</span><span>Fais co&iuml;ncider la ligne 0&deg;&ndash;180&deg; du rapporteur avec l'un des deux c&ocirc;t&eacute;s de l'angle.</span></div>
+      <div class="method-step"><span class="num">3</span><span>Rep&egrave;re la graduation 0&deg; du c&ocirc;t&eacute; align&eacute; (choisis la bonne &eacute;chelle&nbsp;!).</span></div>
+      <div class="method-step"><span class="num">4</span><span>Lis la graduation travers&eacute;e par le second c&ocirc;t&eacute; de l'angle&nbsp;: c'est la mesure cherch&eacute;e.</span></div>
+    </div>
+
+    <div class="card">
+      <h2>M&eacute;thode 2&nbsp;: construire la m&eacute;diatrice d'un segment (au compas)</h2>
+      <div class="method-step"><span class="num">1</span><span>Trace le segment [AB].</span></div>
+      <div class="method-step"><span class="num">2</span><span>Ouvre ton compas &agrave; un &eacute;cartement sup&eacute;rieur &agrave; la moiti&eacute; de AB. Pique en A et trace un grand arc de cercle au-dessus et en dessous de [AB].</span></div>
+      <div class="method-step"><span class="num">3</span><span>Garde le m&ecirc;me &eacute;cartement, pique en B, et trace un autre arc de cercle qui coupe les pr&eacute;c&eacute;dents en deux points.</span></div>
+      <div class="method-step"><span class="num">4</span><span>Relie ces deux points d'intersection avec la r&egrave;gle&nbsp;: tu obtiens la m&eacute;diatrice de [AB].</span></div>
+      <div class="prop-box">Astuce&nbsp;: la m&eacute;diatrice passe toujours exactement par le milieu de [AB] et est perpendiculaire &agrave; [AB].</div>
+    </div>
+
+    <div class="card">
+      <h2>M&eacute;thode 3&nbsp;: construire la bissectrice d'un angle (au compas)</h2>
+      <div class="method-step"><span class="num">1</span><span>Place la pointe du compas sur le sommet O de l'angle et trace un arc de cercle qui coupe les deux c&ocirc;t&eacute;s de l'angle&nbsp;: on obtient deux points, M et N.</span></div>
+      <div class="method-step"><span class="num">2</span><span>Sans changer l'&eacute;cartement (ou en l'augmentant l&eacute;g&egrave;rement), pique en M et trace un arc &agrave; l'int&eacute;rieur de l'angle.</span></div>
+      <div class="method-step"><span class="num">3</span><span>Avec le m&ecirc;me &eacute;cartement, pique en N et trace un second arc qui coupe le premier en un point P.</span></div>
+      <div class="method-step"><span class="num">4</span><span>Trace la demi-droite [OP)&nbsp;: c'est la bissectrice de l'angle.</span></div>
+    </div>
+
+    <div class="card">
+      <h2>M&eacute;thode 4&nbsp;: tracer la perpendiculaire &agrave; une droite passant par un point</h2>
+      <div class="method-step"><span class="num">1</span><span>Place une r&egrave;gle le long de la droite (d).</span></div>
+      <div class="method-step"><span class="num">2</span><span>Place une &eacute;querre contre la r&egrave;gle, en faisant glisser son c&ocirc;t&eacute; droit jusqu'&agrave; ce qu'il touche le point M.</span></div>
+      <div class="method-step"><span class="num">3</span><span>Trace le trait le long du deuxi&egrave;me c&ocirc;t&eacute; de l'&eacute;querre&nbsp;: tu obtiens la droite perpendiculaire &agrave; (d) passant par M.</span></div>
+    </div>
+
+    <div class="card">
+      <h2>M&eacute;thode 5&nbsp;: tracer la parall&egrave;le &agrave; une droite passant par un point</h2>
+      <div class="method-step"><span class="num">1</span><span>Place une &eacute;querre contre la droite (d), puis une r&egrave;gle contre l'autre c&ocirc;t&eacute; de l'&eacute;querre.</span></div>
+      <div class="method-step"><span class="num">2</span><span>En maintenant la r&egrave;gle fixe, fais glisser l'&eacute;querre le long de la r&egrave;gle jusqu'&agrave; ce qu'elle touche le point M.</span></div>
+      <div class="method-step"><span class="num">3</span><span>Trace le trait le long de l'&eacute;querre&nbsp;: tu obtiens la droite parall&egrave;le &agrave; (d) passant par M.</span></div>
+    </div>
+
+    <div class="card">
+      <h2>M&eacute;thode 6&nbsp;: construire un angle de mesure donn&eacute;e</h2>
+      <div class="method-step"><span class="num">1</span><span>Trace une demi-droite [OA), qui sera le premier c&ocirc;t&eacute; de l'angle.</span></div>
+      <div class="method-step"><span class="num">2</span><span>Place le centre du rapporteur sur O, et aligne la ligne 0&deg; sur [OA).</span></div>
+      <div class="method-step"><span class="num">3</span><span>Rep&egrave;re et marque un point &agrave; la graduation correspondant &agrave; la mesure voulue (par exemple 50&deg;).</span></div>
+      <div class="method-step"><span class="num">4</span><span>Retire le rapporteur et trace la demi-droite [OB) reliant O &agrave; ce point&nbsp;: l'angle &Acirc;OB a la mesure demand&eacute;e.</span></div>
+    </div>
+
+    <div class="card">
+      <h2>R&eacute;capitulatif des outils</h2>
+      <table>
+        <tr><th>Outil</th><th>Utilisation</th></tr>
+        <tr><td>R&egrave;gle</td><td>tracer des droites, segments, mesurer des longueurs</td></tr>
+        <tr><td>&Eacute;querre</td><td>tracer des perpendiculaires, v&eacute;rifier un angle droit</td></tr>
+        <tr><td>Compas</td><td>tracer des cercles/arcs, construire m&eacute;diatrice et bissectrice, reporter une longueur</td></tr>
+        <tr><td>Rapporteur</td><td>mesurer ou construire un angle en degr&eacute;s</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 2. EXERCICES ================= -->
+  <section class="tab-pane">
+    <div class="card">
+      <p class="exo-title">Exercice 1 &mdash; Vocabulaire</p>
+      <p>Parmi [AB], (AB) et [AB), lequel repr&eacute;sente&nbsp;: a) une droite&nbsp;? b) un segment&nbsp;? c) une demi-droite&nbsp;?</p>
+      <details><summary>Indice</summary><p>Compare les crochets et les parenth&egrave;ses&nbsp;: une parenth&egrave;se signale que l'objet se prolonge &agrave; l'infini.</p></details>
+      <details><summary>Correction</summary>
+        <p>a) (AB) est une droite. b) [AB] est un segment. c) [AB) est une demi-droite.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 2 &mdash; Positions de droites</p>
+      <p>Deux droites (d1) et (d2) se coupent en formant un angle droit. Que peut-on dire d'elles ?</p>
+      <details><summary>Indice</summary><p>Repense &agrave; la d&eacute;finition&nbsp;: perpendiculaires = s&eacute;cantes + angle droit.</p></details>
+      <details><summary>Correction</summary>
+        <p>(d1) et (d2) sont perpendiculaires, car elles sont s&eacute;cantes et forment un angle droit. On note (d1) &perp; (d2).</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 3 &mdash; Type d'angle</p>
+      <p>Classe ces mesures en angle aigu, droit, obtus ou plat&nbsp;: 45&deg; ; 90&deg; ; 132&deg; ; 180&deg; ; 12&deg;.</p>
+      <details><summary>Indice</summary><p>Compare chaque mesure &agrave; 90&deg; et &agrave; 180&deg;.</p></details>
+      <details><summary>Correction</summary>
+        <p>45&deg; &rarr; aigu ; 90&deg; &rarr; droit ; 132&deg; &rarr; obtus ; 180&deg; &rarr; plat ; 12&deg; &rarr; aigu.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 4 &mdash; Angles compl&eacute;mentaires</p>
+      <p>Un angle mesure 27&deg;. Quelle est la mesure de son compl&eacute;ment (l'angle qui compl&egrave;te &agrave; 90&deg;) ?</p>
+      <details><summary>Indice</summary><p>Compl&eacute;mentaire veut dire que la somme des deux angles fait 90&deg;.</p></details>
+      <details><summary>Correction</summary>
+        <p>90 &minus; 27 = 63&deg;. Le compl&eacute;ment mesure 63&deg;.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 5 &mdash; Angles suppl&eacute;mentaires</p>
+      <p>Un angle mesure 118&deg;. Quelle est la mesure de son suppl&eacute;ment (l'angle qui compl&egrave;te &agrave; 180&deg;) ?</p>
+      <details><summary>Indice</summary><p>Suppl&eacute;mentaire veut dire que la somme des deux angles fait 180&deg;.</p></details>
+      <details><summary>Correction</summary>
+        <p>180 &minus; 118 = 62&deg;. Le suppl&eacute;ment mesure 62&deg;.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 6 &mdash; M&eacute;diatrice</p>
+      <p>[AB] mesure 6 cm. M est un point de la m&eacute;diatrice de [AB] tel que MA = 4 cm. Que vaut MB ? Justifie.</p>
+      <details><summary>Indice</summary><p>Rappelle-toi la propri&eacute;t&eacute; d'&eacute;quidistance de la m&eacute;diatrice.</p></details>
+      <details><summary>Correction</summary>
+        <p>MB = 4 cm, car tout point de la m&eacute;diatrice d'un segment est &eacute;quidistant de ses extr&eacute;mit&eacute;s (MA = MB).</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 7 &mdash; Bissectrice</p>
+      <p>L'angle &Acirc;OB mesure 84&deg;. [Oz) est la bissectrice de cet angle. Calcule la mesure de l'angle &Acirc;Oz.</p>
+      <details><summary>Indice</summary><p>La bissectrice partage l'angle en deux parts &eacute;gales&nbsp;: divise par 2.</p></details>
+      <details><summary>Correction</summary>
+        <p>&Acirc;Oz = 84 &divide; 2 = 42&deg;.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 8 &mdash; Distance point-droite</p>
+      <p>Comment appelle-t-on le segment qui permet de mesurer la distance d'un point M &agrave; une droite (d), et quelle propri&eacute;t&eacute; doit-il v&eacute;rifier ?</p>
+      <details><summary>Indice</summary><p>Pense au segment le plus court entre un point et une droite.</p></details>
+      <details><summary>Correction</summary>
+        <p>C'est le segment [MH], o&ugrave; H est le pied de la perpendiculaire &agrave; (d) passant par M. Il doit &ecirc;tre perpendiculaire &agrave; (d).</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 9 &mdash; Lecture de figure</p>
+      <p>Sur une figure, deux droites (d) et (d') ne se croisent jamais, m&ecirc;me prolong&eacute;es. Comment qualifie-t-on ces droites ?</p>
+      <details><summary>Indice</summary><p>Deux droites qui ne se croisent jamais portent un nom pr&eacute;cis vu en cours.</p></details>
+      <details><summary>Correction</summary>
+        <p>Elles sont parall&egrave;les&nbsp;: (d) // (d').</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 10 &mdash; Construction de m&eacute;diatrice</p>
+      <p>D&eacute;cris les deux &eacute;tapes principales de la construction de la m&eacute;diatrice d'un segment [AB] au compas.</p>
+      <details><summary>Indice</summary><p>Il faut deux arcs de cercle de m&ecirc;me rayon, centr&eacute;s en A puis en B.</p></details>
+      <details><summary>Correction</summary>
+        <p>1) Tracer un arc de cercle centr&eacute; en A, d'un rayon sup&eacute;rieur &agrave; la moiti&eacute; de [AB], puis un arc de m&ecirc;me rayon centr&eacute; en B. 2) Relier les deux points d'intersection des arcs&nbsp;: on obtient la m&eacute;diatrice.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Exercice 11 &mdash; Angle et bissectrice</p>
+      <p>Un angle mesure 96&deg;. Calcule la mesure de chacun des deux angles form&eacute;s par sa bissectrice.</p>
+      <details><summary>Indice</summary><p>Divise la mesure totale par 2.</p></details>
+      <details><summary>Correction</summary>
+        <p>96 &divide; 2 = 48&deg;. La bissectrice partage l'angle en deux angles de 48&deg; chacun.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= 3. APPROFONDISSEMENT ================= -->
+  <section class="tab-pane">
+    <div class="card">
+      <p class="exo-title">Probl&egrave;me 1 &mdash; Trois angles align&eacute;s</p>
+      <p>Les demi-droites [OA), [OB) et [OC) sont telles que l'angle &Acirc;OC est un angle plat. On sait que &Acirc;OB = 55&deg;. Calcule &Bcirc;OC.</p>
+      <details><summary>Indice</summary><p>Un angle plat mesure 180&deg;. Les deux angles &Acirc;OB et &Bcirc;OC se partagent cette mesure.</p></details>
+      <details><summary>Correction</summary>
+        <p>&Acirc;OC = 180&deg; (angle plat). Comme [OB) est entre [OA) et [OC), &Acirc;OB + &Bcirc;OC = &Acirc;OC, donc &Bcirc;OC = 180 &minus; 55 = 125&deg;. &Acirc;OB et &Bcirc;OC sont suppl&eacute;mentaires.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Probl&egrave;me 2 &mdash; &Eacute;quation d'angles compl&eacute;mentaires</p>
+      <p>Deux angles compl&eacute;mentaires ont pour mesures x et 3x (en degr&eacute;s). Calcule x, puis la mesure de chaque angle.</p>
+      <details><summary>Indice</summary><p>&Eacute;cris l'&eacute;quation traduisant "compl&eacute;mentaires"&nbsp;: la somme des deux mesures vaut 90.</p></details>
+      <details><summary>Correction</summary>
+        <p>x + 3x = 90, donc 4x = 90, donc x = 22,5. Les angles mesurent 22,5&deg; et 3 &times; 22,5 = 67,5&deg;. V&eacute;rification&nbsp;: 22,5 + 67,5 = 90&deg;. &#10003;</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Probl&egrave;me 3 &mdash; Bissectrice et calcul</p>
+      <p>[Ot) est la bissectrice de l'angle &Xcirc;OY. On sait que &Xcirc;Ot = 3x + 5 et tOY = 4x &minus; 10 (en degr&eacute;s). Calcule x, puis la mesure de l'angle &Xcirc;OY complet.</p>
+      <details><summary>Indice</summary><p>Une bissectrice partage l'angle en deux parts &eacute;gales&nbsp;: pose l'&eacute;galit&eacute; entre les deux expressions.</p></details>
+      <details><summary>Correction</summary>
+        <p>Comme [Ot) est la bissectrice, &Xcirc;Ot = tOY, donc 3x + 5 = 4x &minus; 10, soit 15 = x. Alors &Xcirc;Ot = 3 &times; 15 + 5 = 50&deg;. L'angle complet &Xcirc;OY = 2 &times; 50 = 100&deg;.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Probl&egrave;me 4 &mdash; Construction guid&eacute;e</p>
+      <p>Trace un segment [AB] de 8 cm. Construis sa m&eacute;diatrice (d) au compas, puis place un point M sur (d) diff&eacute;rent du milieu de [AB]. Que peux-tu affirmer sur MA et MB sans les mesurer ? V&eacute;rifie ensuite avec ta r&egrave;gle.</p>
+      <details><summary>Indice</summary><p>Pense &agrave; la propri&eacute;t&eacute; principale de la m&eacute;diatrice, vue dans le cours.</p></details>
+      <details><summary>Correction</summary>
+        <p>On peut affirmer que MA = MB, car M appartient &agrave; la m&eacute;diatrice de [AB] (propri&eacute;t&eacute; d'&eacute;quidistance). La mesure confirme cette &eacute;galit&eacute;, quel que soit le point M choisi sur (d).</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Probl&egrave;me 5 &mdash; Perpendiculaires en cha&icirc;ne</p>
+      <p>(d1) &perp; (d2) et (d2) &perp; (d3). Que peut-on dire de la position relative de (d1) et (d3) ? Fais un croquis pour justifier.</p>
+      <details><summary>Indice</summary><p>Relis la propri&eacute;t&eacute; de la fin de la section 2 du cours.</p></details>
+      <details><summary>Correction</summary>
+        <p>(d1) et (d3) sont parall&egrave;les&nbsp;: deux droites perpendiculaires &agrave; une m&ecirc;me troisi&egrave;me droite sont parall&egrave;les entre elles (propri&eacute;t&eacute; vue en cours).</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Probl&egrave;me 6 &mdash; Trois angles cons&eacute;cutifs</p>
+      <p>Les demi-droites [OA), [OB), [OC) et [OD) sont plac&eacute;es de sorte que &Acirc;OD soit un angle plat. On sait que &Acirc;OB = 40&deg;, &Bcirc;OC = 3 fois &Acirc;OB, et &Ccirc;OD compl&egrave;te jusqu'&agrave; 180&deg;. Calcule &Bcirc;OC puis &Ccirc;OD.</p>
+      <details><summary>Indice</summary><p>Calcule d'abord &Bcirc;OC, puis utilise le fait que les trois angles se succ&egrave;dent jusqu'&agrave; 180&deg;.</p></details>
+      <details><summary>Correction</summary>
+        <p>&Bcirc;OC = 3 &times; 40 = 120&deg;. Comme &Acirc;OD = 180&deg; et que les angles se succ&egrave;dent, &Acirc;OB + &Bcirc;OC + &Ccirc;OD = 180&deg;, donc 40 + 120 + &Ccirc;OD = 180, soit &Ccirc;OD = 180 &minus; 160 = 20&deg;.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Probl&egrave;me 7 &mdash; Rectangle et diagonales</p>
+      <p>ABCD est un rectangle. Ses diagonales [AC] et [BD] se coupent en un point O. Sachant qu'un rectangle a ses quatre angles droits et que ses diagonales ne sont pas perpendiculaires en g&eacute;n&eacute;ral, l'angle &Acirc;OB peut-il &ecirc;tre un angle droit&nbsp;? Que peux-tu dire de la nature de ABCD si c'est le cas&nbsp;?</p>
+      <details><summary>Indice</summary><p>Pense au quadrilat&egrave;re particulier, cas sp&eacute;cial du rectangle, dont tu connais les propri&eacute;t&eacute;s des diagonales.</p></details>
+      <details><summary>Correction</summary>
+        <p>Oui, l'angle &Acirc;OB peut &ecirc;tre droit&nbsp;: cela se produit uniquement lorsque le rectangle a tous ses c&ocirc;t&eacute;s &eacute;gaux, c'est-&agrave;-dire lorsque ABCD est en fait un <strong>carr&eacute;</strong> (les diagonales d'un carr&eacute; sont perpendiculaires).</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <p class="exo-title">Probl&egrave;me 8 &mdash; Angles et pourcentage</p>
+      <p>Un angle repr&eacute;sente 40&nbsp;% d'un angle plat. Quelle est sa mesure en degr&eacute;s&nbsp;? Est-il aigu, droit ou obtus&nbsp;?</p>
+      <details><summary>Indice</summary><p>Un angle plat mesure 180&deg;. Calcule 40&nbsp;% de 180.</p></details>
+      <details><summary>Correction</summary>
+        <p>Un angle plat mesure 180&deg;. 40&nbsp;% de 180 = 0,40 &times; 180 = 72&deg;. Comme 72&deg; &lt; 90&deg;, c'est un <strong>angle aigu</strong>.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= 4. QCM ================= -->
+  <section class="tab-pane">
+    <div class="card">
+      <h2>QCM &mdash; teste tes connaissances</h2>
+      <p>Coche une r&eacute;ponse par question, puis clique sur <strong>Corriger</strong>.</p>
+      <form id="qcmForm"></form>
+      <button class="btn" onclick="corrigerQCM()">Corriger</button>
+      <div id="qcmScore"></div>
+    </div>
+  </section>
+
+  <!-- ================= 5. VISUALISATION ================= -->
+  <section class="tab-pane">
+    <div class="card accent">
+      <h2>Comment utiliser cette page</h2>
+      <p>Les deux sch&eacute;mas ci-dessous sont interactifs&nbsp;: ils r&eacute;agissent &agrave; ta souris (ou ton doigt sur tablette). Utilise-les pour v&eacute;rifier ton intuition avant un contr&ocirc;le&nbsp;: essaie de deviner la mesure d'un angle avant de le v&eacute;rifier avec le rapporteur virtuel !</p>
+    </div>
+    <div class="card">
+      <h2>Rapporteur interactif</h2>
+      <p>Fais glisser le point rouge pour ouvrir l'angle et observe sa mesure et son type en direct.</p>
+      <canvas id="protractorCanvas" width="500" height="300" aria-label="Rapporteur interactif"></canvas>
+      <div class="readout" id="angleReadout">90&deg;<small id="angleType">Angle droit</small></div>
+      <div class="controls">
+        <button class="btn secondary" onclick="setAngle(30)">30&deg;</button>
+        <button class="btn secondary" onclick="setAngle(90)">90&deg;</button>
+        <button class="btn secondary" onclick="setAngle(120)">120&deg;</button>
+        <button class="btn secondary" onclick="setAngle(180)">180&deg;</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Droites : s&eacute;cantes, perpendiculaires, parall&egrave;les</h2>
+      <p>Fais tourner la droite bleue avec le curseur pour observer l'angle qu'elle forme avec la droite fixe.</p>
+      <canvas id="linesCanvas" width="500" height="300" aria-label="Construction de droites"></canvas>
+      <div class="readout" id="linesReadout">45&deg;<small id="linesInfo">Droites s&eacute;cantes</small></div>
+      <div class="controls">
+        <label for="lineSlider">Angle de rotation&nbsp;:</label>
+        <input type="range" id="lineSlider" min="0" max="180" value="45">
+        <button class="btn secondary" onclick="toggleParallel()">Afficher une parall&egrave;le</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>M&eacute;diatrice interactive&nbsp;: la propri&eacute;t&eacute; d'&eacute;quidistance</h2>
+      <p>Fais glisser le point vert M le long de la droite pointill&eacute;e (la m&eacute;diatrice de [AB]) et observe les distances MA et MB.</p>
+      <canvas id="mediatriceCanvas" width="500" height="280" aria-label="M&eacute;diatrice interactive"></canvas>
+      <div class="readout" id="mediatriceReadout">MA = MB<small>Quelle que soit la position de M sur la m&eacute;diatrice, MA = MB&nbsp;!</small></div>
+    </div>
+  </section>
+
+  <!-- ================= 6. BILAN ================= -->
+  <section class="tab-pane">
+    <div class="card">
+      <h2>Ce qu'il faut retenir</h2>
+      <ul class="checklist">
+        <li>Je sais diff&eacute;rencier point, segment [AB], droite (AB) et demi-droite [AB).</li>
+        <li>Je sais reconna&icirc;tre des droites s&eacute;cantes, perpendiculaires ( &perp; ) et parall&egrave;les ( // ).</li>
+        <li>Je sais d&eacute;terminer la distance d'un point &agrave; une droite (segment perpendiculaire).</li>
+        <li>Je sais d&eacute;finir et construire la m&eacute;diatrice d'un segment (au compas, ou r&egrave;gle et &eacute;querre).</li>
+        <li>Je connais le vocabulaire d'un angle&nbsp;: sommet, c&ocirc;t&eacute;s, notation &Acirc;OB.</li>
+        <li>Je sais classer un angle&nbsp;: nul, aigu, droit, obtus, plat.</li>
+        <li>Je sais mesurer un angle au rapporteur.</li>
+        <li>Je sais utiliser les angles compl&eacute;mentaires (somme = 90&deg;) et suppl&eacute;mentaires (somme = 180&deg;).</li>
+        <li>Je sais d&eacute;finir et construire la bissectrice d'un angle au compas.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Formulaire &eacute;clair</h2>
+      <div class="grid2">
+        <div class="prop-box">Angle aigu&nbsp;: 0&deg; &lt; mesure &lt; 90&deg;</div>
+        <div class="prop-box">Angle droit&nbsp;: mesure = 90&deg;</div>
+        <div class="prop-box">Angle obtus&nbsp;: 90&deg; &lt; mesure &lt; 180&deg;</div>
+        <div class="prop-box">Angle plat&nbsp;: mesure = 180&deg;</div>
+        <div class="prop-box">Compl&eacute;mentaires&nbsp;: somme = 90&deg;</div>
+        <div class="prop-box">Suppl&eacute;mentaires&nbsp;: somme = 180&deg;</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Vocabulaire cl&eacute;</h2>
+      <table>
+        <tr><th>Mot</th><th>Sens</th></tr>
+        <tr><td>M&eacute;diatrice</td><td>droite perpendiculaire &agrave; un segment, passant par son milieu</td></tr>
+        <tr><td>Bissectrice</td><td>demi-droite qui partage un angle en deux angles &eacute;gaux</td></tr>
+        <tr><td>&Eacute;quidistant</td><td>&agrave; &eacute;gale distance de deux points ou objets</td></tr>
+        <tr><td>Sommet</td><td>point d'origine commun des deux c&ocirc;t&eacute;s d'un angle</td></tr>
+        <tr><td>S&eacute;cantes</td><td>droites qui se coupent en un seul point</td></tr>
+        <tr><td>Pied de la perpendiculaire</td><td>point o&ugrave; la perpendiculaire issue d'un point coupe la droite</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Auto-&eacute;valuation &mdash; Vrai ou faux ?</h2>
+      <p>R&eacute;fl&eacute;chis avant de cliquer sur chaque r&eacute;ponse.</p>
+      <details><summary>1. La m&eacute;diatrice d'un segment passe forc&eacute;ment par son milieu. &mdash; Voir la r&eacute;ponse</summary><p><strong>Vrai.</strong> C'est m&ecirc;me une partie de sa d&eacute;finition&nbsp;: perpendiculaire au segment, en passant par son milieu.</p></details>
+      <details><summary>2. Un angle obtus peut mesurer 95&deg;. &mdash; Voir la r&eacute;ponse</summary><p><strong>Vrai.</strong> 95&deg; est bien compris entre 90&deg; et 180&deg;.</p></details>
+      <details><summary>3. Deux angles suppl&eacute;mentaires mesurent toujours chacun 90&deg;. &mdash; Voir la r&eacute;ponse</summary><p><strong>Faux.</strong> Leur somme vaut 180&deg;, mais ils peuvent avoir des mesures diff&eacute;rentes (ex&nbsp;: 70&deg; et 110&deg;).</p></details>
+      <details><summary>4. La bissectrice d'un angle droit forme deux angles de 45&deg;. &mdash; Voir la r&eacute;ponse</summary><p><strong>Vrai.</strong> 90 &divide; 2 = 45&deg;.</p></details>
+      <p>Bravo, tu as parcouru tout le cours ! Relis les onglets <strong>Exercices</strong> et <strong>QCM</strong> autant de fois que n&eacute;cessaire avant ton contr&ocirc;le.</p>
+    </div>
+  </section>
+
+  <footer>Cours interactif de 6&egrave;me &mdash; Droites et angles</footer>
+</main>
+
+<script>
+/* ---------- Th&egrave;me ---------- */
+function toggleTheme(){
+  var root = document.documentElement;
+  var current = root.getAttribute('data-theme');
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if(current === 'dark'){ root.setAttribute('data-theme','light'); }
+  else if(current === 'light'){ root.setAttribute('data-theme','dark'); }
+  else { root.setAttribute('data-theme', prefersDark ? 'light' : 'dark'); }
+}
+
+/* ---------- Onglets ---------- */
+var tabs = document.querySelectorAll('.tab-pane');
+function showTab(n){
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){ b.classList.toggle('active', i===n); });
+  document.querySelectorAll('.tab-pane').forEach(function(p,i){ p.classList.toggle('active', i===n); });
+  if(!tabs[n].dataset.init){ tabs[n].dataset.init = '1'; initSection(n); }
+}
+function initSection(n){
+  if(n === 4){ buildQCM(); }
+  if(n === 5){ initProtractor(); initLines(); initMediatrice(); }
+}
+showTab(0);
+
+/* ================= QCM ================= */
+var qcmData = [
+  { q:"Comment note-t-on le segment d'extrémités A et B ?", opts:["(AB)","[AB]","[AB)"], correct:1 },
+  { q:"Deux droites qui se coupent en formant un angle droit sont dites :", opts:["parallèles","sécantes quelconques","perpendiculaires"], correct:2 },
+  { q:"La distance d'un point M à une droite (d) se mesure :", opts:["le long d'une droite parallèle à (d)","le long du segment perpendiculaire à (d)","en suivant n'importe quel chemin"], correct:1 },
+  { q:"La médiatrice d'un segment [AB] est :", opts:["une droite parallèle à [AB] passant par A","la perpendiculaire à [AB] passant par son milieu","une demi-droite issue de A"], correct:1 },
+  { q:"Un angle qui mesure exactement 90° est un angle :", opts:["aigu","droit","obtus"], correct:1 },
+  { q:"Un angle de 152° est un angle :", opts:["aigu","obtus","plat"], correct:1 },
+  { q:"Deux angles complémentaires ont une somme de mesures égale à :", opts:["90°","180°","100°"], correct:0 },
+  { q:"Deux angles supplémentaires ont une somme de mesures égale à :", opts:["90°","180°","360°"], correct:1 },
+  { q:"La bissectrice d'un angle de 60° le partage en deux angles de :", opts:["60° chacun","30° chacun","15° chacun"], correct:1 },
+  { q:"Pour tracer une perpendiculaire à une droite passant par un point, on utilise principalement :", opts:["le compas seul","l'équerre","le rapporteur seul"], correct:1 }
+];
+function buildQCM(){
+  var form = document.getElementById('qcmForm');
+  var html = '';
+  qcmData.forEach(function(item, qi){
+    html += '<div class="qcm-q" data-qi="'+qi+'"><p><strong>'+(qi+1)+'.</strong> '+item.q+'</p>';
+    item.opts.forEach(function(opt, oi){
+      html += '<label class="qcm-opt" data-oi="'+oi+'"><input type="radio" name="q'+qi+'" value="'+oi+'"> '+opt+'</label>';
+    });
+    html += '</div>';
+  });
+  form.innerHTML = html;
+}
+function corrigerQCM(){
+  var score = 0;
+  qcmData.forEach(function(item, qi){
+    var chosen = document.querySelector('input[name="q'+qi+'"]:checked');
+    var chosenVal = chosen ? parseInt(chosen.value, 10) : -1;
+    var labels = document.querySelectorAll('.qcm-q[data-qi="'+qi+'"] .qcm-opt');
+    labels.forEach(function(lab){
+      var oi = parseInt(lab.getAttribute('data-oi'), 10);
+      lab.classList.remove('correct','incorrect');
+      if(oi === item.correct){ lab.classList.add('correct'); }
+      else if(oi === chosenVal){ lab.classList.add('incorrect'); }
+    });
+    if(chosenVal === item.correct){ score++; }
+  });
+  var out = document.getElementById('qcmScore');
+  out.textContent = 'Score : ' + score + ' / ' + qcmData.length;
+}
+
+/* ================= VISUALISATION : rapporteur ================= */
+var protractorAngle = 90; // en degres, ouverture depuis le cote fixe horizontal
+var protractorDragging = false;
+function css(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function initProtractor(){
+  var canvas = document.getElementById('protractorCanvas');
+  var ctx = canvas.getContext('2d');
+  function pos(evt){
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / rect.width;
+    var scaleY = canvas.height / rect.height;
+    var clientX = (evt.touches ? evt.touches[0].clientX : evt.clientX);
+    var clientY = (evt.touches ? evt.touches[0].clientY : evt.clientY);
+    return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+  }
+  function angleFromPos(p, cx, cy){
+    var dx = p.x - cx, dy = cy - p.y;
+    var a = Math.atan2(dy, dx) * 180 / Math.PI;
+    if(a < 0) a = 0;
+    if(a > 180) a = 180;
+    return a;
+  }
+  canvas.addEventListener('mousedown', function(e){ protractorDragging = true; handleMove(e); });
+  canvas.addEventListener('touchstart', function(e){ protractorDragging = true; handleMove(e); }, {passive:true});
+  window.addEventListener('mousemove', function(e){ if(protractorDragging) handleMove(e); });
+  window.addEventListener('touchmove', function(e){ if(protractorDragging) handleMove(e); }, {passive:true});
+  window.addEventListener('mouseup', function(){ protractorDragging = false; });
+  window.addEventListener('touchend', function(){ protractorDragging = false; });
+  function handleMove(e){
+    var cx = canvas.width/2, cy = canvas.height - 40;
+    var p = pos(e);
+    protractorAngle = Math.round(angleFromPos(p, cx, cy));
+    drawProtractor();
+    updateAngleReadout();
+  }
+  canvas._draw = drawProtractor;
+  drawProtractor();
+  updateAngleReadout();
+
+  function drawProtractor(){
+    var w = canvas.width, h = canvas.height;
+    var cx = w/2, cy = h - 40, r = 150;
+    ctx.clearRect(0,0,w,h);
+    var border = css('--border'), accent = css('--accent'), text = css('--text'), heading = css('--heading'), muted = css('--muted');
+    // demi-disque gradue
+    ctx.strokeStyle = border; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(cx, cy, r, Math.PI, 0, false); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx-r, cy); ctx.lineTo(cx+r, cy); ctx.stroke();
+    // graduations tous les 10 degres
+    for(var d=0; d<=180; d+=10){
+      var rad = Math.PI - d*Math.PI/180;
+      var big = (d % 90 === 0);
+      var inner = r - (big ? 16 : 9);
+      var x1 = cx + r*Math.cos(rad), y1 = cy - r*Math.sin(rad);
+      var x2 = cx + inner*Math.cos(rad), y2 = cy - inner*Math.sin(rad);
+      ctx.strokeStyle = big ? accent : muted;
+      ctx.lineWidth = big ? 2 : 1;
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    }
+    // cote fixe (0 degre, horizontal a droite)
+    ctx.strokeStyle = text; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + r + 20, cy); ctx.stroke();
+    // arc de mesure
+    ctx.strokeStyle = accent; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, 34, -protractorAngle*Math.PI/180, 0, false); ctx.stroke();
+    // marqueur angle droit si 90
+    if(protractorAngle === 90){
+      ctx.strokeStyle = heading; ctx.lineWidth = 2;
+      ctx.strokeRect(cx-12, cy-12, 12, 12);
+    }
+    // cote mobile
+    var rad2 = protractorAngle*Math.PI/180;
+    var mx = cx + (r+20)*Math.cos(rad2), my = cy - (r+20)*Math.sin(rad2);
+    ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(mx, my); ctx.stroke();
+    // poignee
+    ctx.fillStyle = '#c0392b';
+    ctx.beginPath(); ctx.arc(mx, my, 8, 0, 2*Math.PI); ctx.fill();
+    // sommet
+    ctx.fillStyle = heading;
+    ctx.beginPath(); ctx.arc(cx, cy, 4, 0, 2*Math.PI); ctx.fill();
+    // labels O, A, B
+    ctx.fillStyle = text; ctx.font = '14px Nunito Sans, sans-serif';
+    ctx.fillText('O', cx-16, cy+16);
+    ctx.fillText('A', cx + r + 24, cy + 4);
+    ctx.fillText('B', mx + (mx>=cx?8:-18), my - 6);
+  }
+}
+function setAngle(a){
+  protractorAngle = a;
+  var c = document.getElementById('protractorCanvas');
+  if(c._draw) c._draw();
+  updateAngleReadout();
+}
+function updateAngleReadout(){
+  var out = document.getElementById('angleReadout');
+  var typeEl = document.getElementById('angleType');
+  var a = protractorAngle;
+  var type;
+  if(a === 0) type = 'Angle nul';
+  else if(a < 90) type = 'Angle aigu';
+  else if(a === 90) type = 'Angle droit';
+  else if(a < 180) type = 'Angle obtus';
+  else type = 'Angle plat';
+  out.innerHTML = a + '&deg;';
+  var small = document.createElement('small');
+  small.id = 'angleType';
+  small.textContent = type;
+  out.appendChild(small);
+}
+
+/* ================= VISUALISATION : droites ================= */
+var linesShowParallel = false;
+function initLines(){
+  var canvas = document.getElementById('linesCanvas');
+  var ctx = canvas.getContext('2d');
+  var slider = document.getElementById('lineSlider');
+  slider.addEventListener('input', drawLines);
+  canvas._draw = drawLines;
+  drawLines();
+
+  function drawLines(){
+    var w = canvas.width, h = canvas.height;
+    var cx = w/2, cy = h/2;
+    var deg = parseInt(slider.value, 10);
+    ctx.clearRect(0,0,w,h);
+    var border = css('--border'), accent = css('--accent'), text = css('--text'), heading = css('--heading');
+    // droite fixe horizontale
+    ctx.strokeStyle = text; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(30, cy); ctx.lineTo(w-30, cy); ctx.stroke();
+    ctx.fillStyle = text; ctx.font = '13px Nunito Sans, sans-serif';
+    ctx.fillText('(d)', w-46, cy-8);
+    // droite mobile
+    var rad = deg*Math.PI/180;
+    var len = 180;
+    var x1 = cx - len*Math.cos(rad), y1 = cy + len*Math.sin(rad);
+    var x2 = cx + len*Math.cos(rad), y2 = cy - len*Math.sin(rad);
+    ctx.strokeStyle = accent; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    ctx.fillStyle = accent;
+    ctx.fillText("(d')", x2+ (deg<90?6:-30), y2 - (deg<90? -14:8));
+    // angle droit si 90
+    if(deg === 90){
+      ctx.strokeStyle = heading; ctx.lineWidth = 2;
+      ctx.strokeRect(cx-11, cy-11, 11, 11);
+    }
+    // point d'intersection
+    ctx.fillStyle = heading;
+    ctx.beginPath(); ctx.arc(cx, cy, 4, 0, 2*Math.PI); ctx.fill();
+    ctx.fillText('M', cx+8, cy+16);
+    // parallele optionnelle
+    var info;
+    if(linesShowParallel){
+      var offset = 60;
+      var ox1 = x1, oy1 = y1 - offset, ox2 = x2, oy2 = y2 - offset;
+      ctx.strokeStyle = '#2e7d32'; ctx.lineWidth = 2.5;
+      ctx.setLineDash([6,4]);
+      ctx.beginPath(); ctx.moveTo(ox1,oy1); ctx.lineTo(ox2,oy2); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#2e7d32';
+      ctx.fillText("(d'') // (d')", ox2 - 60, oy2 - 8);
+      info = 'Droite (d\") tracée parallèle à (d\')';
+    } else if(deg === 90){
+      info = 'Droites perpendiculaires ( ⊥ )';
+    } else if(deg === 0 || deg === 180){
+      info = 'Droites confondues (angle nul ou plat)';
+    } else {
+      info = 'Droites sécantes';
+    }
+    document.getElementById('linesReadout').innerHTML = deg + '&deg;';
+    var small = document.createElement('small');
+    small.id = 'linesInfo';
+    small.textContent = info;
+    var readout = document.getElementById('linesReadout');
+    readout.appendChild(small);
+  }
+}
+function toggleParallel(){
+  linesShowParallel = !linesShowParallel;
+  var c = document.getElementById('linesCanvas');
+  if(c._draw) c._draw();
+}
+
+/* ================= VISUALISATION : mediatrice interactive ================= */
+var mediatriceY = 90; // position verticale du point M le long de la mediatrice
+var mediatriceDragging = false;
+function initMediatrice(){
+  var canvas = document.getElementById('mediatriceCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  var midX = w/2;
+  var ax = midX - 120, bx = midX + 120, ay = h - 50, by = h - 50; // A et B fixes, meme hauteur
+
+  function pos(evt){
+    var rect = canvas.getBoundingClientRect();
+    var scaleY = canvas.height / rect.height;
+    var clientY = (evt.touches ? evt.touches[0].clientY : evt.clientY);
+    return (clientY - rect.top) * scaleY;
+  }
+  canvas.addEventListener('mousedown', function(e){ mediatriceDragging = true; handleMove(e); });
+  canvas.addEventListener('touchstart', function(e){ mediatriceDragging = true; handleMove(e); }, {passive:true});
+  window.addEventListener('mousemove', function(e){ if(mediatriceDragging) handleMove(e); });
+  window.addEventListener('touchmove', function(e){ if(mediatriceDragging) handleMove(e); }, {passive:true});
+  window.addEventListener('mouseup', function(){ mediatriceDragging = false; });
+  window.addEventListener('touchend', function(){ mediatriceDragging = false; });
+  function handleMove(e){
+    var y = pos(e);
+    if(y < 25) y = 25;
+    if(y > h-25) y = h-25;
+    mediatriceY = y;
+    drawMediatrice();
+  }
+  canvas._draw = drawMediatrice;
+  drawMediatrice();
+
+  function drawMediatrice(){
+    ctx.clearRect(0,0,w,h);
+    var border = css('--border'), accent = css('--accent'), text = css('--text'), heading = css('--heading');
+    // segment [AB]
+    ctx.strokeStyle = text; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+    ctx.fillStyle = heading;
+    ctx.beginPath(); ctx.arc(ax, ay, 4, 0, 2*Math.PI); ctx.fill();
+    ctx.beginPath(); ctx.arc(bx, by, 4, 0, 2*Math.PI); ctx.fill();
+    ctx.font = '14px Nunito Sans, sans-serif';
+    ctx.fillText('A', ax-14, ay+4);
+    ctx.fillText('B', bx+8, by+4);
+    // mediatrice (droite verticale pointillee, passant par le milieu de AB)
+    ctx.strokeStyle = accent; ctx.lineWidth = 2; ctx.setLineDash([6,5]);
+    ctx.beginPath(); ctx.moveTo(midX, 15); ctx.lineTo(midX, h-15); ctx.stroke();
+    ctx.setLineDash([]);
+    // marqueur angle droit au pied de la mediatrice
+    ctx.strokeStyle = heading; ctx.lineWidth = 1.5;
+    ctx.strokeRect(midX-9, ay-9, 9, 9);
+    // point M mobile
+    ctx.strokeStyle = '#2e7d32'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(midX, mediatriceY); ctx.lineTo(ax, ay); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(midX, mediatriceY); ctx.lineTo(bx, by); ctx.stroke();
+    ctx.fillStyle = '#2e7d32';
+    ctx.beginPath(); ctx.arc(midX, mediatriceY, 7, 0, 2*Math.PI); ctx.fill();
+    ctx.fillStyle = text;
+    ctx.fillText('M', midX+10, mediatriceY-6);
+    // calcul des distances
+    var ma = Math.sqrt(Math.pow(midX-ax,2)+Math.pow(mediatriceY-ay,2));
+    var mb = Math.sqrt(Math.pow(midX-bx,2)+Math.pow(mediatriceY-by,2));
+    var out = document.getElementById('mediatriceReadout');
+    out.innerHTML = 'MA = ' + ma.toFixed(0) + ' px &nbsp;&nbsp; MB = ' + mb.toFixed(0) + ' px';
+    var small = document.createElement('small');
+    small.textContent = (Math.abs(ma-mb) < 1 ? 'MA = MB : M est bien equidistant de A et B !' : 'Erreur d\'affichage');
+    out.appendChild(small);
+  }
+}
+</script>
+</body>
+</html>

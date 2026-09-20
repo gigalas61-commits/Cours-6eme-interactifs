@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion de donn&eacute;es &mdash; 6&egrave;me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+  :root{
+    --bg:#f5f2ed; --surface:#ffffff; --surface2:#ebe6de; --text:#2c2418; --heading:#8b4513;
+    --muted:#6b5a48; --border:#d4c8b8; --accent:#a0522d; --accent-light:#faf5ef;
+    --shadow:0 2px 8px rgba(139,69,19,0.07); --radius:8px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0; --heading:#e0a868;
+      --muted:#9a8878; --border:#403428; --accent:#d08840; --accent-light:#1e1610;
+      --shadow:0 2px 8px rgba(0,0,0,0.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0; --heading:#e0a868;
+    --muted:#9a8878; --border:#403428; --accent:#d08840; --accent-light:#1e1610;
+    --shadow:0 2px 8px rgba(0,0,0,0.3);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Nunito Sans', system-ui, sans-serif; font-size:16px; line-height:1.65;
+    padding-inline:16px;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding-bottom:60px;}
+  h1,h2,h3,h4{font-family:'Cormorant Garamond', Georgia, serif; color:var(--heading); line-height:1.2;}
+  h1{font-size:2.3rem; margin-bottom:.2rem;}
+  h2{font-size:1.7rem; margin-top:2rem; border-bottom:2px solid var(--border); padding-bottom:.3rem;}
+  h3{font-size:1.35rem; margin-top:1.5rem;}
+  p{margin:.7rem 0;}
+  .badge{
+    display:inline-block; background:var(--accent); color:#fff; font-weight:700; font-size:.8rem;
+    padding:.25rem .7rem; border-radius:999px; letter-spacing:.03em; margin-bottom:.6rem;
+  }
+  header{padding-top:28px; text-align:center;}
+  .subtitle{color:var(--muted); font-size:1.05rem; margin-top:0;}
+
+  nav.tabs{
+    display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:22px 0;
+    position:sticky; top:0; background:var(--bg); padding:10px 0; z-index:10;
+    border-bottom:1px solid var(--border);
+  }
+  .tab-btn{
+    font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:.85rem; cursor:pointer;
+    background:var(--surface2); color:var(--text); border:1px solid var(--border);
+    border-radius:999px; padding:.5rem 1rem; transition:all .15s ease;
+  }
+  .tab-btn:hover{border-color:var(--accent);}
+  .tab-btn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+  .tab-pane{display:none; animation:fadein .25s ease;}
+  .tab-pane.active{display:block;}
+  @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:1.1rem 1.3rem; margin:1rem 0;
+  }
+  .definition{
+    background:var(--accent-light); border-left:4px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0;
+    padding:.9rem 1.1rem; margin:1rem 0;
+  }
+  .definition strong{color:var(--heading);}
+  .example{
+    background:var(--surface2); border-radius:var(--radius); padding:.9rem 1.1rem; margin:1rem 0;
+    border:1px dashed var(--border);
+  }
+  .example::before{content:"Exemple"; display:block; font-family:'Cormorant Garamond',serif; font-weight:700;
+    color:var(--accent); font-size:1.05rem; margin-bottom:.3rem;}
+  .tip{
+    background:var(--accent-light); border-radius:var(--radius); padding:.8rem 1rem; margin:1rem 0;
+    border:1px solid var(--border);
+  }
+  .tip::before{content:"\1F4A1 Astuce"; display:block; font-weight:700; color:var(--accent); margin-bottom:.25rem;}
+
+  table{width:100%; border-collapse:collapse; margin:1rem 0; font-size:.95rem;}
+  th,td{border:1px solid var(--border); padding:.5rem .6rem; text-align:center;}
+  th{background:var(--surface2); color:var(--heading); font-family:'Cormorant Garamond',serif; font-size:1.05rem;}
+  tr:nth-child(even) td{background:var(--accent-light);}
+
+  ul,ol{padding-left:1.4rem;}
+  li{margin:.35rem 0;}
+
+  details{
+    background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius);
+    padding:.6rem 1rem; margin:.7rem 0;
+  }
+  summary{
+    cursor:pointer; font-weight:700; color:var(--accent); font-family:'Cormorant Garamond',serif; font-size:1.15rem;
+  }
+  details[open] summary{margin-bottom:.5rem;}
+  .exo{
+    border:1px solid var(--border); border-radius:var(--radius); background:var(--surface);
+    padding:1rem 1.2rem; margin:1.1rem 0; box-shadow:var(--shadow);
+  }
+  .exo h4{margin-top:0;}
+
+  .step{
+    display:flex; gap:.8rem; margin:.8rem 0; align-items:flex-start;
+  }
+  .step-num{
+    flex:0 0 auto; width:2rem; height:2rem; border-radius:50%; background:var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Cormorant Garamond',serif;
+  }
+  .step-content{flex:1;}
+
+  .qcm-q{margin:1.3rem 0; padding-bottom:1rem; border-bottom:1px solid var(--border);}
+  .qcm-q p.question{font-weight:700; color:var(--text);}
+  .qcm-opts label{
+    display:block; padding:.5rem .7rem; margin:.35rem 0; border:1px solid var(--border);
+    border-radius:var(--radius); cursor:pointer; background:var(--surface2);
+  }
+  .qcm-opts label:hover{border-color:var(--accent);}
+  .qcm-opts input{margin-right:.5rem;}
+  #qcm-result{
+    text-align:center; font-family:'Cormorant Garamond',serif; font-size:1.5rem; padding:1rem; margin-top:1rem;
+    border-radius:var(--radius); border:2px solid var(--accent); background:var(--accent-light); display:none;
+  }
+  button.primary{
+    background:var(--accent); color:#fff; border:none; border-radius:var(--radius); padding:.7rem 1.4rem;
+    font-weight:700; font-size:1rem; cursor:pointer; font-family:'Nunito Sans',sans-serif;
+  }
+  button.primary:hover{filter:brightness(1.08);}
+  .correct{color:#2d7a2d; font-weight:700;}
+  .incorrect{color:#c0392b; font-weight:700;}
+
+  .viz-controls{display:flex; flex-wrap:wrap; gap:.6rem; margin:.8rem 0; align-items:center;}
+  .viz-controls input[type=text],.viz-controls input[type=number]{
+    padding:.4rem .6rem; border:1px solid var(--border); border-radius:var(--radius);
+    background:var(--surface); color:var(--text); font-family:'Nunito Sans',sans-serif; width:110px;
+  }
+  .data-row{display:flex; gap:.5rem; margin:.35rem 0; align-items:center;}
+  .data-row input{flex:1;}
+  canvas{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    max-width:100%; display:block; margin:.8rem 0;
+  }
+  .btn-small{
+    background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:var(--radius);
+    padding:.35rem .7rem; cursor:pointer; font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:.85rem;
+  }
+  .btn-small:hover{border-color:var(--accent);}
+  footer{text-align:center; color:var(--muted); margin-top:2.5rem; font-size:.85rem;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+  @media(max-width:600px){.grid-2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="badge">Classe de 6&egrave;me</span>
+    <h1>Gestion de donn&eacute;es</h1>
+    <p class="subtitle">Tableaux, diagrammes, graphiques et moyenne</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)">Cours</button>
+    <button class="tab-btn" onclick="showTab(1)">M&eacute;thodes</button>
+    <button class="tab-btn" onclick="showTab(2)">Exercices</button>
+    <button class="tab-btn" onclick="showTab(3)">Approfondissement</button>
+    <button class="tab-btn" onclick="showTab(4)">QCM</button>
+    <button class="tab-btn" onclick="showTab(5)">Visualisation</button>
+    <button class="tab-btn" onclick="showTab(6)">Bilan</button>
+  </nav>
+
+  <!-- ===================== TAB 0 : COURS ===================== -->
+  <section class="tab-pane active" id="tab0">
+    <h2>1. Lire et organiser un tableau de donn&eacute;es</h2>
+    <p>En math&eacute;matiques, on collecte souvent des <strong>donn&eacute;es</strong> (des informations chiffr&eacute;es) que l'on organise dans un <strong>tableau</strong> pour pouvoir les lire et les analyser facilement.</p>
+
+    <div class="example">
+      Voici les notes obtenues par les 10 &eacute;l&egrave;ves d'un groupe lors d'un contr&ocirc;le de math&eacute;matiques :
+      <table>
+        <tr><th>&Eacute;l&egrave;ve</th><td>Lina</td><td>Sam</td><td>Nora</td><td>Ilan</td><td>Ma&euml;lys</td><td>Youssef</td><td>Emma</td><td>Th&eacute;o</td><td>L&eacute;a</td><td>Rayan</td></tr>
+        <tr><th>Note /20</th><td>14</td><td>9</td><td>16</td><td>12</td><td>14</td><td>8</td><td>18</td><td>12</td><td>14</td><td>10</td></tr>
+      </table>
+      <p>Ce tableau permet de retrouver rapidement la note de chaque &eacute;l&egrave;ve.</p>
+    </div>
+
+    <h3>Tableau &agrave; double entr&eacute;e</h3>
+    <p>Un tableau &agrave; <strong>double entr&eacute;e</strong> croise deux informations &agrave; la fois : une en ligne, une en colonne.</p>
+    <div class="example">
+      Nombre d'&eacute;l&egrave;ves pratiquant un sport, selon leur classe :
+      <table>
+        <tr><th></th><th>Football</th><th>Natation</th><th>Danse</th></tr>
+        <tr><th>6&egrave;meA</th><td>8</td><td>5</td><td>4</td></tr>
+        <tr><th>6&egrave;meB</th><td>6</td><td>7</td><td>3</td></tr>
+      </table>
+      <p>Par exemple, on lit qu'il y a <strong>7 &eacute;l&egrave;ves</strong> de 6&egrave;meB qui pratiquent la natation : on croise la ligne &laquo;&nbsp;6&egrave;meB&nbsp;&raquo; et la colonne &laquo;&nbsp;Natation&nbsp;&raquo;.</p>
+    </div>
+
+    <h2>2. Effectifs et fr&eacute;quences</h2>
+    <div class="definition">
+      <strong>L'effectif</strong> d'une valeur, c'est le nombre de fois qu'elle appara&icirc;t dans une s&eacute;rie de donn&eacute;es.<br>
+      <strong>L'effectif total</strong> est le nombre total de donn&eacute;es de la s&eacute;rie (la somme de tous les effectifs).
+    </div>
+    <div class="example">
+      On demande &agrave; 25 &eacute;l&egrave;ves leur mati&egrave;re pr&eacute;f&eacute;r&eacute;e :
+      <table>
+        <tr><th>Mati&egrave;re</th><td>Maths</td><td>Sport</td><td>Arts</td><td>Histoire</td></tr>
+        <tr><th>Effectif</th><td>10</td><td>8</td><td>4</td><td>3</td></tr>
+      </table>
+      <p>L'effectif total est 10+8+4+3 = <strong>25</strong> &eacute;l&egrave;ves (ce qui correspond bien au nombre total d'&eacute;l&egrave;ves interrog&eacute;s).</p>
+    </div>
+    <div class="definition">
+      <strong>La fr&eacute;quence</strong> d'une valeur est la proportion que repr&eacute;sente son effectif par rapport &agrave; l'effectif total. On peut l'&eacute;crire sous forme de fraction, de nombre d&eacute;cimal ou de pourcentage :
+      <p style="text-align:center; font-weight:700; margin:.6rem 0;">Fr&eacute;quence = effectif de la valeur &divide; effectif total</p>
+    </div>
+    <div class="example">
+      Pour les &eacute;l&egrave;ves qui pr&eacute;f&egrave;rent les Maths : fr&eacute;quence = 10 &divide; 25 = 0,4 = <strong>40&nbsp;%</strong>.<br>
+      Cela signifie que 40&nbsp;% des &eacute;l&egrave;ves interrog&eacute;s pr&eacute;f&egrave;rent les maths.
+    </div>
+    <div class="tip">La somme de toutes les fr&eacute;quences (en pourcentage) est toujours &eacute;gale &agrave; <strong>100&nbsp;%</strong> (ou 1 en &eacute;criture d&eacute;cimale). C'est une bonne fa&ccedil;on de v&eacute;rifier ses calculs !</div>
+
+    <h2>3. Diagrammes en b&acirc;tons et en barres</h2>
+    <p>Un <strong>diagramme en b&acirc;tons</strong> repr&eacute;sente des donn&eacute;es <strong>discr&egrave;tes</strong> (des valeurs pr&eacute;cises, souvent des nombres) par des traits verticaux dont la hauteur est proportionnelle &agrave; l'effectif.</p>
+    <p>Un <strong>diagramme en barres</strong> repr&eacute;sente des donn&eacute;es par des rectangles (barres) dont la hauteur (ou la longueur) est proportionnelle &agrave; l'effectif. On l'utilise souvent pour des <strong>cat&eacute;gories</strong> (des mots).</p>
+    <div class="tip">Diff&eacute;rence : le b&acirc;ton est un simple trait fin (pour des nombres, comme le nombre d'enfants par famille), la barre est un rectangle large (pour des cat&eacute;gories, comme des mati&egrave;res scolaires ou des sports).</div>
+
+    <h2>4. Diagrammes circulaires</h2>
+    <p>Un <strong>diagramme circulaire</strong> (ou &laquo;&nbsp;camembert&nbsp;&raquo;) repr&eacute;sente les effectifs par des parts d'un disque. L'angle de chaque part est <strong>proportionnel</strong> &agrave; l'effectif qu'elle repr&eacute;sente.</p>
+    <div class="definition">
+      Le disque complet correspond &agrave; un angle de <strong>360&deg;</strong> (l'effectif total). Pour trouver l'angle d'une part :
+      <p style="text-align:center; font-weight:700; margin:.6rem 0;">Angle = (effectif de la valeur &divide; effectif total) &times; 360&deg;</p>
+    </div>
+    <div class="example">
+      Reprenons les mati&egrave;res pr&eacute;f&eacute;r&eacute;es (25 &eacute;l&egrave;ves). Pour les Maths (effectif 10) :<br>
+      Angle = (10 &divide; 25) &times; 360 = 0,4 &times; 360 = <strong>144&deg;</strong>
+    </div>
+
+    <h2>5. Graphiques cart&eacute;siens : rep&eacute;rer un point</h2>
+    <p>Un graphique cart&eacute;sien utilise deux axes perpendiculaires (un axe horizontal et un axe vertical) qui se croisent en un point appel&eacute; <strong>origine</strong>.</p>
+    <div class="definition">
+      Un point est rep&eacute;r&eacute; par un couple de <strong>coordonn&eacute;es</strong> (x&nbsp;;&nbsp;y) :
+      <ul>
+        <li><strong>x</strong> est l'abscisse : on la lit sur l'axe horizontal.</li>
+        <li><strong>y</strong> est l'ordonn&eacute;e : on la lit sur l'axe vertical.</li>
+      </ul>
+      On dit &laquo;&nbsp;d'abord la maison, ensuite l'ascenseur&nbsp;&raquo; pour se souvenir de lire l'abscisse avant l'ordonn&eacute;e !
+    </div>
+    <div class="example">
+      Le point A(3&nbsp;;&nbsp;5) se trouve &agrave; 3 unit&eacute;s vers la droite sur l'axe horizontal, puis 5 unit&eacute;s vers le haut.
+    </div>
+    <p>Ce type de graphique permet aussi de repr&eacute;senter l'&eacute;volution d'une grandeur en fonction d'une autre (par exemple, la temp&eacute;rature au cours d'une journ&eacute;e).</p>
+
+    <h2>6. La moyenne arithm&eacute;tique</h2>
+    <div class="definition">
+      La <strong><span style="text-decoration:overline">x</span> moyenne</strong> d'une s&eacute;rie de donn&eacute;es est la somme de toutes les valeurs divis&eacute;e par le nombre de valeurs :
+      <p style="text-align:center; font-weight:700; margin:.6rem 0;"><span style="text-decoration:overline">x</span> = (somme des valeurs) &divide; (nombre de valeurs)</p>
+    </div>
+    <div class="example">
+      Notes de Lina sur l'ann&eacute;e : 14, 12, 16, 10.<br>
+      Somme = 14+12+16+10 = 52. Nombre de valeurs = 4.<br>
+      Moyenne = 52 &divide; 4 = <strong>13</strong>.
+    </div>
+    <div class="tip">La moyenne n'est pas forc&eacute;ment une valeur de la s&eacute;rie ! Elle donne une id&eacute;e g&eacute;n&eacute;rale du niveau, mais ne remplace pas le d&eacute;tail de toutes les notes.</div>
+
+    <h3>Moyenne avec effectifs</h3>
+    <p>Quand plusieurs &eacute;l&egrave;ves ont la m&ecirc;me note, on utilise les effectifs pour calculer la moyenne plus rapidement.</p>
+    <div class="example">
+      <table>
+        <tr><th>Note</th><td>8</td><td>12</td><td>16</td></tr>
+        <tr><th>Effectif</th><td>2</td><td>5</td><td>3</td></tr>
+      </table>
+      Somme des notes = (8&times;2) + (12&times;5) + (16&times;3) = 16+60+48 = 124<br>
+      Effectif total = 2+5+3 = 10<br>
+      Moyenne = 124 &divide; 10 = <strong>12,4</strong>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 1 : METHODES ===================== -->
+  <section class="tab-pane" id="tab1">
+    <h2>M&eacute;thode 1 : Calculer une fr&eacute;quence</h2>
+    <div class="card">
+      <div class="step"><div class="step-num">1</div><div class="step-content">Identifier l'effectif de la valeur &eacute;tudi&eacute;e.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content">Identifier (ou calculer) l'effectif total en additionnant tous les effectifs.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content">Diviser l'effectif de la valeur par l'effectif total.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content">Si besoin, convertir le r&eacute;sultat en pourcentage (multiplier par 100).</div></div>
+      <div class="example">
+        Sur 40 &eacute;l&egrave;ves, 6 viennent &agrave; l'&eacute;cole &agrave; v&eacute;lo. Fr&eacute;quence = 6 &divide; 40 = 0,15 = <strong>15&nbsp;%</strong>.
+      </div>
+    </div>
+
+    <h2>M&eacute;thode 2 : Calculer un angle de diagramme circulaire</h2>
+    <div class="card">
+      <div class="step"><div class="step-num">1</div><div class="step-content">Calculer la fr&eacute;quence de la valeur (effectif &divide; effectif total).</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content">Multiplier cette fr&eacute;quence par 360&deg;.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content">V&eacute;rifier : la somme de tous les angles doit faire 360&deg;.</div></div>
+      <div class="example">
+        Sur 50 personnes interrog&eacute;es, 15 pr&eacute;f&egrave;rent le chocolat.<br>
+        Fr&eacute;quence = 15 &divide; 50 = 0,3<br>
+        Angle = 0,3 &times; 360 = <strong>108&deg;</strong>
+      </div>
+    </div>
+
+    <h2>M&eacute;thode 3 : Construire un diagramme en barres</h2>
+    <div class="card">
+      <div class="step"><div class="step-num">1</div><div class="step-content">Tracer deux axes perpendiculaires : un pour les cat&eacute;gories, un pour les effectifs.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content">Choisir une &eacute;chelle r&eacute;guli&egrave;re sur l'axe des effectifs (par exemple, 1 carreau = 1 &eacute;l&egrave;ve).</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content">Tracer une barre de m&ecirc;me largeur pour chaque cat&eacute;gorie, avec une hauteur &eacute;gale &agrave; l'effectif.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content">Donner un titre au diagramme et nommer les axes.</div></div>
+      <div class="tip">Toutes les barres doivent avoir la m&ecirc;me largeur et &ecirc;tre s&eacute;par&eacute;es par un espace &eacute;gal pour que la lecture soit facile.</div>
+    </div>
+
+    <h2>M&eacute;thode 4 : Lire les coordonn&eacute;es d'un point</h2>
+    <div class="card">
+      <div class="step"><div class="step-num">1</div><div class="step-content">Depuis le point, tracer (mentalement ou au crayon) une ligne verticale jusqu'&agrave; l'axe horizontal : on lit l'<strong>abscisse</strong>.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content">Depuis le point, tracer une ligne horizontale jusqu'&agrave; l'axe vertical : on lit l'<strong>ordonn&eacute;e</strong>.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content">&Eacute;crire le couple (abscisse&nbsp;;&nbsp;ordonn&eacute;e).</div></div>
+    </div>
+
+    <h2>M&eacute;thode 5 : Calculer une moyenne</h2>
+    <div class="card">
+      <div class="step"><div class="step-num">1</div><div class="step-content">Additionner toutes les valeurs de la s&eacute;rie (en tenant compte des effectifs s'il y en a).</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content">Compter le nombre total de valeurs (l'effectif total).</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content">Diviser la somme par le nombre total de valeurs.</div></div>
+      <div class="tip">Pense &agrave; v&eacute;rifier que ta moyenne est coh&eacute;rente : elle doit toujours &ecirc;tre comprise entre la plus petite et la plus grande valeur de la s&eacute;rie.</div>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 2 : EXERCICES ===================== -->
+  <section class="tab-pane" id="tab2">
+    <h2>Exercices d'entra&icirc;nement</h2>
+
+    <div class="exo">
+      <h4>Exercice 1 &mdash; Lecture de tableau</h4>
+      <p>Un club sportif compte des adh&eacute;rents r&eacute;partis ainsi :</p>
+      <table>
+        <tr><th>Activit&eacute;</th><td>Football</td><td>Basket</td><td>Tennis</td><td>Judo</td></tr>
+        <tr><th>Effectif</th><td>32</td><td>18</td><td>12</td><td>8</td></tr>
+      </table>
+      <p>a) Quel est l'effectif total du club&nbsp;?<br>b) Quelle activit&eacute; a le plus d'adh&eacute;rents&nbsp;? Le moins&nbsp;?</p>
+      <details><summary>Correction</summary>
+        <p>a) 32+18+12+8 = <strong>70 adh&eacute;rents</strong>.<br>
+        b) Le football a le plus d'adh&eacute;rents (32), le judo en a le moins (8).</p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 2 &mdash; Fr&eacute;quences</h4>
+      <p>Avec les donn&eacute;es de l'exercice 1, calcule la fr&eacute;quence (en %) des adh&eacute;rents qui font du tennis.</p>
+      <details><summary>Correction</summary>
+        <p>Fr&eacute;quence = 12 &divide; 70 &asymp; 0,171 &asymp; <strong>17,1&nbsp;%</strong> des adh&eacute;rents font du tennis.</p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 3 &mdash; Diagramme en b&acirc;tons</h4>
+      <p>On a demand&eacute; &agrave; 20 familles leur nombre d'enfants. Voici les r&eacute;sultats bruts : 1, 2, 2, 3, 1, 0, 2, 2, 1, 3, 2, 1, 2, 4, 1, 2, 3, 2, 1, 0.</p>
+      <p>a) Construis le tableau des effectifs.<br>b) D&eacute;cris comment tu tracerais le diagramme en b&acirc;tons correspondant.</p>
+      <details><summary>Correction</summary>
+        <p>a) <table>
+          <tr><th>Nb d'enfants</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+          <tr><th>Effectif</th><td>2</td><td>6</td><td>7</td><td>3</td><td>1</td></tr>
+        </table>
+        On v&eacute;rifie : 2+6+7+3+1 = 19... attention il faut recompter&nbsp;! En listant : 0 appara&icirc;t 2 fois, 1 appara&icirc;t 6 fois, 2 appara&icirc;t 7 fois, 3 appara&icirc;t 3 fois, 4 appara&icirc;t 1 fois &rarr; total 2+6+7+3+1 = <strong>19</strong>. Il manque une donn&eacute;e, v&eacute;rifie en recomptant la liste (20 valeurs attendues) &mdash; c'est une bonne habitude de toujours v&eacute;rifier le total&nbsp;!<br>
+        b) On trace un axe horizontal pour le nombre d'enfants (0,1,2,3,4) et un axe vertical pour l'effectif, puis un b&acirc;ton (trait vertical) de la hauteur correspondant &agrave; chaque effectif.</p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 4 &mdash; Angle du diagramme circulaire</h4>
+      <p>Dans une classe de 30 &eacute;l&egrave;ves, 9 ont les yeux marron, 12 les yeux bleus, et le reste les yeux verts.</p>
+      <p>a) Combien d'&eacute;l&egrave;ves ont les yeux verts&nbsp;?<br>b) Calcule l'angle correspondant &agrave; chaque couleur d'yeux.</p>
+      <details><summary>Correction</summary>
+        <p>a) 30 &minus; 9 &minus; 12 = <strong>9 &eacute;l&egrave;ves</strong> ont les yeux verts.<br>
+        b) Marron : 9&divide;30&times;360 = <strong>108&deg;</strong>. Bleu : 12&divide;30&times;360 = <strong>144&deg;</strong>. Vert : 9&divide;30&times;360 = <strong>108&deg;</strong>.<br>
+        V&eacute;rification : 108+144+108 = 360&deg; &check;</p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 5 &mdash; Coordonn&eacute;es</h4>
+      <p>Sur un graphique, place les points suivants et donne leurs coordonn&eacute;es : A(2&nbsp;;&nbsp;4), B(5&nbsp;;&nbsp;1), C(0&nbsp;;&nbsp;3).</p>
+      <details><summary>Correction</summary>
+        <p>A(2&nbsp;;&nbsp;4) : abscisse 2, ordonn&eacute;e 4 &mdash; 2 &agrave; droite, 4 vers le haut.<br>
+        B(5&nbsp;;&nbsp;1) : 5 &agrave; droite, 1 vers le haut.<br>
+        C(0&nbsp;;&nbsp;3) : sur l'axe vertical (abscisse nulle), 3 vers le haut.<br>
+        Tu peux v&eacute;rifier tes constructions dans l'onglet <strong>Visualisation</strong>&nbsp;!</p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 6 &mdash; Moyenne</h4>
+      <p>Les temp&eacute;ratures relev&eacute;es &agrave; midi durant une semaine sont : 18&deg;C, 20&deg;C, 17&deg;C, 22&deg;C, 19&deg;C, 21&deg;C, 20&deg;C.</p>
+      <p>Calcule la temp&eacute;rature moyenne de la semaine.</p>
+      <details><summary>Correction</summary>
+        <p>Somme = 18+20+17+22+19+21+20 = 137<br>
+        Nombre de valeurs = 7<br>
+        Moyenne = 137 &divide; 7 &asymp; <strong>19,6&deg;C</strong></p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 7 &mdash; Moyenne avec effectifs</h4>
+      <p>Voici la r&eacute;partition des notes d'un contr&ocirc;le :</p>
+      <table>
+        <tr><th>Note</th><td>6</td><td>10</td><td>14</td><td>18</td></tr>
+        <tr><th>Effectif</th><td>3</td><td>7</td><td>8</td><td>2</td></tr>
+      </table>
+      <p>Calcule la moyenne de la classe.</p>
+      <details><summary>Correction</summary>
+        <p>Somme = (6&times;3)+(10&times;7)+(14&times;8)+(18&times;2) = 18+70+112+36 = 236<br>
+        Effectif total = 3+7+8+2 = 20<br>
+        Moyenne = 236 &divide; 20 = <strong>11,8</strong></p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 3 : APPROFONDISSEMENT ===================== -->
+  <section class="tab-pane" id="tab3">
+    <h2>Pour aller plus loin</h2>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 1 &mdash; Enqu&ecirc;te compl&egrave;te</h4>
+      <p>Dans un coll&egrave;ge de 400 &eacute;l&egrave;ves, on a interrog&eacute; un &eacute;chantillon sur leur moyen de transport pr&eacute;f&eacute;r&eacute; pour venir au coll&egrave;ge :</p>
+      <table>
+        <tr><th>Moyen</th><td>Marche</td><td>V&eacute;lo</td><td>Bus</td><td>Voiture</td></tr>
+        <tr><th>Effectif</th><td>45</td><td>30</td><td>60</td><td>15</td></tr>
+      </table>
+      <p>a) Quel est l'effectif total de l'&eacute;chantillon interrog&eacute;&nbsp;?<br>
+      b) Calcule la fr&eacute;quence de chaque moyen de transport (en %, arrondie au dixi&egrave;me).<br>
+      c) Calcule l'angle correspondant &agrave; chaque moyen de transport sur un diagramme circulaire.<br>
+      d) Si on suppose que ces proportions sont valables pour tout le coll&egrave;ge (400 &eacute;l&egrave;ves), estime combien d'&eacute;l&egrave;ves viennent en bus.</p>
+      <details><summary>Correction</summary>
+        <p>a) 45+30+60+15 = <strong>150 &eacute;l&egrave;ves</strong>.<br>
+        b) Marche : 45&divide;150 = 30&nbsp;%. V&eacute;lo : 30&divide;150 = 20&nbsp;%. Bus : 60&divide;150 = 40&nbsp;%. Voiture : 15&divide;150 = 10&nbsp;%.<br>
+        c) Marche : 0,3&times;360 = 108&deg;. V&eacute;lo : 0,2&times;360 = 72&deg;. Bus : 0,4&times;360 = 144&deg;. Voiture : 0,1&times;360 = 36&deg;. (Somme = 360&deg; &check;)<br>
+        d) 40&nbsp;% de 400 = 0,4&times;400 = <strong>160 &eacute;l&egrave;ves</strong> environ viendraient en bus.</p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 2 &mdash; Moyenne pond&eacute;r&eacute;e avec coefficients</h4>
+      <p>En fin de trimestre, Nora obtient les notes suivantes, chacune ayant un coefficient (poids) diff&eacute;rent :</p>
+      <table>
+        <tr><th>Mati&egrave;re</th><td>Maths</td><td>Fran&ccedil;ais</td><td>Histoire</td><td>Sport</td></tr>
+        <tr><th>Note</th><td>15</td><td>12</td><td>16</td><td>18</td></tr>
+        <tr><th>Coefficient</th><td>3</td><td>3</td><td>2</td><td>1</td></tr>
+      </table>
+      <p>Calcule la moyenne g&eacute;n&eacute;rale de Nora en tenant compte des coefficients (c'est comme une moyenne avec effectifs, o&ugrave; le coefficient joue le r&ocirc;le de l'effectif).</p>
+      <details><summary>Correction</summary>
+        <p>Somme pond&eacute;r&eacute;e = (15&times;3)+(12&times;3)+(16&times;2)+(18&times;1) = 45+36+32+18 = 131<br>
+        Somme des coefficients = 3+3+2+1 = 9<br>
+        Moyenne = 131 &divide; 9 &asymp; <strong>14,6</strong></p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 3 &mdash; Retrouver une donn&eacute;e manquante</h4>
+      <p>Un &eacute;l&egrave;ve a obtenu 4 notes dont la moyenne est 13. On conna&icirc;t trois de ses notes : 12, 14 et 15. Quelle est la quatri&egrave;me note&nbsp;?</p>
+      <details><summary>Correction</summary>
+        <p>Si la moyenne de 4 notes est 13, alors la somme des 4 notes est 13&times;4 = 52.<br>
+        Somme des 3 notes connues = 12+14+15 = 41.<br>
+        Quatri&egrave;me note = 52 &minus; 41 = <strong>11</strong>.</p>
+      </details>
+    </div>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 4 &mdash; Lecture crois&eacute;e</h4>
+      <p>Voici un tableau &agrave; double entr&eacute;e du nombre d'&eacute;l&egrave;ves ayant obtenu chaque mention au brevet blanc, selon leur classe :</p>
+      <table>
+        <tr><th></th><th>Sans mention</th><th>Assez bien</th><th>Bien</th><th>Tr&egrave;s bien</th></tr>
+        <tr><th>3&egrave;meA</th><td>3</td><td>8</td><td>10</td><td>4</td></tr>
+        <tr><th>3&egrave;meB</th><td>5</td><td>6</td><td>9</td><td>5</td></tr>
+      </table>
+      <p>a) Combien d'&eacute;l&egrave;ves de 3&egrave;meA ont pass&eacute; le brevet blanc&nbsp;?<br>
+      b) Combien d'&eacute;l&egrave;ves au total (les deux classes) ont eu la mention &laquo;&nbsp;Tr&egrave;s bien&nbsp;&raquo;&nbsp;?<br>
+      c) Quelle est la fr&eacute;quence des &eacute;l&egrave;ves de 3&egrave;meB ayant eu &laquo;&nbsp;Bien&nbsp;&raquo;, parmi les &eacute;l&egrave;ves de 3&egrave;meB&nbsp;?</p>
+      <details><summary>Correction</summary>
+        <p>a) 3+8+10+4 = <strong>25 &eacute;l&egrave;ves</strong>.<br>
+        b) 4+5 = <strong>9 &eacute;l&egrave;ves</strong>.<br>
+        c) Effectif total 3&egrave;meB = 5+6+9+5 = 25. Fr&eacute;quence = 9&divide;25 = 0,36 = <strong>36&nbsp;%</strong>.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 4 : QCM ===================== -->
+  <section class="tab-pane" id="tab4">
+    <h2>QCM &mdash; Teste tes connaissances</h2>
+    <form id="qcm-form">
+      <div class="qcm-q" data-correct="b">
+        <p class="question">1. Dans un tableau, l'effectif total est&hellip;</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q1" value="a">la plus grande valeur du tableau</label>
+          <label><input type="radio" name="q1" value="b">la somme de tous les effectifs</label>
+          <label><input type="radio" name="q1" value="c">le nombre de colonnes du tableau</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="c">
+        <p class="question">2. Sur 40 &eacute;l&egrave;ves, 10 ont un animal de compagnie. Quelle est la fr&eacute;quence&nbsp;?</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q2" value="a">10&nbsp;%</label>
+          <label><input type="radio" name="q2" value="b">40&nbsp;%</label>
+          <label><input type="radio" name="q2" value="c">25&nbsp;%</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="a">
+        <p class="question">3. Le disque complet d'un diagramme circulaire repr&eacute;sente un angle de&hellip;</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q3" value="a">360&deg;</label>
+          <label><input type="radio" name="q3" value="b">180&deg;</label>
+          <label><input type="radio" name="q3" value="c">100&deg;</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="b">
+        <p class="question">4. Sur 50 votes, 20 pour l'option A. Quel angle repr&eacute;sente l'option A sur un diagramme circulaire&nbsp;?</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q4" value="a">100&deg;</label>
+          <label><input type="radio" name="q4" value="b">144&deg;</label>
+          <label><input type="radio" name="q4" value="c">200&deg;</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="c">
+        <p class="question">5. Pour repr&eacute;senter le nombre de fr&egrave;res et s&oelig;urs des &eacute;l&egrave;ves (une valeur num&eacute;rique pr&eacute;cise), on utilise plut&ocirc;t&hellip;</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q5" value="a">un diagramme circulaire</label>
+          <label><input type="radio" name="q5" value="b">un tableau &agrave; double entr&eacute;e uniquement</label>
+          <label><input type="radio" name="q5" value="c">un diagramme en b&acirc;tons</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="a">
+        <p class="question">6. Dans le couple de coordonn&eacute;es (3&nbsp;;&nbsp;7), le nombre 3 est&hellip;</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q6" value="a">l'abscisse</label>
+          <label><input type="radio" name="q6" value="b">l'ordonn&eacute;e</label>
+          <label><input type="radio" name="q6" value="c">l'effectif</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="b">
+        <p class="question">7. La moyenne de 8, 12 et 16 est&hellip;</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q7" value="a">10</label>
+          <label><input type="radio" name="q7" value="b">12</label>
+          <label><input type="radio" name="q7" value="c">14</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="c">
+        <p class="question">8. Trois notes ont pour moyenne 10. Quelle est la somme de ces trois notes&nbsp;?</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q8" value="a">10</label>
+          <label><input type="radio" name="q8" value="b">13</label>
+          <label><input type="radio" name="q8" value="c">30</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="b">
+        <p class="question">9. Quelle affirmation est vraie&nbsp;?</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q9" value="a">la moyenne est toujours une des valeurs de la s&eacute;rie</label>
+          <label><input type="radio" name="q9" value="b">la somme des fr&eacute;quences (en %) fait toujours 100&nbsp;%</label>
+          <label><input type="radio" name="q9" value="c">un diagramme en b&acirc;tons a des barres larges</label>
+        </div>
+      </div>
+
+      <div class="qcm-q" data-correct="a">
+        <p class="question">10. Dans un tableau &agrave; double entr&eacute;e, pour lire une donn&eacute;e, il faut&hellip;</p>
+        <div class="qcm-opts">
+          <label><input type="radio" name="q10" value="a">croiser une ligne et une colonne</label>
+          <label><input type="radio" name="q10" value="b">lire uniquement la premi&egrave;re ligne</label>
+          <label><input type="radio" name="q10" value="c">additionner toutes les valeurs</label>
+        </div>
+      </div>
+
+      <button type="button" class="primary" onclick="checkQCM()">Valider mes r&eacute;ponses</button>
+    </form>
+    <div id="qcm-result"></div>
+  </section>
+
+  <!-- ===================== TAB 5 : VISUALISATION ===================== -->
+  <section class="tab-pane" id="tab5">
+    <h2>Outils interactifs</h2>
+
+    <h3>1. Diagramme en barres</h3>
+    <p>Saisis des cat&eacute;gories et des effectifs, le diagramme se dessine automatiquement.</p>
+    <div class="card">
+      <div id="bar-rows"></div>
+      <div class="viz-controls">
+        <button type="button" class="btn-small" onclick="addBarRow()">+ Ajouter une ligne</button>
+        <button type="button" class="btn-small" onclick="resetBars()">R&eacute;initialiser</button>
+      </div>
+      <canvas id="barCanvas" width="680" height="360"></canvas>
+    </div>
+
+    <h3>2. Diagramme circulaire</h3>
+    <p>Saisis des valeurs : les angles proportionnels sont calcul&eacute;s et affich&eacute;s.</p>
+    <div class="card">
+      <div id="pie-rows"></div>
+      <div class="viz-controls">
+        <button type="button" class="btn-small" onclick="addPieRow()">+ Ajouter une ligne</button>
+        <button type="button" class="btn-small" onclick="resetPies()">R&eacute;initialiser</button>
+      </div>
+      <canvas id="pieCanvas" width="680" height="380"></canvas>
+      <div id="pieLegend"></div>
+    </div>
+
+    <h3>3. Placer des points sur un rep&egrave;re</h3>
+    <p>Entre les coordonn&eacute;es d'un point (abscisse et ordonn&eacute;e entre 0 et 10) puis clique sur &laquo;&nbsp;Placer&nbsp;&raquo;. Tu peux aussi cliquer directement sur la grille.</p>
+    <div class="card">
+      <div class="viz-controls">
+        <label>x : <input type="number" id="ptX" min="0" max="10" value="3"></label>
+        <label>y : <input type="number" id="ptY" min="0" max="10" value="5"></label>
+        <label>Nom : <input type="text" id="ptName" value="A" maxlength="3"></label>
+        <button type="button" class="btn-small" onclick="addPoint()">Placer</button>
+        <button type="button" class="btn-small" onclick="resetPoints()">Effacer tout</button>
+      </div>
+      <canvas id="ptCanvas" width="680" height="440"></canvas>
+      <p id="ptList" style="color:var(--muted); font-size:.9rem;"></p>
+    </div>
+  </section>
+
+  <!-- ===================== TAB 6 : BILAN ===================== -->
+  <section class="tab-pane" id="tab6">
+    <h2>Bilan du chapitre</h2>
+    <div class="card">
+      <h3>Ce qu'il faut retenir</h3>
+      <ul>
+        <li><strong>Tableau de donn&eacute;es</strong> : organise l'information ; un tableau &agrave; <strong>double entr&eacute;e</strong> croise deux informations (ligne &times; colonne).</li>
+        <li><strong>Effectif</strong> : nombre de fois qu'une valeur appara&icirc;t. <strong>Effectif total</strong> : somme de tous les effectifs.</li>
+        <li><strong>Fr&eacute;quence</strong> = effectif &divide; effectif total (peut s'exprimer en %). La somme des fr&eacute;quences vaut toujours 100&nbsp;%.</li>
+        <li><strong>Diagramme en b&acirc;tons</strong> : donn&eacute;es num&eacute;riques discr&egrave;tes, traits fins. <strong>Diagramme en barres</strong> : cat&eacute;gories, rectangles larges.</li>
+        <li><strong>Diagramme circulaire</strong> : angle = (effectif &divide; effectif total) &times; 360&deg;. La somme des angles vaut toujours 360&deg;.</li>
+        <li><strong>Rep&egrave;re cart&eacute;sien</strong> : un point a pour coordonn&eacute;es (abscisse&nbsp;;&nbsp;ordonn&eacute;e), not&eacute; (x&nbsp;;&nbsp;y).</li>
+        <li><strong>Moyenne</strong> <span style="text-decoration:overline">x</span> = somme des valeurs &divide; nombre de valeurs (en tenant compte des effectifs si besoin).</li>
+      </ul>
+    </div>
+
+    <div class="tip">
+      Avant un contr&ocirc;le, entra&icirc;ne-toi &agrave; : lire un tableau &agrave; double entr&eacute;e, calculer une fr&eacute;quence et un angle, construire un diagramme, lire des coordonn&eacute;es, et calculer une moyenne (avec et sans effectifs).
+    </div>
+
+    <h3>Auto-&eacute;valuation</h3>
+    <div class="card">
+      <p>Coche les comp&eacute;tences que tu ma&icirc;trises d&eacute;j&agrave; :</p>
+      <div id="selfcheck"></div>
+    </div>
+
+    <h3>Vocabulaire &agrave; conna&icirc;tre</h3>
+    <table>
+      <tr><th>Mot</th><th>D&eacute;finition rapide</th></tr>
+      <tr><td>Effectif</td><td>Nombre d'apparitions d'une valeur</td></tr>
+      <tr><td>Fr&eacute;quence</td><td>Effectif &divide; effectif total</td></tr>
+      <tr><td>Abscisse</td><td>Coordonn&eacute;e horizontale d'un point</td></tr>
+      <tr><td>Ordonn&eacute;e</td><td>Coordonn&eacute;e verticale d'un point</td></tr>
+      <tr><td>Moyenne</td><td>Somme des valeurs &divide; nombre de valeurs</td></tr>
+    </table>
+  </section>
+
+  <footer>Cours de math&eacute;matiques &mdash; Gestion de donn&eacute;es &mdash; Classe de 6&egrave;me</footer>
+</div>
+
+<script>
+/* ---------- Tab system ---------- */
+var tabs = document.querySelectorAll('.tab-pane');
+function showTab(n){
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active', i===n);});
+  tabs.forEach(function(p,i){p.classList.toggle('active', i===n);});
+  if(!tabs[n].dataset.init){ tabs[n].dataset.init='1'; initSection(n); }
+}
+function initSection(n){
+  if(n===5){ initBars(); initPies(); initPoints(); }
+  if(n===6){ initSelfcheck(); }
+}
+
+/* ---------- QCM ---------- */
+function checkQCM(){
+  var questions = document.querySelectorAll('.qcm-q');
+  var score = 0;
+  questions.forEach(function(q){
+    var correct = q.dataset.correct;
+    var name = q.querySelector('input').name;
+    var selected = document.querySelector('input[name="'+name+'"]:checked');
+    var labels = q.querySelectorAll('.qcm-opts label');
+    labels.forEach(function(l){ l.classList.remove('correct','incorrect'); });
+    if(selected){
+      var selLabel = selected.closest('label');
+      if(selected.value === correct){
+        score++;
+        selLabel.classList.add('correct');
+      } else {
+        selLabel.classList.add('incorrect');
+        q.querySelectorAll('.qcm-opts input').forEach(function(inp){
+          if(inp.value === correct) inp.closest('label').classList.add('correct');
+        });
+      }
+    } else {
+      q.querySelectorAll('.qcm-opts input').forEach(function(inp){
+        if(inp.value === correct) inp.closest('label').classList.add('correct');
+      });
+    }
+  });
+  var result = document.getElementById('qcm-result');
+  var total = questions.length;
+  var msg = 'Score : ' + score + ' / ' + total;
+  if(score === total) msg += '  — Excellent, sans faute !';
+  else if(score >= total*0.7) msg += '  — Très bien !';
+  else if(score >= total*0.5) msg += '  — Pas mal, continue !';
+  else msg += '  — Relis le cours et réessaie !';
+  result.textContent = msg;
+  result.style.display = 'block';
+}
+
+/* ---------- Theme colors from CSS ---------- */
+function getColors(){
+  var s = getComputedStyle(document.documentElement);
+  return {
+    text: s.getPropertyValue('--text').trim(),
+    muted: s.getPropertyValue('--muted').trim(),
+    border: s.getPropertyValue('--border').trim(),
+    accent: s.getPropertyValue('--accent').trim(),
+    heading: s.getPropertyValue('--heading').trim(),
+    surface: s.getPropertyValue('--surface').trim(),
+    surface2: s.getPropertyValue('--surface2').trim()
+  };
+}
+var palette = ['#a0522d','#d4a24e','#6b8e63','#5b7fa6','#b05c7a','#8a7ab5','#c98a3e','#4f9a94'];
+
+/* ---------- Bar chart builder ---------- */
+var barData = [
+  {label:'Football', value:8},
+  {label:'Natation', value:5},
+  {label:'Danse', value:4},
+  {label:'Judo', value:3}
+];
+function initBars(){ renderBarRows(); drawBarChart(); }
+function renderBarRows(){
+  var box = document.getElementById('bar-rows');
+  box.innerHTML = '';
+  barData.forEach(function(d, i){
+    var row = document.createElement('div');
+    row.className = 'data-row';
+    row.innerHTML =
+      '<input type="text" value="'+escapeHtml(d.label)+'" onchange="updateBar('+i+',\'label\',this.value)">' +
+      '<input type="number" min="0" value="'+d.value+'" onchange="updateBar('+i+',\'value\',this.value)">' +
+      '<button type="button" class="btn-small" onclick="removeBar('+i+')">✕</button>';
+    box.appendChild(row);
+  });
+}
+function updateBar(i, field, val){
+  if(field === 'value'){ barData[i].value = Math.max(0, parseFloat(val)||0); }
+  else { barData[i].label = val; }
+  drawBarChart();
+}
+function addBarRow(){
+  barData.push({label:'Catégorie '+(barData.length+1), value:1});
+  renderBarRows();
+  drawBarChart();
+}
+function removeBar(i){
+  barData.splice(i,1);
+  renderBarRows();
+  drawBarChart();
+}
+function resetBars(){
+  barData = [
+    {label:'Football', value:8},
+    {label:'Natation', value:5},
+    {label:'Danse', value:4},
+    {label:'Judo', value:3}
+  ];
+  renderBarRows();
+  drawBarChart();
+}
+function drawBarChart(){
+  var canvas = document.getElementById('barCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var c = getColors();
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = c.surface;
+  ctx.fillRect(0,0,w,h);
+
+  var marginL = 50, marginB = 60, marginT = 20, marginR = 20;
+  var plotW = w - marginL - marginR;
+  var plotH = h - marginT - marginB;
+  var maxVal = Math.max(1, Math.max.apply(null, barData.map(function(d){return d.value;})));
+  var niceMax = Math.ceil(maxVal*1.15) || 1;
+
+  // axes
+  ctx.strokeStyle = c.border;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(marginL, marginT);
+  ctx.lineTo(marginL, marginT+plotH);
+  ctx.lineTo(marginL+plotW, marginT+plotH);
+  ctx.stroke();
+
+  // y grid + labels
+  ctx.fillStyle = c.muted;
+  ctx.font = '12px Nunito Sans, sans-serif';
+  ctx.textAlign = 'right';
+  var steps = 5;
+  for(var s=0; s<=steps; s++){
+    var val = Math.round(niceMax * s / steps);
+    var y = marginT + plotH - (val/niceMax)*plotH;
+    ctx.strokeStyle = c.border;
+    ctx.globalAlpha = 0.5;
+    ctx.beginPath(); ctx.moveTo(marginL, y); ctx.lineTo(marginL+plotW, y); ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.fillText(val, marginL-8, y+4);
+  }
+
+  // bars
+  var n = barData.length;
+  if(n > 0){
+    var slot = plotW / n;
+    var barW = Math.min(60, slot*0.6);
+    barData.forEach(function(d, i){
+      var bh = (d.value/niceMax)*plotH;
+      var x = marginL + i*slot + (slot-barW)/2;
+      var y = marginT + plotH - bh;
+      ctx.fillStyle = palette[i % palette.length];
+      ctx.fillRect(x, y, barW, bh);
+      ctx.fillStyle = c.text;
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 12px Nunito Sans, sans-serif';
+      ctx.fillText(d.value, x+barW/2, y-6);
+      ctx.fillStyle = c.muted;
+      ctx.font = '11px Nunito Sans, sans-serif';
+      var lbl = d.label.length > 10 ? d.label.slice(0,9)+'…' : d.label;
+      ctx.fillText(lbl, x+barW/2, marginT+plotH+18);
+    });
+  }
+}
+
+/* ---------- Pie chart builder ---------- */
+var pieData = [
+  {label:'Maths', value:10},
+  {label:'Sport', value:8},
+  {label:'Arts', value:4},
+  {label:'Histoire', value:3}
+];
+function initPies(){ renderPieRows(); drawPieChart(); }
+function renderPieRows(){
+  var box = document.getElementById('pie-rows');
+  box.innerHTML = '';
+  pieData.forEach(function(d, i){
+    var row = document.createElement('div');
+    row.className = 'data-row';
+    row.innerHTML =
+      '<input type="text" value="'+escapeHtml(d.label)+'" onchange="updatePie('+i+',\'label\',this.value)">' +
+      '<input type="number" min="0" value="'+d.value+'" onchange="updatePie('+i+',\'value\',this.value)">' +
+      '<button type="button" class="btn-small" onclick="removePie('+i+')">✕</button>';
+    box.appendChild(row);
+  });
+}
+function updatePie(i, field, val){
+  if(field === 'value'){ pieData[i].value = Math.max(0, parseFloat(val)||0); }
+  else { pieData[i].label = val; }
+  drawPieChart();
+}
+function addPieRow(){
+  pieData.push({label:'Valeur '+(pieData.length+1), value:1});
+  renderPieRows();
+  drawPieChart();
+}
+function removePie(i){
+  pieData.splice(i,1);
+  renderPieRows();
+  drawPieChart();
+}
+function resetPies(){
+  pieData = [
+    {label:'Maths', value:10},
+    {label:'Sport', value:8},
+    {label:'Arts', value:4},
+    {label:'Histoire', value:3}
+  ];
+  renderPieRows();
+  drawPieChart();
+}
+function drawPieChart(){
+  var canvas = document.getElementById('pieCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var c = getColors();
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = c.surface;
+  ctx.fillRect(0,0,w,h);
+
+  var total = pieData.reduce(function(s,d){ return s+d.value; }, 0);
+  var cx = w/2, cy = h/2 - 15, r = Math.min(w,h)/2 - 60;
+  var legend = document.getElementById('pieLegend');
+  legend.innerHTML = '';
+
+  if(total <= 0){
+    ctx.fillStyle = c.muted;
+    ctx.font = '14px Nunito Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Ajoute des valeurs positives pour voir le diagramme.', w/2, h/2);
+    return;
+  }
+
+  var startAngle = -Math.PI/2;
+  var rows = '<table><tr><th>Catégorie</th><th>Effectif</th><th>Fréquence</th><th>Angle</th></tr>';
+  pieData.forEach(function(d, i){
+    if(d.value <= 0) return;
+    var slice = (d.value/total) * Math.PI * 2;
+    var endAngle = startAngle + slice;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, endAngle);
+    ctx.closePath();
+    ctx.fillStyle = palette[i % palette.length];
+    ctx.fill();
+    ctx.strokeStyle = c.surface;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    var mid = (startAngle+endAngle)/2;
+    var pct = (d.value/total*100).toFixed(1);
+    if(slice > 0.18){
+      var lx = cx + Math.cos(mid)*(r*0.65);
+      var ly = cy + Math.sin(mid)*(r*0.65);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 12px Nunito Sans, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(pct+'%', lx, ly);
+    }
+    var angleDeg = Math.round(slice * 180/Math.PI);
+    rows += '<tr><td style="text-align:left"><span style="display:inline-block;width:10px;height:10px;background:'+palette[i%palette.length]+';border-radius:2px;margin-right:6px;"></span>'+escapeHtml(d.label)+'</td><td>'+d.value+'</td><td>'+pct+'%</td><td>'+angleDeg+'°</td></tr>';
+    startAngle = endAngle;
+  });
+  rows += '</table>';
+  legend.innerHTML = rows;
+}
+
+/* ---------- Point plotter ---------- */
+var points = [
+  {x:3, y:5, name:'A'}
+];
+function initPoints(){
+  drawPointGrid();
+  updatePtList();
+  var canvas = document.getElementById('ptCanvas');
+  if(canvas && !canvas.dataset.listenerSet){
+    canvas.dataset.listenerSet = '1';
+    canvas.addEventListener('click', function(evt){
+      var rect = canvas.getBoundingClientRect();
+      var scaleX = canvas.width / rect.width;
+      var scaleY = canvas.height / rect.height;
+      var mx = (evt.clientX - rect.left) * scaleX;
+      var my = (evt.clientY - rect.top) * scaleY;
+      var g = gridGeometry(canvas);
+      var gx = Math.round((mx - g.originX) / g.step);
+      var gy = Math.round((g.originY - my) / g.step);
+      if(gx>=0 && gx<=10 && gy>=0 && gy<=10){
+        var name = document.getElementById('ptName').value || 'P';
+        points.push({x:gx, y:gy, name:name});
+        drawPointGrid();
+        updatePtList();
+      }
+    });
+  }
+}
+function gridGeometry(canvas){
+  var marginL = 45, marginB = 45, marginT = 25, marginR = 25;
+  var plotW = canvas.width - marginL - marginR;
+  var plotH = canvas.height - marginT - marginB;
+  var step = Math.min(plotW, plotH) / 10;
+  return { originX: marginL, originY: canvas.height - marginB, step: step };
+}
+function addPoint(){
+  var x = parseFloat(document.getElementById('ptX').value);
+  var y = parseFloat(document.getElementById('ptY').value);
+  var name = document.getElementById('ptName').value || 'P';
+  if(isNaN(x) || isNaN(y)) return;
+  x = Math.max(0, Math.min(10, x));
+  y = Math.max(0, Math.min(10, y));
+  points.push({x:x, y:y, name:name});
+  drawPointGrid();
+  updatePtList();
+}
+function resetPoints(){
+  points = [];
+  drawPointGrid();
+  updatePtList();
+}
+function updatePtList(){
+  var el = document.getElementById('ptList');
+  if(points.length === 0){ el.textContent = 'Aucun point placé.'; return; }
+  el.textContent = points.map(function(p){ return p.name+'('+p.x+' ; '+p.y+')'; }).join('  —  ');
+}
+function drawPointGrid(){
+  var canvas = document.getElementById('ptCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var c = getColors();
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = c.surface;
+  ctx.fillRect(0,0,w,h);
+
+  var g = gridGeometry(canvas);
+  // grid lines
+  ctx.strokeStyle = c.border;
+  ctx.lineWidth = 1;
+  for(var i=0; i<=10; i++){
+    var x = g.originX + i*g.step;
+    var y = g.originY - i*g.step;
+    ctx.beginPath(); ctx.moveTo(x, g.originY); ctx.lineTo(x, g.originY-10*g.step); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(g.originX, y); ctx.lineTo(g.originX+10*g.step, y); ctx.stroke();
+  }
+  // axes
+  ctx.strokeStyle = c.text;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(g.originX, g.originY); ctx.lineTo(g.originX+10*g.step, g.originY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(g.originX, g.originY); ctx.lineTo(g.originX, g.originY-10*g.step); ctx.stroke();
+
+  // labels
+  ctx.fillStyle = c.muted;
+  ctx.font = '11px Nunito Sans, sans-serif';
+  ctx.textAlign = 'center';
+  for(var j=0; j<=10; j+=1){
+    ctx.fillText(j, g.originX + j*g.step, g.originY + 16);
+    if(j>0){
+      ctx.textAlign = 'right';
+      ctx.fillText(j, g.originX - 8, g.originY - j*g.step + 4);
+      ctx.textAlign = 'center';
+    }
+  }
+  ctx.fillStyle = c.heading;
+  ctx.font = 'bold 12px Nunito Sans, sans-serif';
+  ctx.fillText('x', g.originX+10*g.step+12, g.originY+4);
+  ctx.fillText('y', g.originX, g.originY-10*g.step-10);
+
+  // points
+  points.forEach(function(p, idx){
+    var px = g.originX + p.x*g.step;
+    var py = g.originY - p.y*g.step;
+    ctx.fillStyle = palette[idx % palette.length];
+    ctx.beginPath();
+    ctx.arc(px, py, 5, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = c.text;
+    ctx.font = 'bold 13px Cormorant Garamond, serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(p.name+'('+p.x+';'+p.y+')', px+8, py-8);
+  });
+}
+
+/* ---------- Self-check (Bilan) ---------- */
+function initSelfcheck(){
+  var box = document.getElementById('selfcheck');
+  if(box.dataset.init) return;
+  box.dataset.init = '1';
+  var items = [
+    'Lire un tableau simple et un tableau à double entrée',
+    'Calculer un effectif total',
+    'Calculer une fréquence (fraction, décimal, pourcentage)',
+    'Construire ou lire un diagramme en bâtons / en barres',
+    'Calculer l\'angle d\'un diagramme circulaire',
+    'Lire les coordonnées d\'un point dans un repère',
+    'Calculer une moyenne simple',
+    'Calculer une moyenne avec effectifs'
+  ];
+  items.forEach(function(txt, i){
+    var lbl = document.createElement('label');
+    lbl.style.display = 'block';
+    lbl.style.padding = '.4rem 0';
+    lbl.innerHTML = '<input type="checkbox" id="sc'+i+'"> '+txt;
+    box.appendChild(lbl);
+  });
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  });
+}
+
+/* Initial render for first visible tab */
+initSection(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Symétrie axiale — Cours de 6ème</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f2ed; --surface:#ffffff; --surface2:#ebe6de; --text:#2c2418; --heading:#8b4513;
+  --muted:#6b5a48; --border:#d4c8b8; --accent:#a0522d; --accent-light:#faf5ef;
+  --shadow:0 2px 8px rgba(139,69,19,0.07); --radius:8px;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0; --heading:#e0a868;
+    --muted:#9a8878; --border:#403428; --accent:#d08840; --accent-light:#1e1610;
+    --shadow:0 2px 8px rgba(0,0,0,0.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0; --heading:#e0a868;
+  --muted:#9a8878; --border:#403428; --accent:#d08840; --accent-light:#1e1610;
+  --shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; font-family:'Nunito Sans',system-ui,sans-serif; font-size:16px; line-height:1.65;
+  background:var(--bg); color:var(--text); padding-inline:16px;
+}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif; color:var(--heading); font-weight:700; line-height:1.2;}
+.wrapper{max-width:760px; margin:0 auto; padding:24px 0 64px;}
+header.top{text-align:center; padding:20px 0 12px;}
+.badge{
+  display:inline-block; background:var(--accent); color:#fff; font-weight:700; font-size:0.78rem;
+  letter-spacing:0.06em; text-transform:uppercase; padding:5px 14px; border-radius:999px; margin-bottom:12px;
+}
+h1.title{font-size:2.1rem; margin:0 0 6px;}
+.subtitle{color:var(--muted); font-size:1.05rem; margin:0;}
+nav.tabs{
+  display:flex; flex-wrap:wrap; gap:6px; margin:24px 0 18px; padding:6px; background:var(--surface2);
+  border-radius:var(--radius); position:sticky; top:0; z-index:10;
+}
+.tab-btn{
+  flex:1 1 auto; min-width:90px; text-align:center; background:transparent; border:none; padding:9px 8px;
+  font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:0.82rem; color:var(--muted);
+  border-radius:6px; cursor:pointer; transition:background .15s,color .15s;
+}
+.tab-btn:hover{background:var(--accent-light);}
+.tab-btn.active{background:var(--accent); color:#fff;}
+.tab-pane{display:none; animation:fadein .25s ease;}
+.tab-pane.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+.card{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:18px 20px; margin-bottom:18px;
+}
+.card h2{margin-top:0; font-size:1.5rem; border-bottom:2px solid var(--border); padding-bottom:8px;}
+.card h3{font-size:1.2rem; margin-bottom:6px;}
+.definition{
+  background:var(--accent-light); border-left:4px solid var(--accent); padding:12px 16px; border-radius:0 6px 6px 0;
+  margin:14px 0;
+}
+.definition strong{color:var(--heading);}
+.propriete{
+  background:var(--surface2); border:1px dashed var(--accent); padding:12px 16px; border-radius:6px; margin:14px 0;
+}
+.example{border:1px solid var(--border); border-radius:6px; padding:10px 14px; margin:10px 0; background:var(--surface);}
+.example .label{font-weight:700; color:var(--accent); font-size:0.8rem; text-transform:uppercase; letter-spacing:.04em;}
+.tip{background:var(--accent-light); border-radius:6px; padding:10px 14px; margin:12px 0; font-size:0.95rem;}
+.tip::before{content:"💡 "; }
+ul,ol{padding-left:22px;}
+li{margin-bottom:4px;}
+table{width:100%; border-collapse:collapse; margin:14px 0; font-size:0.93rem;}
+th,td{border:1px solid var(--border); padding:7px 10px; text-align:left;}
+th{background:var(--surface2); color:var(--heading); font-family:'Cormorant Garamond',serif; font-size:1.02rem;}
+details{
+  background:var(--surface2); border-radius:6px; margin:10px 0; padding:8px 14px; border:1px solid var(--border);
+}
+details summary{cursor:pointer; font-weight:700; color:var(--accent); padding:4px 0;}
+details[open] summary{margin-bottom:6px;}
+.exo{border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:16px; background:var(--surface);}
+.exo .num{
+  display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%;
+  background:var(--accent); color:#fff; font-weight:700; font-size:0.85rem; margin-right:8px;
+}
+.level{font-size:0.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:700;}
+.qcm-q{border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin-bottom:14px; background:var(--surface);}
+.qcm-q p.question{font-weight:700; margin-top:0;}
+.qcm-opt{
+  display:block; width:100%; text-align:left; padding:8px 12px; margin:6px 0; border:1px solid var(--border);
+  border-radius:6px; background:var(--surface2); color:var(--text); font-family:inherit; font-size:0.95rem; cursor:pointer;
+}
+.qcm-opt:hover{border-color:var(--accent);}
+.qcm-opt.selected{border-color:var(--accent); background:var(--accent-light);}
+.qcm-opt.correct{background:#dff3e0; border-color:#4b8b52; color:#1e3c20;}
+.qcm-opt.incorrect{background:#f6dede; border-color:#a04040; color:#4a1616;}
+:root[data-theme="dark"] .qcm-opt.correct,
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .qcm-opt.correct{background:#1e3b22; border-color:#4b8b52; color:#cdeed0;}}
+:root[data-theme="dark"] .qcm-opt.correct{background:#1e3b22; border-color:#4b8b52; color:#cdeed0;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .qcm-opt.incorrect{background:#3b1e1e; border-color:#a04040; color:#eecdcd;}}
+:root[data-theme="dark"] .qcm-opt.incorrect{background:#3b1e1e; border-color:#a04040; color:#eecdcd;}
+button.action{
+  background:var(--accent); color:#fff; border:none; padding:10px 20px; border-radius:6px; font-weight:700;
+  font-family:inherit; cursor:pointer; font-size:0.95rem; margin-top:8px;
+}
+button.action:hover{opacity:0.9;}
+button.secondary{background:var(--surface2); color:var(--text); border:1px solid var(--border);}
+#qcm-score{
+  font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:700; color:var(--heading); margin-top:14px;
+  display:none;
+}
+.canvas-wrap{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px; text-align:center;}
+canvas{max-width:100%; border-radius:6px; background:var(--surface); touch-action:none; cursor:crosshair;}
+.viz-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:12px 0;}
+.viz-controls button{
+  background:var(--surface2); color:var(--text); border:1px solid var(--border); padding:7px 14px; border-radius:6px;
+  font-family:inherit; font-weight:700; font-size:0.85rem; cursor:pointer;
+}
+.viz-controls button.active-mode{background:var(--accent); color:#fff; border-color:var(--accent);}
+.viz-hint{color:var(--muted); font-size:0.88rem; margin-top:8px;}
+footer{text-align:center; color:var(--muted); font-size:0.85rem; margin-top:36px;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+@media(max-width:520px){.grid2{grid-template-columns:1fr;}}
+.mono{font-family:monospace; background:var(--surface2); padding:1px 5px; border-radius:4px;}
+.bilan-list li{margin-bottom:8px;}
+.check{color:#4b8b52; font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<header class="top">
+  <span class="badge">Classe de 6ème</span>
+  <h1 class="title">La symétrie axiale</h1>
+  <p class="subtitle">Comprendre, construire et utiliser le symétrique d'une figure par rapport à une droite</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" onclick="showTab(0)">Cours</button>
+  <button class="tab-btn" onclick="showTab(1)">Méthodes</button>
+  <button class="tab-btn" onclick="showTab(2)">Exercices</button>
+  <button class="tab-btn" onclick="showTab(3)">Approfondissement</button>
+  <button class="tab-btn" onclick="showTab(4)">QCM</button>
+  <button class="tab-btn" onclick="showTab(5)">Visualisation</button>
+  <button class="tab-btn" onclick="showTab(6)">Bilan</button>
+</nav>
+
+<!-- ============ TAB 0 : COURS ============ -->
+<section class="tab-pane active">
+
+<div class="card">
+  <h2>1. Qu'est-ce qu'un axe de symétrie ?</h2>
+  <div class="definition">
+    <strong>Définition.</strong> Une figure possède un <strong>axe de symétrie</strong> si, en pliant la feuille le long de cette droite, les deux parties de la figure se superposent exactement.
+  </div>
+  <p>Autrement dit, la droite joue le rôle d'un <strong>miroir</strong> : tout point d'un côté a son "reflet" exact de l'autre côté, à la même distance de la droite.</p>
+  <div class="example">
+    <span class="label">Exemple</span>
+    <p>Les lettres <strong>A</strong>, <strong>M</strong>, <strong>T</strong>, <strong>U</strong>, <strong>V</strong>, <strong>W</strong>, <strong>Y</strong> ont un axe de symétrie vertical. La lettre <strong>B</strong> a un axe de symétrie horizontal. La lettre <strong>H</strong> a deux axes de symétrie (un horizontal, un vertical). La lettre <strong>S</strong>, elle, n'a aucun axe de symétrie.</p>
+  </div>
+  <div class="tip">Pour vérifier qu'une droite est un axe de symétrie, on peut plier le papier calque le long de la droite : les deux parties doivent coïncider parfaitement.</div>
+</div>
+
+<div class="card">
+  <h2>2. Figures usuelles et leurs axes de symétrie</h2>
+  <p>Certaines figures géométriques possèdent un ou plusieurs axes de symétrie qu'il faut connaître par cœur.</p>
+  <table>
+    <tr><th>Figure</th><th>Nombre d'axes de symétrie</th><th>Description des axes</th></tr>
+    <tr><td>Triangle isocèle (non équilatéral)</td><td>1</td><td>La médiatrice de la base (= la hauteur issue du sommet principal)</td></tr>
+    <tr><td>Triangle équilatéral</td><td>3</td><td>Les 3 médiatrices des côtés (qui sont aussi les 3 hauteurs)</td></tr>
+    <tr><td>Carré</td><td>4</td><td>Les 2 diagonales + les 2 médiatrices des côtés</td></tr>
+    <tr><td>Rectangle (non carré)</td><td>2</td><td>Les 2 médiatrices des côtés (les diagonales ne sont pas des axes)</td></tr>
+    <tr><td>Losange (non carré)</td><td>2</td><td>Les 2 diagonales</td></tr>
+    <tr><td>Cercle</td><td>Une infinité</td><td>Tout diamètre est un axe de symétrie</td></tr>
+    <tr><td>Parallélogramme quelconque</td><td>0</td><td>Aucun axe de symétrie</td></tr>
+  </table>
+  <div class="tip">Attention : un rectangle non carré n'a <strong>pas</strong> ses diagonales comme axes de symétrie ! Il faut toujours vérifier par pliage ou par le calcul.</div>
+</div>
+
+<div class="card">
+  <h2>3. Symétrique d'un point par rapport à une droite</h2>
+  <div class="definition">
+    <strong>Définition.</strong> Soit <span class="mono">d</span> une droite et <span class="mono">A</span> un point.
+    Le symétrique du point <span class="mono">A</span> par rapport à la droite <span class="mono">d</span> est le point <span class="mono">A'</span> tel que :
+    <ul>
+      <li>la droite <span class="mono">d</span> est perpendiculaire à la droite <span class="mono">(AA')</span> ;</li>
+      <li>la droite <span class="mono">d</span> coupe le segment <span class="mono">[AA']</span> en son milieu.</li>
+    </ul>
+  </div>
+  <p>On dit aussi que <span class="mono">d</span> est la <strong>médiatrice</strong> du segment <span class="mono">[AA']</span>.</p>
+  <div class="propriete">
+    <strong>Cas particuliers</strong>
+    <ul>
+      <li>Si le point <span class="mono">A</span> est <strong>sur</strong> la droite <span class="mono">d</span>, alors son symétrique <span class="mono">A'</span> est <strong>lui-même</strong> (A' = A).</li>
+      <li>Le symétrique du symétrique d'un point est le point de départ : symétriser deux fois de suite revient à ne rien changer.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h2>4. Construire le symétrique d'un point</h2>
+  <p>Il existe trois méthodes principales pour construire le symétrique d'un point par rapport à une droite. Elles sont détaillées dans l'onglet <strong>Méthodes</strong>. En résumé :</p>
+  <ul>
+    <li><strong>Avec l'équerre et la règle graduée</strong> : on trace la perpendiculaire à <span class="mono">d</span> passant par <span class="mono">A</span>, puis on reporte la même distance de l'autre côté.</li>
+    <li><strong>Avec le compas</strong> : on utilise la propriété de la médiatrice (tout point de la médiatrice est équidistant des extrémités).</li>
+    <li><strong>Sur quadrillage</strong> : on compte les carreaux perpendiculairement à l'axe.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>5. Propriétés conservées par la symétrie axiale</h2>
+  <p>La symétrie axiale transforme une figure en une figure symétrique. C'est une transformation qui <strong>conserve</strong> :</p>
+  <div class="grid2">
+    <div class="propriete"><strong>Les longueurs</strong><br>Si A' et B' sont les symétriques de A et B, alors A'B' = AB.</div>
+    <div class="propriete"><strong>Les angles</strong><br>Un angle et son symétrique ont la même mesure.</div>
+    <div class="propriete"><strong>Les aires</strong><br>Une figure et sa symétrique ont la même aire.</div>
+    <div class="propriete"><strong>L'alignement</strong><br>Si trois points sont alignés, leurs symétriques le sont aussi.</div>
+  </div>
+  <p style="margin-top:10px;">On dit que la symétrie axiale est une <strong>transformation qui conserve les distances</strong> (on parle d'<em>isométrie</em>). Elle conserve aussi le <strong>périmètre</strong> des figures, le <strong>parallélisme</strong> et la <strong>perpendicularité</strong> des droites.</p>
+  <div class="tip">En revanche, la symétrie axiale <strong>inverse le sens</strong> de la figure (comme dans un miroir) : une figure symétrique n'est en général pas superposable à la figure de départ par un simple glissement, il faut la retourner.</div>
+</div>
+
+<div class="card">
+  <h2>6. La médiatrice, un axe de symétrie particulier</h2>
+  <div class="definition">
+    <strong>Définition.</strong> La médiatrice d'un segment <span class="mono">[AB]</span> est la droite perpendiculaire à <span class="mono">[AB]</span> qui passe par son milieu.
+  </div>
+  <p>La médiatrice de <span class="mono">[AB]</span> est exactement l'<strong>axe de symétrie</strong> du segment <span class="mono">[AB]</span> : par symétrie par rapport à cette droite, A et B s'échangent.</p>
+  <div class="propriete">
+    <strong>Propriété caractéristique</strong><br>
+    Un point M appartient à la médiatrice de <span class="mono">[AB]</span> si et seulement si <span class="mono">MA = MB</span> (M est équidistant de A et de B).
+  </div>
+  <p>Cette propriété est la base de la construction au compas du symétrique d'un point (voir onglet Méthodes).</p>
+</div>
+
+</section>
+
+<!-- ============ TAB 1 : METHODES ============ -->
+<section class="tab-pane">
+
+<div class="card">
+  <h2>Méthode 1 — Construire le symétrique d'un point avec l'équerre et la règle</h2>
+  <p><strong>Objectif :</strong> construire A', symétrique de A par rapport à la droite d.</p>
+  <ol>
+    <li>Placer l'équerre de façon à tracer la droite <strong>perpendiculaire</strong> à d passant par A.</li>
+    <li>Noter le point H, intersection de cette perpendiculaire avec d.</li>
+    <li>Mesurer avec la règle graduée la distance AH.</li>
+    <li>Reporter cette même distance de l'autre côté de d, sur la perpendiculaire : on obtient A' tel que HA' = HA.</li>
+  </ol>
+  <div class="tip">A, H et A' sont alignés, H est le milieu de [AA'], et (AA') est perpendiculaire à d : c'est exactement la définition du symétrique !</div>
+</div>
+
+<div class="card">
+  <h2>Méthode 2 — Construire le symétrique d'un point au compas</h2>
+  <p><strong>Objectif :</strong> construire A', symétrique de A par rapport à d, en utilisant la propriété de la médiatrice.</p>
+  <ol>
+    <li>Choisir deux points I et J distincts sur la droite d.</li>
+    <li>Avec le compas, pointer en I, ouvrir jusqu'à A, tracer un arc de cercle assez grand.</li>
+    <li>Sans changer l'écartement, pointer en J, tracer un second arc qui coupe le premier de l'autre côté de d.</li>
+    <li>Le point d'intersection des deux arcs est A' : en effet IA' = IA et JA' = JA, donc d est bien la médiatrice de [AA'].</li>
+  </ol>
+  <div class="tip">Cette méthode ne nécessite ni équerre ni mesure : elle est très précise si le compas est bien manié.</div>
+</div>
+
+<div class="card">
+  <h2>Méthode 3 — Construire le symétrique sur un quadrillage</h2>
+  <p>Quand la droite d est horizontale, verticale ou suit une diagonale du quadrillage, on peut construire le symétrique simplement en comptant les carreaux.</p>
+  <ol>
+    <li>Compter le nombre de carreaux entre le point A et la droite d, en se déplaçant <strong>perpendiculairement</strong> à d.</li>
+    <li>Reporter le même nombre de carreaux de l'autre côté de d, dans le prolongement.</li>
+    <li>Placer A' à cet endroit.</li>
+  </ol>
+  <div class="example">
+    <span class="label">Exemple</span>
+    <p>Si d est verticale et que A est à 3 carreaux à gauche de d, alors A' se trouve à 3 carreaux à droite de d, sur la même ligne horizontale que A.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Méthode 4 — Construire le symétrique d'une figure entière</h2>
+  <ol>
+    <li>Repérer les points "importants" de la figure (sommets d'un polygone, extrémités d'un segment, centre d'un cercle...).</li>
+    <li>Construire le symétrique de chacun de ces points (au compas, à l'équerre, ou sur quadrillage).</li>
+    <li>Relier les points symétriques <strong>dans le même ordre</strong> que dans la figure de départ.</li>
+  </ol>
+  <div class="tip">Pour un cercle, il suffit de construire le symétrique du centre : le rayon reste le même (la symétrie conserve les longueurs) !</div>
+</div>
+
+<div class="card">
+  <h2>Méthode 5 — Reconnaître un axe de symétrie sur une figure</h2>
+  <ol>
+    <li>Chercher une droite qui semble partager la figure en deux parties "miroir".</li>
+    <li>Vérifier que chaque sommet de la figure a bien son symétrique parmi les autres sommets (mêmes distances à la droite, alignement perpendiculaire).</li>
+    <li>En cas de doute, plier mentalement (ou réellement sur un calque) le long de la droite.</li>
+  </ol>
+  <div class="tip">Méthode rapide : mesurer avec la règle la distance de deux points "censés" être symétriques à la droite candidate. Si les distances sont différentes, ce n'est pas un axe de symétrie.</div>
+</div>
+
+<div class="card">
+  <h2>Méthode 6 — Tracer la médiatrice d'un segment (= axe de symétrie de ce segment)</h2>
+  <ol>
+    <li>Pointer le compas en A, ouvrir à plus de la moitié de AB, tracer un arc au-dessus et en dessous du segment.</li>
+    <li>Sans changer l'écartement, pointer en B, tracer deux nouveaux arcs qui coupent les précédents.</li>
+    <li>Relier les deux points d'intersection : on obtient la médiatrice de [AB].</li>
+  </ol>
+</div>
+
+</section>
+
+<!-- ============ TAB 2 : EXERCICES ============ -->
+<section class="tab-pane">
+
+<div class="card">
+  <h2>Exercices progressifs</h2>
+
+  <div class="exo">
+    <p><span class="num">1</span><span class="level">Facile</span></p>
+    <p>Parmi les lettres suivantes, lesquelles possèdent au moins un axe de symétrie : <strong>E, F, G, H, I, K, L, O, P, X, Z</strong> ?</p>
+    <details><summary>Correction</summary>
+      <p>Ont un axe de symétrie : <strong>E</strong> (horizontal), <strong>H</strong> (horizontal et vertical), <strong>I</strong> (horizontal et vertical), <strong>K</strong> (horizontal), <strong>O</strong> (horizontal et vertical, voire une infinité si c'est un cercle parfait), <strong>X</strong> (horizontal et vertical).<br>
+      N'ont pas d'axe de symétrie : <strong>F, G, L, P, Z</strong>.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">2</span><span class="level">Facile</span></p>
+    <p>Cite le nombre d'axes de symétrie d'un carré, d'un rectangle non carré, d'un losange non carré et d'un triangle équilatéral.</p>
+    <details><summary>Correction</summary>
+      <p>Carré : 4 axes. Rectangle non carré : 2 axes. Losange non carré : 2 axes. Triangle équilatéral : 3 axes.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">3</span><span class="level">Moyen</span></p>
+    <p>Sur une feuille quadrillée, place un point A. Trace une droite verticale d à 4 carreaux à droite de A. Construis le symétrique A' de A par rapport à d.</p>
+    <details><summary>Correction</summary>
+      <p>A est à 4 carreaux à gauche de d. Donc A' doit être à 4 carreaux à droite de d, sur la même ligne horizontale que A (car d est verticale, le déplacement perpendiculaire à d est horizontal). A, le pied de la perpendiculaire sur d, et A' sont alignés horizontalement, et le pied est bien le milieu de [AA'].</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">4</span><span class="level">Moyen</span></p>
+    <p>ABC est un triangle isocèle en A. On appelle d la médiatrice de [BC]. Explique pourquoi d est un axe de symétrie du triangle ABC.</p>
+    <details><summary>Correction</summary>
+      <p>Comme ABC est isocèle en A, on a AB = AC, donc A est équidistant de B et de C : A appartient à la médiatrice de [BC], donc A est sur la droite d. Par symétrie par rapport à d, B et C s'échangent (d est la médiatrice de [BC]), et A reste fixe puisqu'il est sur d. Le symétrique du triangle ABC par rapport à d est donc le triangle ACB, c'est-à-dire le triangle ABC lui-même : d est bien un axe de symétrie.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">5</span><span class="level">Moyen</span></p>
+    <p>M est le symétrique de N par rapport à une droite d. On sait que MN = 6 cm. Quelle est la distance entre N et d si M et d sont distants de 6 cm... indique si cette affirmation est possible et pourquoi.</p>
+    <details><summary>Correction</summary>
+      <p>Non, ce n'est pas possible. Par définition, d coupe [MN] en son milieu. Donc la distance de M à d est égale à la distance de N à d, et chacune vaut la moitié de MN, soit 3 cm. Si M était à 6 cm de d, alors N serait aussi à 6 cm de d (de l'autre côté), et MN vaudrait 12 cm, pas 6 cm.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">6</span><span class="level">Moyen</span></p>
+    <p>Construis au compas le symétrique du point A par rapport à la droite d (décris les étapes précises que tu suivrais, en nommant les points auxiliaires que tu utilises).</p>
+    <details><summary>Correction</summary>
+      <p>On choisit deux points I et J sur d. On pointe le compas en I avec un écartement IA, on trace un arc de l'autre côté de d. On pointe en J avec l'écartement JA (sans changer l'écartement du compas à chaque pointage : IA pour I, puis on règle JA pour J), on trace un second arc. Le point d'intersection des deux arcs (du côté opposé à A) est A', le symétrique cherché, car IA' = IA et JA' = JA donc d = médiatrice de [AA'].</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">7</span><span class="level">Moyen</span></p>
+    <p>Un triangle ABC a une aire de 12 cm². On construit son symétrique A'B'C' par rapport à une droite d. Quelle est l'aire de A'B'C' ? Justifie.</p>
+    <details><summary>Correction</summary>
+      <p>L'aire de A'B'C' est aussi 12 cm², car la symétrie axiale conserve les aires (c'est une des propriétés de la symétrie axiale).</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">8</span><span class="level">Difficile</span></p>
+    <p>Un cercle de centre O et de rayon 5 cm est symétrisé par rapport à une droite d qui ne coupe pas le cercle. Décris comment construire le cercle symétrique, et donne son rayon.</p>
+    <details><summary>Correction</summary>
+      <p>Il suffit de construire O', le symétrique du centre O par rapport à d (au compas ou à l'équerre). Le cercle symétrique a pour centre O' et pour rayon 5 cm (le même rayon), car la symétrie conserve les longueurs, donc conserve la distance entre le centre et tout point du cercle.</p>
+    </details>
+  </div>
+
+</div>
+</section>
+
+<!-- ============ TAB 3 : APPROFONDISSEMENT ============ -->
+<section class="tab-pane">
+
+<div class="card">
+  <h2>Exercices d'approfondissement</h2>
+
+  <div class="exo">
+    <p><span class="num">1</span><span class="level">Difficile</span></p>
+    <p>ABCD est un carré. On note d une des diagonales du carré. Démontre que d est un axe de symétrie du carré (indication : utilise les égalités de longueurs des côtés).</p>
+    <details><summary>Correction</summary>
+      <p>Soit d = (AC). Dans un carré, tous les côtés sont égaux : AB = AD et CB = CD. Donc A est équidistant de B et D, donc A appartient à la médiatrice de [BD]. De même C est équidistant de B et D, donc C appartient aussi à la médiatrice de [BD]. La droite (AC) passe donc par deux points de la médiatrice de [BD] : c'est donc elle-même la médiatrice de [BD]. Par symétrie par rapport à (AC), B et D s'échangent, tandis que A et C restent fixes (ils sont sur l'axe). Le carré ABCD se transforme donc en ADCB = ABCD : (AC) est un axe de symétrie.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">2</span><span class="level">Difficile</span></p>
+    <p>Pourquoi un rectangle non carré n'a-t-il pas ses diagonales comme axes de symétrie, contrairement au carré ? Justifie avec un argument de longueur.</p>
+    <details><summary>Correction</summary>
+      <p>Dans un rectangle non carré, les côtés ne sont pas tous égaux (longueur ≠ largeur). Si on prend d = une diagonale, par exemple (AC) dans ABCD, pour que d soit un axe de symétrie il faudrait que A soit équidistant de B et D, c'est-à-dire AB = AD. Or dans un rectangle non carré, AB (longueur) ≠ AD (largeur). Donc A n'est pas sur la médiatrice de [BD], et la diagonale n'est pas un axe de symétrie. Seules les médiatrices des côtés (parallèles aux côtés, passant par leurs milieux) sont des axes de symétrie du rectangle.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">3</span><span class="level">Difficile</span></p>
+    <p>On symétrise le point A(situé à 3 carreaux au-dessus d'une droite horizontale d) par rapport à d pour obtenir A'. On symétrise ensuite A' par rapport à une deuxième droite d' parallèle à d, située 2 carreaux plus bas que d. On obtient A''. En te plaçant sur un quadrillage mental, détermine à quelle distance de A se trouve A''.</p>
+    <details><summary>Correction</summary>
+      <p>Plaçons une origine sur d, axe vertical gradué en carreaux vers le haut. A est à la hauteur +3. Son symétrique A' par rapport à d (hauteur 0) est à la hauteur −3. La droite d' est à la hauteur −2. Le symétrique de A' (hauteur −3) par rapport à d' (hauteur −2) : la distance de A' à d' est |−3 − (−2)| = 1, donc A'' est à la hauteur −2 + 1 = −1. Résultat : A'' est à la hauteur −1, alors que A était à la hauteur +3. La distance AA'' = |3 − (−1)| = 4 carreaux. On remarque que composer deux symétries d'axes parallèles donne une translation : ici la distance parcourue (4 carreaux) est le double de la distance entre les deux droites (2 carreaux), ce qui est une propriété générale.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">4</span><span class="level">Difficile</span></p>
+    <p>Un triangle ABC est rectangle en A. Peut-il avoir un axe de symétrie ? Si oui, à quelle condition supplémentaire sur ses côtés ?</p>
+    <details><summary>Correction</summary>
+      <p>Oui, à condition qu'il soit aussi isocèle en A, c'est-à-dire AB = AC. Dans ce cas, l'axe de symétrie est la médiatrice de [BC], qui passe aussi par A (car A est équidistant de B et C). Un triangle rectangle isocèle en A a donc un unique axe de symétrie. Un triangle rectangle "quelconque" (non isocèle) n'a aucun axe de symétrie.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <p><span class="num">5</span><span class="level">Défi</span></p>
+    <p>Trace un triangle ABC quelconque et une droite d ne passant par aucun de ses sommets. On construit A'B'C', le symétrique de ABC par rapport à d. Explique pourquoi le périmètre de A'B'C' est égal au périmètre de ABC, sans construire la figure, uniquement par un raisonnement sur les propriétés de la symétrie.</p>
+    <details><summary>Correction</summary>
+      <p>La symétrie axiale conserve les longueurs : A'B' = AB, B'C' = BC, C'A' = CA. Le périmètre de A'B'C' est A'B' + B'C' + C'A' = AB + BC + CA, qui est exactement le périmètre de ABC. Donc les deux périmètres sont égaux, sans qu'il soit nécessaire de construire la figure : cela découle directement de la conservation des longueurs par la symétrie axiale.</p>
+    </details>
+  </div>
+
+</div>
+</section>
+
+<!-- ============ TAB 4 : QCM ============ -->
+<section class="tab-pane">
+<div class="card">
+  <h2>QCM — Teste-toi !</h2>
+  <p>Réponds aux questions puis clique sur "Valider mes réponses" pour voir ton score.</p>
+  <div id="qcm-container"></div>
+  <button class="action" onclick="validerQCM()">Valider mes réponses</button>
+  <button class="action secondary" onclick="reinitialiserQCM()">Recommencer</button>
+  <p id="qcm-score"></p>
+</div>
+</section>
+
+<!-- ============ TAB 5 : VISUALISATION ============ -->
+<section class="tab-pane">
+<div class="card">
+  <h2>Visualisation interactive</h2>
+  <p>Choisis un mode, puis clique/touche le canevas pour placer des points. La droite verticale au centre est l'axe de symétrie (le miroir).</p>
+  <div class="viz-controls">
+    <button id="mode-point" class="active-mode" onclick="setMode('point')">Placer des points</button>
+    <button id="mode-shape" onclick="setMode('shape')">Dessiner une figure</button>
+    <button id="mode-drag" onclick="setMode('drag')">Déplacer un sommet</button>
+    <button onclick="clearCanvas()">Effacer</button>
+    <button onclick="toggleAxis()">Basculer axe horizontal/vertical</button>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="symCanvas" width="640" height="440"></canvas>
+  </div>
+  <p class="viz-hint" id="viz-hint">Mode "Placer des points" : clique sur le canevas pour poser un point A ; son symétrique A' apparaît instantanément de l'autre côté de l'axe.</p>
+</div>
+</section>
+
+<!-- ============ TAB 6 : BILAN ============ -->
+<section class="tab-pane">
+<div class="card">
+  <h2>Bilan de la leçon</h2>
+  <h3>Ce qu'il faut absolument retenir</h3>
+  <ul class="bilan-list">
+    <li><span class="check">✓</span> Un <strong>axe de symétrie</strong> d'une figure est une droite qui, par pliage, superpose les deux parties de la figure.</li>
+    <li><span class="check">✓</span> Le symétrique d'un point A par rapport à une droite d est le point A' tel que d soit la <strong>médiatrice</strong> de [AA'].</li>
+    <li><span class="check">✓</span> Si A est sur d, alors A' = A.</li>
+    <li><span class="check">✓</span> Trois méthodes de construction : <strong>équerre + règle</strong>, <strong>compas</strong>, <strong>quadrillage</strong>.</li>
+    <li><span class="check">✓</span> La symétrie axiale conserve : les <strong>longueurs</strong>, les <strong>angles</strong>, les <strong>aires</strong>, les <strong>périmètres</strong>, et l'<strong>alignement</strong>.</li>
+    <li><span class="check">✓</span> Triangle isocèle : 1 axe · Triangle équilatéral : 3 axes · Carré : 4 axes · Rectangle : 2 axes · Losange : 2 axes · Cercle : une infinité.</li>
+    <li><span class="check">✓</span> La médiatrice d'un segment [AB] est l'axe de symétrie de ce segment : M appartient à la médiatrice de [AB] si et seulement si MA = MB.</li>
+  </ul>
+
+  <h3>Vocabulaire clé</h3>
+  <table>
+    <tr><th>Mot</th><th>Sens</th></tr>
+    <tr><td>Axe de symétrie</td><td>Droite miroir qui superpose une figure sur elle-même par pliage</td></tr>
+    <tr><td>Symétrique d'un point</td><td>Point "reflet" obtenu par retournement autour d'une droite</td></tr>
+    <tr><td>Médiatrice</td><td>Droite perpendiculaire à un segment, passant par son milieu</td></tr>
+    <tr><td>Équidistant</td><td>À la même distance de deux points ou objets</td></tr>
+    <tr><td>Isométrie</td><td>Transformation qui conserve les distances (comme la symétrie axiale)</td></tr>
+  </table>
+
+  <h3>Ce qu'il ne faut PAS confondre</h3>
+  <div class="tip">La symétrie <strong>axiale</strong> (par rapport à une droite) est différente de la symétrie <strong>centrale</strong> (par rapport à un point), que tu découvriras en 5ème. Dans la symétrie axiale, la figure est "retournée comme dans un miroir" ; dans la symétrie centrale, elle est "tournée d'un demi-tour" sans effet miroir.</div>
+
+  <h3>Auto-évaluation</h3>
+  <p>Coche mentalement : sais-tu...</p>
+  <ul class="bilan-list">
+    <li>Reconnaître un axe de symétrie sur une figure donnée ?</li>
+    <li>Construire le symétrique d'un point au compas et à l'équerre ?</li>
+    <li>Citer le nombre d'axes de symétrie des figures usuelles ?</li>
+    <li>Utiliser les propriétés de conservation pour répondre sans construire ?</li>
+    <li>Tracer la médiatrice d'un segment au compas ?</li>
+  </ul>
+  <p>Si tu as un doute sur l'un de ces points, relis le <strong>Cours</strong> et les <strong>Méthodes</strong>, puis retente le <strong>QCM</strong> !</p>
+</div>
+</section>
+
+</div><!-- /wrapper -->
+
+<footer>Symétrie axiale · Cours de mathématiques · Classe de 6ème</footer>
+
+<script>
+var tabs = document.querySelectorAll('.tab-pane');
+
+function showTab(n){
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){ b.classList.toggle('active', i===n); });
+  tabs.forEach(function(p,i){ p.classList.toggle('active', i===n); });
+  if(!tabs[n].dataset.init){
+    tabs[n].dataset.init = '1';
+    initSection(n);
+  }
+}
+
+function initSection(n){
+  if(n === 4){ initQCM(); }
+  if(n === 5){ initCanvas(); }
+}
+</script>
+
+<script>
+/* ============ QCM ============ */
+var questions = [
+  {
+    q: "Quelle est la bonne définition d'un axe de symétrie d'une figure ?",
+    options: [
+      "Une droite qui passe par le centre de la figure",
+      "Une droite telle que le pliage le long d'elle superpose les deux parties de la figure",
+      "Une droite qui coupe la figure en deux aires égales",
+      "N'importe quelle diagonale de la figure"
+    ],
+    correct: 1
+  },
+  {
+    q: "Combien d'axes de symétrie possède un carré ?",
+    options: ["1", "2", "4", "Une infinité"],
+    correct: 2
+  },
+  {
+    q: "Combien d'axes de symétrie possède un rectangle non carré ?",
+    options: ["0", "2", "4", "Une infinité"],
+    correct: 1
+  },
+  {
+    q: "A' est le symétrique de A par rapport à la droite d. Que peut-on dire de d ?",
+    options: [
+      "d passe par A mais pas par A'",
+      "d est parallèle à (AA')",
+      "d est la médiatrice de [AA']",
+      "d est confondue avec (AA')"
+    ],
+    correct: 2
+  },
+  {
+    q: "Si le point A appartient à la droite d, quel est son symétrique A' par rapport à d ?",
+    options: ["A' est très loin de A", "A' = A", "A' n'existe pas", "A' est le milieu de d"],
+    correct: 1
+  },
+  {
+    q: "La symétrie axiale conserve...",
+    options: [
+      "uniquement les longueurs",
+      "uniquement les angles",
+      "les longueurs, les angles, les aires et l'alignement",
+      "rien du tout, la figure change complètement"
+    ],
+    correct: 2
+  },
+  {
+    q: "Un triangle équilatéral possède combien d'axes de symétrie ?",
+    options: ["0", "1", "2", "3"],
+    correct: 3
+  },
+  {
+    q: "Quelle propriété caractérise la médiatrice d'un segment [AB] ?",
+    options: [
+      "C'est la droite (AB) elle-même",
+      "Tout point M de la médiatrice vérifie MA = MB",
+      "Elle passe par A uniquement",
+      "Elle est parallèle à [AB]"
+    ],
+    correct: 1
+  },
+  {
+    q: "Pour construire le symétrique d'un point au compas, que doit-on faire ?",
+    options: [
+      "Tracer deux arcs de même écartement depuis deux points distincts de la droite",
+      "Mesurer uniquement avec la règle",
+      "Tracer un seul arc de cercle centré sur le point à symétriser",
+      "Utiliser uniquement l'équerre"
+    ],
+    correct: 0
+  },
+  {
+    q: "Un cercle de rayon 4 cm est symétrisé par rapport à une droite d. Quel est le rayon du cercle symétrique ?",
+    options: ["2 cm", "4 cm", "8 cm", "Cela dépend de la distance à d"],
+    correct: 1
+  }
+];
+
+var reponsesUtilisateur = new Array(questions.length).fill(null);
+
+function initQCM(){
+  var container = document.getElementById('qcm-container');
+  container.innerHTML = '';
+  questions.forEach(function(item, qi){
+    var div = document.createElement('div');
+    div.className = 'qcm-q';
+    var p = document.createElement('p');
+    p.className = 'question';
+    p.textContent = (qi+1) + '. ' + item.q;
+    div.appendChild(p);
+    item.options.forEach(function(opt, oi){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'qcm-opt';
+      btn.textContent = opt;
+      btn.onclick = function(){ selectionner(qi, oi, div); };
+      btn.dataset.oi = oi;
+      div.appendChild(btn);
+    });
+    container.appendChild(div);
+  });
+}
+
+function selectionner(qi, oi, div){
+  reponsesUtilisateur[qi] = oi;
+  var opts = div.querySelectorAll('.qcm-opt');
+  opts.forEach(function(b, i){
+    b.classList.toggle('selected', i===oi);
+    b.classList.remove('correct','incorrect');
+  });
+}
+
+function validerQCM(){
+  var score = 0;
+  var qcmDivs = document.querySelectorAll('.qcm-q');
+  qcmDivs.forEach(function(div, qi){
+    var opts = div.querySelectorAll('.qcm-opt');
+    var chosen = reponsesUtilisateur[qi];
+    var correctIndex = questions[qi].correct;
+    opts.forEach(function(b, oi){
+      b.disabled = true;
+      if(oi === correctIndex){ b.classList.add('correct'); }
+      else if(oi === chosen && chosen !== correctIndex){ b.classList.add('incorrect'); }
+    });
+    if(chosen === correctIndex){ score++; }
+  });
+  var scoreEl = document.getElementById('qcm-score');
+  scoreEl.style.display = 'block';
+  var pct = Math.round((score/questions.length)*100);
+  var msg = 'Score : ' + score + ' / ' + questions.length + ' (' + pct + '%). ';
+  if(pct >= 80){ msg += 'Excellent travail !'; }
+  else if(pct >= 50){ msg += 'Bien, mais relis le cours pour progresser.'; }
+  else { msg += "Retourne voir le cours et les méthodes avant de retenter."; }
+  scoreEl.textContent = msg;
+}
+
+function reinitialiserQCM(){
+  reponsesUtilisateur = new Array(questions.length).fill(null);
+  document.getElementById('qcm-score').style.display = 'none';
+  initQCM();
+}
+</script>
+
+<script>
+/* ============ VISUALISATION CANVAS ============ */
+var canvas, ctx;
+var mode = 'point';
+var axisVertical = true; /* true = axe vertical, false = axe horizontal */
+var points = [];       /* mode point : liste de {x,y} */
+var shapePoints = [];  /* mode shape : sommets du polygone en cours */
+var dragIndex = -1;
+var colors = {};
+
+function readColors(){
+  var cs = getComputedStyle(document.documentElement);
+  colors.bg = cs.getPropertyValue('--surface').trim() || '#ffffff';
+  colors.text = cs.getPropertyValue('--text').trim() || '#2c2418';
+  colors.accent = cs.getPropertyValue('--accent').trim() || '#a0522d';
+  colors.heading = cs.getPropertyValue('--heading').trim() || '#8b4513';
+  colors.border = cs.getPropertyValue('--border').trim() || '#d4c8b8';
+  colors.muted = cs.getPropertyValue('--muted').trim() || '#6b5a48';
+  colors.surface2 = cs.getPropertyValue('--surface2').trim() || '#ebe6de';
+}
+
+function initCanvas(){
+  canvas = document.getElementById('symCanvas');
+  ctx = canvas.getContext('2d');
+  readColors();
+  canvas.addEventListener('pointerdown', onPointerDown);
+  canvas.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
+  drawScene();
+}
+
+function getAxisValue(){
+  return axisVertical ? canvas.width/2 : canvas.height/2;
+}
+
+function reflect(pt){
+  if(axisVertical){
+    var ax = getAxisValue();
+    return { x: 2*ax - pt.x, y: pt.y };
+  } else {
+    var ay = getAxisValue();
+    return { x: pt.x, y: 2*ay - pt.y };
+  }
+}
+
+function getCanvasPos(evt){
+  var rect = canvas.getBoundingClientRect();
+  var scaleX = canvas.width / rect.width;
+  var scaleY = canvas.height / rect.height;
+  return {
+    x: (evt.clientX - rect.left) * scaleX,
+    y: (evt.clientY - rect.top) * scaleY
+  };
+}
+
+function onPointerDown(evt){
+  var pos = getCanvasPos(evt);
+  if(mode === 'point'){
+    points.push(pos);
+    drawScene();
+  } else if(mode === 'shape'){
+    shapePoints.push(pos);
+    drawScene();
+  } else if(mode === 'drag'){
+    dragIndex = findNearestShapePoint(pos);
+  }
+}
+
+function onPointerMove(evt){
+  if(mode === 'drag' && dragIndex !== -1){
+    var pos = getCanvasPos(evt);
+    shapePoints[dragIndex] = pos;
+    drawScene();
+  }
+}
+
+function onPointerUp(){
+  dragIndex = -1;
+}
+
+function findNearestShapePoint(pos){
+  var best = -1, bestDist = 22;
+  shapePoints.forEach(function(p, i){
+    var d = Math.hypot(p.x - pos.x, p.y - pos.y);
+    if(d < bestDist){ bestDist = d; best = i; }
+  });
+  return best;
+}
+
+function setMode(m){
+  mode = m;
+  ['mode-point','mode-shape','mode-drag'].forEach(function(id){
+    document.getElementById(id).classList.remove('active-mode');
+  });
+  document.getElementById('mode-' + m).classList.add('active-mode');
+  var hint = document.getElementById('viz-hint');
+  if(m === 'point'){
+    hint.textContent = 'Mode "Placer des points" : clique sur le canevas pour poser un point A ; son symétrique A’ apparaît instantanément de l’autre côté de l’axe.';
+  } else if(m === 'shape'){
+    hint.textContent = 'Mode "Dessiner une figure" : clique plusieurs fois pour placer les sommets d’un polygone ; sa figure symétrique se dessine automatiquement.';
+    if(shapePoints.length === 0){ points = []; }
+  } else {
+    hint.textContent = 'Mode "Déplacer un sommet" : fais glisser un sommet de ta figure (petit cercle) pour voir sa figure symétrique bouger en temps réel.';
+  }
+  drawScene();
+}
+
+function toggleAxis(){
+  axisVertical = !axisVertical;
+  drawScene();
+}
+
+function clearCanvas(){
+  points = [];
+  shapePoints = [];
+  drawScene();
+}
+
+function drawScene(){
+  if(!ctx) return;
+  readColors();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = colors.bg;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  drawGrid();
+  drawAxis();
+
+  if(mode === 'point'){
+    points.forEach(function(p, i){
+      var r = reflect(p);
+      drawSegmentDashed(p, r);
+      drawPoint(p, colors.accent, 'A' + (i+1));
+      drawPoint(r, colors.heading, "A'" + (i+1));
+    });
+  } else {
+    drawPolygon(shapePoints, colors.accent, false);
+    var reflected = shapePoints.map(reflect);
+    drawPolygon(reflected, colors.heading, true);
+    shapePoints.forEach(function(p, i){
+      drawSegmentDashed(p, reflected[i]);
+    });
+  }
+}
+
+function drawGrid(){
+  ctx.strokeStyle = colors.surface2;
+  ctx.lineWidth = 1;
+  var step = 20;
+  for(var x = 0; x <= canvas.width; x += step){
+    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke();
+  }
+  for(var y = 0; y <= canvas.height; y += step){
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke();
+  }
+}
+
+function drawAxis(){
+  ctx.strokeStyle = colors.accent;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  if(axisVertical){
+    var ax = getAxisValue();
+    ctx.moveTo(ax, 0); ctx.lineTo(ax, canvas.height);
+  } else {
+    var ay = getAxisValue();
+    ctx.moveTo(0, ay); ctx.lineTo(canvas.width, ay);
+  }
+  ctx.stroke();
+  ctx.fillStyle = colors.accent;
+  ctx.font = 'bold 14px Nunito Sans, sans-serif';
+  if(axisVertical){
+    ctx.fillText('axe d', getAxisValue() + 8, 18);
+  } else {
+    ctx.fillText('axe d', 8, getAxisValue() - 8);
+  }
+}
+
+function drawPoint(p, color, label){
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, 6, 0, Math.PI*2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.strokeStyle = colors.bg;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = colors.text;
+  ctx.font = 'bold 13px Nunito Sans, sans-serif';
+  ctx.fillText(label, p.x + 9, p.y - 9);
+}
+
+function drawSegmentDashed(p1, p2){
+  ctx.save();
+  ctx.setLineDash([4,4]);
+  ctx.strokeStyle = colors.muted;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawPolygon(pts, color, isReflection){
+  if(pts.length === 0) return;
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  for(var i=1;i<pts.length;i++){ ctx.lineTo(pts[i].x, pts[i].y); }
+  if(pts.length > 2){ ctx.closePath(); }
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.5;
+  if(isReflection){ ctx.setLineDash([6,3]); } else { ctx.setLineDash([]); }
+  ctx.stroke();
+  ctx.setLineDash([]);
+  if(pts.length > 2){
+    ctx.fillStyle = color + '22';
+    ctx.globalAlpha = 0.12;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  pts.forEach(function(p, i){
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 5, 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.strokeStyle = colors.bg;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  });
+}
+</script>
+
+</body>
+</html>

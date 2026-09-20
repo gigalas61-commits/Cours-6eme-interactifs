@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P&eacute;rim&egrave;tres et aires &ndash; 6&egrave;me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f2ed; --surface:#ffffff; --surface2:#ebe6de; --text:#2c2418; --heading:#8b4513;
+  --muted:#6b5a48; --border:#d4c8b8; --accent:#a0522d; --accent-light:#faf5ef;
+  --shadow:0 2px 8px rgba(139,69,19,0.07); --radius:8px;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0; --heading:#e0a868;
+    --muted:#9a8878; --border:#403428; --accent:#d08840; --accent-light:#1e1610;
+    --shadow:0 2px 8px rgba(0,0,0,0.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0; --heading:#e0a868;
+  --muted:#9a8878; --border:#403428; --accent:#d08840; --accent-light:#1e1610;
+  --shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+*{box-sizing:border-box;}
+body{
+  font-family:'Nunito Sans',system-ui,sans-serif; font-size:16px; line-height:1.65;
+  padding-inline:16px; margin:0; background:var(--bg); color:var(--text);
+  transition:background .2s,color .2s;
+}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif; color:var(--heading); line-height:1.2;}
+.wrap{max-width:760px; margin:0 auto; padding:24px 0 60px;}
+header.top{text-align:center; margin-bottom:20px;}
+.badge{
+  display:inline-block; background:var(--accent); color:#fff; font-weight:700; font-size:.78rem;
+  letter-spacing:.05em; text-transform:uppercase; padding:5px 14px; border-radius:99px; margin-bottom:10px;
+}
+h1{font-size:2.3rem; margin:6px 0 4px;}
+.subtitle{color:var(--muted); font-size:1.05rem; margin-bottom:6px;}
+.theme-toggle{
+  position:fixed; top:12px; right:12px; background:var(--surface); border:1px solid var(--border);
+  border-radius:99px; padding:6px 12px; font-size:.8rem; cursor:pointer; color:var(--text); z-index:50;
+  box-shadow:var(--shadow);
+}
+nav.tabs{
+  display:flex; flex-wrap:wrap; gap:6px; margin:22px 0 18px; border-bottom:2px solid var(--border);
+  padding-bottom:10px; position:sticky; top:0; background:var(--bg); z-index:10; padding-top:6px;
+}
+.tab-btn{
+  font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:.85rem; color:var(--muted);
+  background:var(--surface2); border:1px solid var(--border); border-radius:99px; padding:7px 13px;
+  cursor:pointer; transition:.15s;
+}
+.tab-btn:hover{color:var(--accent); border-color:var(--accent);}
+.tab-btn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+.tab-pane{display:none; animation:fade .25s ease;}
+.tab-pane.active{display:block;}
+@keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+.card{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px 20px; margin-bottom:16px; box-shadow:var(--shadow);
+}
+.formula{
+  background:var(--accent-light); border-left:4px solid var(--accent); border-radius:6px;
+  padding:12px 16px; margin:12px 0; font-size:1.15rem; font-family:'Cormorant Garamond',serif;
+  font-weight:600; color:var(--text);
+}
+.formula .sym{color:var(--accent); font-weight:700;}
+.note{
+  background:var(--surface2); border-radius:6px; padding:10px 14px; margin:10px 0; font-size:.92rem;
+  color:var(--muted); border:1px dashed var(--border);
+}
+.tip::before{content:"\1F4A1 "; }
+.warn{border-left:4px solid var(--accent); background:var(--accent-light);}
+table{width:100%; border-collapse:collapse; margin:12px 0; font-size:.92rem;}
+th,td{border:1px solid var(--border); padding:7px 10px; text-align:center;}
+th{background:var(--surface2); color:var(--heading); font-family:'Cormorant Garamond',serif; font-size:1.05rem;}
+ul,ol{padding-left:22px;}
+li{margin-bottom:5px;}
+.method-step{
+  display:flex; gap:12px; margin:10px 0; align-items:flex-start;
+}
+.step-num{
+  flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;
+}
+.exo{border-left:4px solid var(--border); padding-left:14px; margin-bottom:18px;}
+.exo h4{margin-bottom:4px;}
+details{
+  margin-top:8px; background:var(--surface2); border-radius:6px; padding:8px 12px; border:1px solid var(--border);
+}
+summary{cursor:pointer; font-weight:700; color:var(--accent); font-size:.9rem;}
+details[open] summary{margin-bottom:8px;}
+.diff{
+  display:inline-block; font-size:.72rem; font-weight:700; padding:2px 9px; border-radius:99px; margin-left:6px;
+  vertical-align:middle;
+}
+.diff1{background:#dff0d8; color:#3c763d;}
+.diff2{background:#fcf3cf; color:#8a6d3b;}
+.diff3{background:#f2dede; color:#a94442;}
+:root[data-theme="dark"] .diff1,{}
+@media(prefers-color-scheme:dark){.diff1{background:#25402a; color:#8fd19e;} .diff2{background:#453a1c; color:#e0c468;} .diff3{background:#452424; color:#e09a9a;}}
+:root[data-theme="dark"] .diff1{background:#25402a; color:#8fd19e;}
+:root[data-theme="dark"] .diff2{background:#453a1c; color:#e0c468;}
+:root[data-theme="dark"] .diff3{background:#452424; color:#e09a9a;}
+.qcm-q{margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--border);}
+.qcm-q p.question{font-weight:700; margin-bottom:8px;}
+.qcm-opt{
+  display:block; width:100%; text-align:left; background:var(--surface2); border:1px solid var(--border);
+  border-radius:6px; padding:8px 12px; margin-bottom:6px; cursor:pointer; color:var(--text); font-family:inherit;
+  font-size:.95rem;
+}
+.qcm-opt:hover{border-color:var(--accent);}
+.qcm-opt.correct{background:#dff0d8; border-color:#3c763d; color:#245424;}
+.qcm-opt.wrong{background:#f2dede; border-color:#a94442; color:#7a2a2a;}
+:root[data-theme="dark"] .qcm-opt.correct, body:has(.qcm-opt) .qcm-opt.correct{}
+@media(prefers-color-scheme:dark){.qcm-opt.correct{background:#25402a; border-color:#4a8f57; color:#bfe8c6;} .qcm-opt.wrong{background:#452424; border-color:#a05050; color:#e8bcbc;}}
+:root[data-theme="dark"] .qcm-opt.correct{background:#25402a; border-color:#4a8f57; color:#bfe8c6;}
+:root[data-theme="dark"] .qcm-opt.wrong{background:#452424; border-color:#a05050; color:#e8bcbc;}
+.qcm-opt:disabled{cursor:default; opacity:.85;}
+#qcm-score{
+  font-family:'Cormorant Garamond',serif; font-size:1.4rem; text-align:center; margin-top:14px; color:var(--heading);
+}
+button.primary{
+  background:var(--accent); color:#fff; border:none; border-radius:99px; padding:9px 20px; font-weight:700;
+  cursor:pointer; font-family:'Nunito Sans',sans-serif; font-size:.9rem;
+}
+button.primary:hover{opacity:.9;}
+.viz-controls{display:flex; flex-direction:column; gap:10px; margin-top:10px;}
+.viz-controls label{font-weight:700; font-size:.85rem; color:var(--muted); display:flex; justify-content:space-between;}
+.viz-controls input[type=range]{width:100%; accent-color:var(--accent);}
+.viz-result{
+  background:var(--accent-light); border-radius:6px; padding:10px 14px; margin-top:10px; font-size:.95rem;
+  border:1px solid var(--border);
+}
+.viz-result span{font-weight:700; color:var(--accent);}
+canvas{width:100%; background:var(--surface); border:1px solid var(--border); border-radius:6px; touch-action:none;}
+.shape-select{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;}
+.shape-select button{
+  background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:7px 12px;
+  font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:.82rem; cursor:pointer; color:var(--text);
+}
+.shape-select button.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+.summary-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+@media(min-width:600px){.summary-grid{grid-template-columns:1fr 1fr;}}
+.summary-box{background:var(--surface2); border-radius:6px; padding:12px 14px; border:1px solid var(--border);}
+.summary-box h4{margin:0 0 6px; font-size:1.1rem;}
+footer{text-align:center; color:var(--muted); font-size:.8rem; margin-top:30px;}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="toggleTheme()">&#127769; Th&egrave;me</button>
+<div class="wrap">
+<header class="top">
+  <span class="badge">Classe de 6&egrave;me</span>
+  <h1>P&eacute;rim&egrave;tres et aires</h1>
+  <p class="subtitle">Mesurer le tour et la surface des figures</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" onclick="showTab(0)">Cours</button>
+  <button class="tab-btn" onclick="showTab(1)">M&eacute;thodes</button>
+  <button class="tab-btn" onclick="showTab(2)">Exercices</button>
+  <button class="tab-btn" onclick="showTab(3)">Approfondissement</button>
+  <button class="tab-btn" onclick="showTab(4)">QCM</button>
+  <button class="tab-btn" onclick="showTab(5)">Visualisation</button>
+  <button class="tab-btn" onclick="showTab(6)">Bilan</button>
+</nav>
+
+<!-- ============ TAB 0 : COURS ============ -->
+<section class="tab-pane active">
+  <div class="card">
+    <h2>1. Le p&eacute;rim&egrave;tre</h2>
+    <p>Le <strong>p&eacute;rim&egrave;tre</strong> d'une figure est la longueur totale de son contour, c'est-&agrave;-dire la distance que l'on parcourt si on fait le tour complet de la figure.</p>
+    <p>Le p&eacute;rim&egrave;tre se mesure avec une unit&eacute; de <strong>longueur</strong> : millim&egrave;tre (mm), centim&egrave;tre (cm), d&eacute;cim&egrave;tre (dm), m&egrave;tre (m), kilom&egrave;tre (km)&hellip;</p>
+    <div class="note">Astuce : pour retenir l'ordre des unit&eacute;s de longueur, pense &agrave; "km &gt; hm &gt; dam &gt; m &gt; dm &gt; cm &gt; mm", chaque unit&eacute; valant 10 fois la suivante.</div>
+  </div>
+
+  <div class="card">
+    <h3>Carr&eacute; et rectangle</h3>
+    <p>Pour un <strong>carr&eacute;</strong> de c&ocirc;t&eacute; <em>c</em>, les 4 c&ocirc;t&eacute;s ont la m&ecirc;me longueur.</p>
+    <div class="formula">P<span class="sym">(carr&eacute;)</span> = 4 &times; c</div>
+    <p>Pour un <strong>rectangle</strong> de longueur <em>L</em> et de largeur <em>l</em>, il y a deux longueurs et deux largeurs.</p>
+    <div class="formula">P<span class="sym">(rectangle)</span> = 2 &times; (L + l)</div>
+    <p>Exemple : un rectangle de longueur 8 cm et de largeur 5 cm a pour p&eacute;rim&egrave;tre 2 &times; (8 + 5) = 2 &times; 13 = 26 cm.</p>
+  </div>
+
+  <div class="card">
+    <h3>Triangle</h3>
+    <p>Pour un triangle quelconque de c&ocirc;t&eacute;s <em>a</em>, <em>b</em> et <em>c</em>, on additionne simplement les trois longueurs.</p>
+    <div class="formula">P<span class="sym">(triangle)</span> = a + b + c</div>
+    <p>Pour un triangle &eacute;quilat&eacute;ral (3 c&ocirc;t&eacute;s &eacute;gaux) de c&ocirc;t&eacute; <em>c</em> : P = 3 &times; c.</p>
+  </div>
+
+  <div class="card">
+    <h3>Le cercle et le nombre &pi;</h3>
+    <p>Le p&eacute;rim&egrave;tre d'un cercle s'appelle aussi sa <strong>circonf&eacute;rence</strong>. Il d&eacute;pend du rayon <em>r</em> (distance du centre &agrave; un point du cercle) ou du diam&egrave;tre <em>d</em> = 2 &times; r.</p>
+    <p>Quel que soit le cercle, le rapport entre sa circonf&eacute;rence et son diam&egrave;tre est toujours le m&ecirc;me nombre : c'est le nombre <strong>&pi;</strong> (on lit "pi"). On utilise souvent la valeur approch&eacute;e &pi; &asymp; 3,14 (les calculatrices donnent plus de d&eacute;cimales : 3,14159265&hellip;).</p>
+    <div class="formula">C = 2 &times; &pi; &times; r <span class="sym">&nbsp;ou&nbsp;</span> C = &pi; &times; d</div>
+    <p>Exemple : un cercle de rayon 5 cm a pour circonf&eacute;rence C = 2 &times; 3,14 &times; 5 = 31,4 cm.</p>
+    <div class="note tip">&Agrave; retenir : plus le rayon double, plus la circonf&eacute;rence double aussi (proportionnalit&eacute;).</div>
+  </div>
+
+  <div class="card">
+    <h2>2. L'aire</h2>
+    <p>L'<strong>aire</strong> d'une figure mesure la surface qu'elle occupe, c'est-&agrave;-dire la quantit&eacute; de "plan" recouverte par la figure.</p>
+    <p>L'aire se mesure avec une unit&eacute; de <strong>longueur au carr&eacute;</strong> : mm&sup2;, cm&sup2;, dm&sup2;, m&sup2;, km&sup2;&hellip; On utilise aussi parfois l'hectare (ha) pour les terrains.</p>
+    <table>
+      <tr><th>1 cm&sup2;</th><td>= 100 mm&sup2;</td></tr>
+      <tr><th>1 dm&sup2;</th><td>= 100 cm&sup2;</td></tr>
+      <tr><th>1 m&sup2;</th><td>= 100 dm&sup2; = 10 000 cm&sup2;</td></tr>
+      <tr><th>1 km&sup2;</th><td>= 1 000 000 m&sup2;</td></tr>
+    </table>
+    <div class="note warn">Attention : pour les unit&eacute;s d'aire, chaque unit&eacute; vaut <strong>100 fois</strong> la suivante (et non 10 fois comme pour les longueurs), car on multiplie deux dimensions.</div>
+  </div>
+
+  <div class="card">
+    <h3>Carr&eacute; et rectangle</h3>
+    <div class="formula">A<span class="sym">(carr&eacute;)</span> = c &times; c = c&sup2;</div>
+    <div class="formula">A<span class="sym">(rectangle)</span> = L &times; l</div>
+    <p>Exemple : un rectangle de 8 cm sur 5 cm a pour aire 8 &times; 5 = 40 cm&sup2;.</p>
+  </div>
+
+  <div class="card">
+    <h3>Triangle</h3>
+    <p>Un triangle est toujours "la moiti&eacute;" d'un rectangle (ou d'un parall&eacute;logramme) construit sur la m&ecirc;me base et la m&ecirc;me hauteur. La <strong>hauteur</strong> relative &agrave; une base est le segment perpendiculaire &agrave; cette base, reliant le sommet oppos&eacute; &agrave; la droite qui porte la base.</p>
+    <div class="formula">A<span class="sym">(triangle)</span> = (base &times; hauteur) &divide; 2</div>
+    <p>Exemple : un triangle de base 6 cm et de hauteur 4 cm a pour aire (6 &times; 4) &divide; 2 = 24 &divide; 2 = 12 cm&sup2;.</p>
+    <div class="note">Rep&egrave;re bien la hauteur : elle ne fait pas toujours partie du triangle dessin&eacute; ! Dans un triangle "penché" (obtusangle), le pied de la hauteur peut &ecirc;tre en dehors du segment de base ; on la prolonge alors en pointill&eacute;s.</div>
+  </div>
+
+  <div class="card">
+    <h3>Parall&eacute;logramme</h3>
+    <p>Un parall&eacute;logramme a ses c&ocirc;t&eacute;s oppos&eacute;s parall&egrave;les et de m&ecirc;me longueur. Son aire se calcule comme celle d'un rectangle "d&eacute;form&eacute;" de m&ecirc;me base et m&ecirc;me hauteur.</p>
+    <div class="formula">A<span class="sym">(parall&eacute;logramme)</span> = base &times; hauteur</div>
+  </div>
+
+  <div class="card">
+    <h3>Le disque</h3>
+    <p>Le <strong>disque</strong> est la surface d&eacute;limit&eacute;e par un cercle. Son aire d&eacute;pend aussi du rayon.</p>
+    <div class="formula">A<span class="sym">(disque)</span> = &pi; &times; r&sup2; = &pi; &times; r &times; r</div>
+    <p>Exemple : un disque de rayon 5 cm a pour aire A = 3,14 &times; 5 &times; 5 = 3,14 &times; 25 = 78,5 cm&sup2;.</p>
+    <div class="note tip">Ne confonds pas p&eacute;rim&egrave;tre du cercle (2&pi;r, une longueur) et aire du disque (&pi;r&sup2;, une surface) !</div>
+  </div>
+
+  <div class="card">
+    <h2>3. Figures compos&eacute;es</h2>
+    <p>Beaucoup de figures "compliqu&eacute;es" se d&eacute;composent en plusieurs figures simples (carr&eacute;s, rectangles, triangles, demi-disques&hellip;). Pour calculer leur aire, on additionne (ou on soustrait) les aires des figures simples. Pour le p&eacute;rim&egrave;tre, il faut suivre le contour r&eacute;el avec attention : certains segments internes ne comptent pas !</p>
+    <div class="note">Exemple classique : une pi&egrave;ce en forme de "L" &ndash; on la d&eacute;coupe en deux rectangles, on calcule chaque aire, puis on additionne.</div>
+  </div>
+</section>
+
+<!-- ============ TAB 1 : METHODES ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>M&eacute;thode 1 &ndash; Calculer un p&eacute;rim&egrave;tre</h2>
+    <div class="method-step"><div class="step-num">1</div><div>Identifier la nature de la figure (carr&eacute;, rectangle, triangle, cercle&hellip;).</div></div>
+    <div class="method-step"><div class="step-num">2</div><div>Rep&eacute;rer les longueurs donn&eacute;es dans l'&eacute;nonc&eacute; (v&eacute;rifier qu'elles sont dans la m&ecirc;me unit&eacute;).</div></div>
+    <div class="method-step"><div class="step-num">3</div><div>Appliquer la formule adapt&eacute;e.</div></div>
+    <div class="method-step"><div class="step-num">4</div><div>&Eacute;crire le r&eacute;sultat avec son unit&eacute; (une longueur, jamais au carr&eacute;).</div></div>
+  </div>
+
+  <div class="card">
+    <h2>M&eacute;thode 2 &ndash; Calculer une aire</h2>
+    <div class="method-step"><div class="step-num">1</div><div>Identifier la figure et la formule qui lui correspond.</div></div>
+    <div class="method-step"><div class="step-num">2</div><div>Convertir toutes les longueurs dans la m&ecirc;me unit&eacute; si n&eacute;cessaire.</div></div>
+    <div class="method-step"><div class="step-num">3</div><div>Pour un triangle, bien identifier la base ET la hauteur relative &agrave; cette base (segment perpendiculaire).</div></div>
+    <div class="method-step"><div class="step-num">4</div><div>Calculer, puis &eacute;crire le r&eacute;sultat avec une unit&eacute; au carr&eacute; (cm&sup2;, m&sup2;&hellip;).</div></div>
+  </div>
+
+  <div class="card">
+    <h2>M&eacute;thode 3 &ndash; Convertir une aire</h2>
+    <div class="method-step"><div class="step-num">1</div><div>Se rappeler que chaque unit&eacute; d'aire vaut 100 fois la suivante.</div></div>
+    <div class="method-step"><div class="step-num">2</div><div>Pour passer d'une grande unit&eacute; &agrave; une petite (ex : m&sup2; &rarr; cm&sup2;), on <strong>multiplie</strong> ; pour l'inverse, on <strong>divise</strong>.</div></div>
+    <div class="method-step"><div class="step-num">3</div><div>Exemple : 3 m&sup2; = 3 &times; 10 000 = 30 000 cm&sup2;. Et 25 000 cm&sup2; = 25 000 &divide; 10 000 = 2,5 m&sup2;.</div></div>
+    <div class="note tip">Astuce du tableau de conversion : chaque unit&eacute; d'aire occupe <strong>2 colonnes</strong> (au lieu d'une pour les longueurs), car on &eacute;l&egrave;ve au carr&eacute;.</div>
+  </div>
+
+  <div class="card">
+    <h2>M&eacute;thode 4 &ndash; D&eacute;composer une figure compos&eacute;e</h2>
+    <div class="method-step"><div class="step-num">1</div><div>Tracer (ou imaginer) des lignes qui d&eacute;coupent la figure en formes simples connues.</div></div>
+    <div class="method-step"><div class="step-num">2</div><div>Calculer les longueurs manquantes &agrave; l'aide des donn&eacute;es de l'&eacute;nonc&eacute; (souvent par addition/soustraction).</div></div>
+    <div class="method-step"><div class="step-num">3</div><div>Calculer l'aire de chaque forme simple, puis additionner (ou soustraire si une partie est "retir&eacute;e", comme un trou).</div></div>
+    <div class="method-step"><div class="step-num">4</div><div>Pour le p&eacute;rim&egrave;tre, suivre uniquement le contour ext&eacute;rieur r&eacute;el de la figure.</div></div>
+  </div>
+
+  <div class="card">
+    <h2>M&eacute;thode 5 &ndash; Probl&egrave;me concret (cl&ocirc;ture, peinture&hellip;)</h2>
+    <div class="method-step"><div class="step-num">1</div><div>Faire un sch&eacute;ma clair avec les donn&eacute;es de l'&eacute;nonc&eacute;.</div></div>
+    <div class="method-step"><div class="step-num">2</div><div>D&eacute;terminer si la question porte sur un p&eacute;rim&egrave;tre (cl&ocirc;ture, bordure, fil&hellip;) ou une aire (peinture, gazon, carrelage&hellip;).</div></div>
+    <div class="method-step"><div class="step-num">3</div><div>Calculer la grandeur demand&eacute;e, en tenant compte des &eacute;ventuelles ouvertures (portail, porte) &agrave; soustraire.</div></div>
+    <div class="method-step"><div class="step-num">4</div><div>R&eacute;pondre &agrave; la question pos&eacute;e par une phrase compl&egrave;te, avec l'unit&eacute; correcte.</div></div>
+  </div>
+</section>
+
+<!-- ============ TAB 2 : EXERCICES ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Exercices progressifs</h2>
+
+    <div class="exo">
+      <h4>Exercice 1 <span class="diff diff1">Facile</span></h4>
+      <p>Calcule le p&eacute;rim&egrave;tre d'un carr&eacute; de c&ocirc;t&eacute; 6 cm.</p>
+      <details><summary>Correction</summary><p>P = 4 &times; c = 4 &times; 6 = <strong>24 cm</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 2 <span class="diff diff1">Facile</span></h4>
+      <p>Un rectangle mesure 9 cm de longueur et 4 cm de largeur. Calcule son p&eacute;rim&egrave;tre puis son aire.</p>
+      <details><summary>Correction</summary><p>P = 2 &times; (9 + 4) = 2 &times; 13 = <strong>26 cm</strong>.<br>A = 9 &times; 4 = <strong>36 cm&sup2;</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 3 <span class="diff diff1">Facile</span></h4>
+      <p>Un triangle a des c&ocirc;t&eacute;s de 5 cm, 7 cm et 8 cm. Calcule son p&eacute;rim&egrave;tre.</p>
+      <details><summary>Correction</summary><p>P = 5 + 7 + 8 = <strong>20 cm</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 4 <span class="diff diff2">Moyen</span></h4>
+      <p>Un triangle a une base de 10 cm et une hauteur relative &agrave; cette base de 6 cm. Calcule son aire.</p>
+      <details><summary>Correction</summary><p>A = (base &times; hauteur) &divide; 2 = (10 &times; 6) &divide; 2 = 60 &divide; 2 = <strong>30 cm&sup2;</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 5 <span class="diff diff2">Moyen</span></h4>
+      <p>Un cercle a un rayon de 4 cm. Calcule sa circonf&eacute;rence puis l'aire du disque correspondant (&pi; &asymp; 3,14).</p>
+      <details><summary>Correction</summary><p>C = 2 &times; &pi; &times; r = 2 &times; 3,14 &times; 4 = <strong>25,12 cm</strong>.<br>A = &pi; &times; r&sup2; = 3,14 &times; 4 &times; 4 = 3,14 &times; 16 = <strong>50,24 cm&sup2;</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 6 <span class="diff diff2">Moyen</span></h4>
+      <p>Convertis : a) 5 m&sup2; en cm&sup2; &nbsp; b) 340 cm&sup2; en dm&sup2; &nbsp; c) 2,5 km&sup2; en m&sup2;.</p>
+      <details><summary>Correction</summary><p>a) 5 m&sup2; = 5 &times; 10 000 = <strong>50 000 cm&sup2;</strong><br>b) 340 cm&sup2; = 340 &divide; 100 = <strong>3,4 dm&sup2;</strong><br>c) 2,5 km&sup2; = 2,5 &times; 1 000 000 = <strong>2 500 000 m&sup2;</strong></p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 7 <span class="diff diff2">Moyen</span></h4>
+      <p>Un parall&eacute;logramme a une base de 12 cm et une hauteur de 5 cm. Calcule son aire.</p>
+      <details><summary>Correction</summary><p>A = base &times; hauteur = 12 &times; 5 = <strong>60 cm&sup2;</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 8 <span class="diff diff3">Difficile</span></h4>
+      <p>Un jardin rectangulaire mesure 15 m de longueur et 8 m de largeur. On veut poser une cl&ocirc;ture tout autour, avec un portail de 2 m que l'on ne cl&ocirc;ture pas. Quelle longueur de cl&ocirc;ture faut-il acheter ?</p>
+      <details><summary>Correction</summary><p>P&eacute;rim&egrave;tre total = 2 &times; (15 + 8) = 2 &times; 23 = 46 m.<br>On retire le portail : 46 &ndash; 2 = <strong>44 m de cl&ocirc;ture</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 9 <span class="diff diff3">Difficile</span></h4>
+      <p>Une pi&egrave;ce a la forme d'un carr&eacute; de 6 m de c&ocirc;t&eacute; auquel on ajoute un rectangle de 3 m sur 2 m accol&eacute;. Calcule l'aire totale de la pi&egrave;ce.</p>
+      <details><summary>Correction</summary><p>Aire du carr&eacute; : 6 &times; 6 = 36 m&sup2;.<br>Aire du rectangle : 3 &times; 2 = 6 m&sup2;.<br>Aire totale : 36 + 6 = <strong>42 m&sup2;</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Exercice 10 <span class="diff diff3">Difficile</span></h4>
+      <p>Combien de pots de peinture faut-il pour peindre un mur rectangulaire de 5 m de large et 2,5 m de haut, sachant qu'un pot couvre 4 m&sup2; et qu'on ne peint pas une fen&ecirc;tre de 1 m sur 1,5 m ?</p>
+      <details><summary>Correction</summary><p>Aire du mur : 5 &times; 2,5 = 12,5 m&sup2;.<br>Aire de la fen&ecirc;tre : 1 &times; 1,5 = 1,5 m&sup2;.<br>Aire &agrave; peindre : 12,5 &ndash; 1,5 = 11 m&sup2;.<br>11 &divide; 4 = 2,75 &rarr; il faut <strong>3 pots</strong> de peinture (on arrondit toujours au-dessus).</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TAB 3 : APPROFONDISSEMENT ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Pour aller plus loin</h2>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 1 <span class="diff diff3">Difficile</span></h4>
+      <p>Un terrain en forme de "L" est compos&eacute; d'un rectangle de 20 m sur 12 m auquel on a retir&eacute; un rectangle de 8 m sur 5 m dans un coin. Calcule l'aire du terrain restant, puis son p&eacute;rim&egrave;tre (fais un sch&eacute;ma pour t'aider).</p>
+      <details><summary>Correction</summary>
+      <p>Aire : 20 &times; 12 &ndash; 8 &times; 5 = 240 &ndash; 40 = <strong>200 m&sup2;</strong>.</p>
+      <p>Pour le p&eacute;rim&egrave;tre du "L", on retrouve les longueurs manquantes : les c&ocirc;t&eacute;s ext&eacute;rieurs se recomposent toujours pour donner 2 &times; (20 + 12) = <strong>64 m</strong> (propri&eacute;t&eacute; du p&eacute;rim&egrave;tre d'une figure en escalier issue d'un rectangle).</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 2 <span class="diff diff3">Difficile</span></h4>
+      <p>Un rond-point circulaire a un diam&egrave;tre de 30 m. On veut peindre une bande blanche tout autour du bord ext&eacute;rieur (le contour). Quelle longueur de peinture doit-on pr&eacute;voir ? (&pi; &asymp; 3,14)</p>
+      <details><summary>Correction</summary><p>C = &pi; &times; d = 3,14 &times; 30 = <strong>94,2 m</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 3 <span class="diff diff3">Difficile</span></h4>
+      <p>Une piste d'athl&eacute;tisme est form&eacute;e d'un rectangle de 80 m sur 40 m, prolong&eacute; de chaque c&ocirc;t&eacute; par un demi-disque de rayon 20 m (les demi-disques sont sur les petits c&ocirc;t&eacute;s). Calcule la longueur totale du contour de la piste (un tour de piste).</p>
+      <details><summary>Correction</summary><p>Les deux grands c&ocirc;t&eacute;s du rectangle : 2 &times; 80 = 160 m.<br>Les deux demi-cercles se recomposent en un cercle complet de rayon 20 m : circonf&eacute;rence = 2 &times; 3,14 &times; 20 = 125,6 m.<br>Total : 160 + 125,6 = <strong>285,6 m</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 4 <span class="diff diff3">Difficile</span></h4>
+      <p>Un jardinier veut recouvrir de gazon un terrain carr&eacute; de 10 m de c&ocirc;t&eacute;, en laissant un chemin circulaire de rayon 2 m au centre pour un bassin. Le gazon co&ucirc;te 3&euro; le m&sup2;. Quel est le co&ucirc;t total du gazon ? (&pi; &asymp; 3,14, arrondis l'aire du bassin au dixi&egrave;me)</p>
+      <details><summary>Correction</summary><p>Aire du carr&eacute; : 10 &times; 10 = 100 m&sup2;.<br>Aire du bassin (disque) : 3,14 &times; 2 &times; 2 = 12,56 &asymp; 12,6 m&sup2;.<br>Aire &agrave; engazonner : 100 &ndash; 12,6 = 87,4 m&sup2;.<br>Co&ucirc;t : 87,4 &times; 3 = <strong>262,2 &euro;</strong>.</p></details>
+    </div>
+
+    <div class="exo">
+      <h4>Probl&egrave;me 5 <span class="diff diff3">Difficile</span> (r&eacute;flexion)</h4>
+      <p>Deux rectangles ont le m&ecirc;me p&eacute;rim&egrave;tre de 24 cm mais des formes diff&eacute;rentes. Trouve deux couples (longueur, largeur) possibles et compare leurs aires. Que remarques-tu ?</p>
+      <details><summary>Correction</summary><p>Par exemple : (9, 3) donne P = 2 &times; 12 = 24 cm et A = 27 cm&sup2;. Et (6, 6) (un carr&eacute;) donne aussi P = 24 cm mais A = 36 cm&sup2;.<br><strong>Remarque</strong> : &agrave; p&eacute;rim&egrave;tre &eacute;gal, l'aire peut varier ! Le carr&eacute; donne l'aire maximale parmi tous les rectangles de m&ecirc;me p&eacute;rim&egrave;tre.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TAB 4 : QCM ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>QCM &ndash; Teste-toi !</h2>
+    <p class="note">Choisis une r&eacute;ponse pour chaque question. Le score s'affiche &agrave; la fin.</p>
+    <div id="qcm-container"></div>
+    <div style="text-align:center; margin-top:14px;">
+      <button class="primary" onclick="resetQCM()">Recommencer</button>
+    </div>
+    <div id="qcm-score"></div>
+  </div>
+</section>
+
+<!-- ============ TAB 5 : VISUALISATION ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Constructeur de figures interactif</h2>
+    <p>Choisis une forme et fais varier ses dimensions pour observer le p&eacute;rim&egrave;tre et l'aire en temps r&eacute;el.</p>
+    <div class="shape-select">
+      <button id="btn-square" class="active" onclick="setShape('square')">Carr&eacute;</button>
+      <button id="btn-rect" onclick="setShape('rect')">Rectangle</button>
+      <button id="btn-circle" onclick="setShape('circle')">Cercle / disque</button>
+      <button id="btn-triangle" onclick="setShape('triangle')">Triangle</button>
+    </div>
+    <canvas id="shapeCanvas" width="600" height="360" height2="360"></canvas>
+    <div class="viz-controls" id="shapeControls"></div>
+    <div class="viz-result" id="shapeResult"></div>
+  </div>
+
+  <div class="card">
+    <h2>Estimation d'aire par quadrillage</h2>
+    <p>D&eacute;place le rayon du cercle trac&eacute; sur la grille : compte les carreaux pleins et estime l'aire, puis compare avec la formule.</p>
+    <canvas id="gridCanvas" width="600" height="320"></canvas>
+    <div class="viz-controls">
+      <label>Rayon du cercle (carreaux) <span id="gridRVal">5</span>
+        <input type="range" id="gridR" min="2" max="10" step="1" value="5">
+      </label>
+    </div>
+    <div class="viz-result" id="gridResult"></div>
+  </div>
+</section>
+
+<!-- ============ TAB 6 : BILAN ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Bilan &ndash; Ce qu'il faut retenir</h2>
+    <div class="summary-grid">
+      <div class="summary-box">
+        <h4>P&eacute;rim&egrave;tres</h4>
+        <ul>
+          <li>Carr&eacute; : P = 4 &times; c</li>
+          <li>Rectangle : P = 2 &times; (L + l)</li>
+          <li>Triangle : P = a + b + c</li>
+          <li>Cercle : C = 2 &times; &pi; &times; r = &pi; &times; d</li>
+        </ul>
+      </div>
+      <div class="summary-box">
+        <h4>Aires</h4>
+        <ul>
+          <li>Carr&eacute; : A = c&sup2;</li>
+          <li>Rectangle : A = L &times; l</li>
+          <li>Triangle : A = (base &times; hauteur) &divide; 2</li>
+          <li>Parall&eacute;logramme : A = base &times; hauteur</li>
+          <li>Disque : A = &pi; &times; r&sup2;</li>
+        </ul>
+      </div>
+      <div class="summary-box">
+        <h4>Unit&eacute;s</h4>
+        <ul>
+          <li>Longueurs : mm, cm, dm, m, km (facteur 10)</li>
+          <li>Aires : mm&sup2;, cm&sup2;, dm&sup2;, m&sup2;, km&sup2; (facteur 100)</li>
+          <li>1 m&sup2; = 10 000 cm&sup2;</li>
+        </ul>
+      </div>
+      <div class="summary-box">
+        <h4>Le nombre &pi;</h4>
+        <ul>
+          <li>&pi; &asymp; 3,14</li>
+          <li>Rapport constant entre circonf&eacute;rence et diam&egrave;tre</li>
+          <li>Ne pas confondre 2&pi;r (longueur) et &pi;r&sup2; (aire)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note tip" style="margin-top:14px;">M&eacute;thode g&eacute;n&eacute;rale : identifier la figure &rarr; rep&eacute;rer les bonnes longueurs &rarr; v&eacute;rifier les unit&eacute;s &rarr; appliquer la formule &rarr; conclure avec l'unit&eacute; ad&eacute;quate (simple pour un p&eacute;rim&egrave;tre, au carr&eacute; pour une aire).</div>
+  </div>
+  <div class="card">
+    <h2>Auto-&eacute;valuation</h2>
+    <ul>
+      <li>Je sais calculer le p&eacute;rim&egrave;tre d'un carr&eacute;, d'un rectangle, d'un triangle.</li>
+      <li>Je connais et sais utiliser la formule de la circonf&eacute;rence d'un cercle.</li>
+      <li>Je sais calculer l'aire d'un carr&eacute;, d'un rectangle, d'un triangle, d'un parall&eacute;logramme, d'un disque.</li>
+      <li>Je sais convertir des unit&eacute;s d'aire.</li>
+      <li>Je sais d&eacute;composer une figure compos&eacute;e pour calculer son aire ou son p&eacute;rim&egrave;tre.</li>
+      <li>Je sais r&eacute;soudre un probl&egrave;me concret li&eacute; aux p&eacute;rim&egrave;tres et aires.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+<footer>Cours interactif &ndash; P&eacute;rim&egrave;tres et aires &ndash; 6&egrave;me</footer>
+
+<script>
+/* ---------- Th&egrave;me ---------- */
+function toggleTheme(){
+  var root = document.documentElement;
+  var current = root.getAttribute('data-theme');
+  if(current === 'dark'){ root.setAttribute('data-theme','light'); }
+  else if(current === 'light'){ root.removeAttribute('data-theme'); }
+  else { root.setAttribute('data-theme','dark'); }
+  drawShape();
+  drawGrid();
+}
+
+/* ---------- Onglets ---------- */
+var tabs = document.querySelectorAll('.tab-pane');
+function showTab(n){
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active', i===n);});
+  document.querySelectorAll('.tab-pane').forEach(function(p,i){p.classList.toggle('active', i===n);});
+  if(!tabs[n].dataset.init){ tabs[n].dataset.init='1'; initSection(n); }
+}
+function initSection(n){
+  if(n===4){ buildQCM(); }
+  if(n===5){ setShape('square'); buildGrid(); }
+}
+
+/* ---------- QCM ---------- */
+var qcmData = [
+  {q:"Quelle est la formule du p&eacute;rim&egrave;tre d'un carr&eacute; de c&ocirc;t&eacute; c ?", opts:["c + c","4 &times; c","c &times; c","2 &times; c"], correct:1},
+  {q:"Quelle est la formule de l'aire d'un rectangle de longueur L et largeur l ?", opts:["2 &times; (L + l)","L + l","L &times; l","L&sup2; + l&sup2;"], correct:2},
+  {q:"Un triangle a des c&ocirc;t&eacute;s de 3 cm, 4 cm et 5 cm. Quel est son p&eacute;rim&egrave;tre ?", opts:["7 cm","12 cm","60 cm","10 cm"], correct:1},
+  {q:"Quelle est la formule de la circonf&eacute;rence d'un cercle de rayon r ?", opts:["&pi; &times; r&sup2;","r &times; r","2 &times; &pi; &times; r","&pi; &times; r"], correct:2},
+  {q:"Un disque a un rayon de 3 cm. Quelle est son aire (&pi; &asymp; 3,14) ?", opts:["18,84 cm&sup2;","9 cm&sup2;","28,26 cm&sup2;","6,28 cm&sup2;"], correct:2},
+  {q:"Combien de cm&sup2; y a-t-il dans 1 m&sup2; ?", opts:["100","1 000","10 000","100 000"], correct:2},
+  {q:"Un triangle a une base de 8 cm et une hauteur de 5 cm. Quelle est son aire ?", opts:["40 cm&sup2;","20 cm&sup2;","13 cm&sup2;","26 cm&sup2;"], correct:1},
+  {q:"Quelle unit&eacute; utilise-t-on pour exprimer une aire ?", opts:["Une unit&eacute; simple (cm, m&hellip;)","Une unit&eacute; au carr&eacute; (cm&sup2;, m&sup2;&hellip;)","Une unit&eacute; au cube (cm&sup3;&hellip;)","&Ccedil;a d&eacute;pend de la figure"], correct:1},
+  {q:"Quelle est la valeur approch&eacute;e usuelle de &pi; en 6&egrave;me ?", opts:["3","3,14","3,1","3,41"], correct:1},
+  {q:"Un parall&eacute;logramme a une base de 10 cm et une hauteur de 4 cm. Quelle est son aire ?", opts:["14 cm&sup2;","40 cm&sup2;","20 cm&sup2;","28 cm&sup2;"], correct:1}
+];
+var qcmAnswered = [];
+function buildQCM(){
+  var c = document.getElementById('qcm-container');
+  c.innerHTML = '';
+  qcmAnswered = new Array(qcmData.length).fill(false);
+  qcmData.forEach(function(item, qi){
+    var div = document.createElement('div');
+    div.className = 'qcm-q';
+    var p = document.createElement('p');
+    p.className = 'question';
+    p.innerHTML = (qi+1) + '. ' + item.q;
+    div.appendChild(p);
+    item.opts.forEach(function(opt, oi){
+      var btn = document.createElement('button');
+      btn.className = 'qcm-opt';
+      btn.innerHTML = opt;
+      btn.onclick = function(){ answerQCM(qi, oi, div); };
+      div.appendChild(btn);
+    });
+    c.appendChild(div);
+  });
+  document.getElementById('qcm-score').innerHTML = '';
+}
+function answerQCM(qi, oi, div){
+  if(qcmAnswered[qi]) return;
+  qcmAnswered[qi] = true;
+  var opts = div.querySelectorAll('.qcm-opt');
+  opts.forEach(function(b, i){
+    b.disabled = true;
+    if(i === qcmData[qi].correct){ b.classList.add('correct'); }
+    else if(i === oi){ b.classList.add('wrong'); }
+  });
+  if(qcmAnswered.every(function(v){return v;})){ showQCMScore(); }
+}
+function showQCMScore(){
+  var score = 0;
+  qcmData.forEach(function(item, qi){
+    var div = document.querySelectorAll('.qcm-q')[qi];
+    var correctBtn = div.querySelectorAll('.qcm-opt')[item.correct];
+    if(correctBtn.classList.contains('correct') && !div.querySelector('.wrong')){ score++; }
+  });
+  document.getElementById('qcm-score').innerHTML = 'Score : ' + score + ' / ' + qcmData.length;
+}
+function resetQCM(){ buildQCM(); }
+
+/* ---------- Visualisation : constructeur de figures ---------- */
+var currentShape = 'square';
+var shapeParams = {
+  square:{c:6},
+  rect:{L:8, l:5},
+  circle:{r:5},
+  triangle:{base:8, height:5}
+};
+function cssVar(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function setShape(shape){
+  currentShape = shape;
+  ['square','rect','circle','triangle'].forEach(function(s){
+    document.getElementById('btn-' + (s==='rect'?'rect':s)).classList.toggle('active', s===shape);
+  });
+  buildShapeControls();
+  drawShape();
+}
+function buildShapeControls(){
+  var el = document.getElementById('shapeControls');
+  el.innerHTML = '';
+  function slider(id, label, min, max, val, step){
+    var wrap = document.createElement('div');
+    var lab = document.createElement('label');
+    lab.innerHTML = label + ' <span id="' + id + 'Val">' + val + '</span> cm';
+    var input = document.createElement('input');
+    input.type = 'range'; input.id = id; input.min = min; input.max = max; input.value = val; input.step = step || 1;
+    input.oninput = function(){
+      document.getElementById(id + 'Val').textContent = input.value;
+      updateShapeParam(id, parseFloat(input.value));
+    };
+    wrap.appendChild(lab); wrap.appendChild(input);
+    el.appendChild(wrap);
+  }
+  if(currentShape==='square'){ slider('sq_c','C&ocirc;t&eacute;',2,15,shapeParams.square.c); }
+  else if(currentShape==='rect'){
+    slider('rc_L','Longueur',2,18,shapeParams.rect.L);
+    slider('rc_l','Largeur',2,12,shapeParams.rect.l);
+  }
+  else if(currentShape==='circle'){ slider('ci_r','Rayon',2,12,shapeParams.circle.r); }
+  else if(currentShape==='triangle'){
+    slider('tr_base','Base',2,18,shapeParams.triangle.base);
+    slider('tr_height','Hauteur',2,12,shapeParams.triangle.height);
+  }
+}
+function updateShapeParam(id, val){
+  if(id==='sq_c') shapeParams.square.c = val;
+  if(id==='rc_L') shapeParams.rect.L = val;
+  if(id==='rc_l') shapeParams.rect.l = val;
+  if(id==='ci_r') shapeParams.circle.r = val;
+  if(id==='tr_base') shapeParams.triangle.base = val;
+  if(id==='tr_height') shapeParams.triangle.height = val;
+  drawShape();
+}
+function drawShape(){
+  var canvas = document.getElementById('shapeCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  var surface = cssVar('--surface');
+  var accent = cssVar('--accent');
+  var accentLight = cssVar('--accent-light');
+  var text = cssVar('--text');
+  var border = cssVar('--border');
+  ctx.fillStyle = surface; ctx.fillRect(0,0,w,h);
+
+  var scale = 16;
+  var cx = w/2, cy = h/2 + 20;
+  ctx.font = '15px Nunito Sans, sans-serif';
+  ctx.fillStyle = text;
+  var resultText = '';
+
+  if(currentShape==='square'){
+    var c = shapeParams.square.c;
+    var size = c*scale;
+    ctx.fillStyle = accentLight; ctx.strokeStyle = accent; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.rect(cx-size/2, cy-size/2, size, size); ctx.fill(); ctx.stroke();
+    var P = 4*c, A = c*c;
+    resultText = 'P&eacute;rim&egrave;tre = 4 &times; ' + c + ' = <span>' + P + ' cm</span> &nbsp;|&nbsp; Aire = ' + c + ' &times; ' + c + ' = <span>' + A + ' cm&sup2;</span>';
+  } else if(currentShape==='rect'){
+    var L = shapeParams.rect.L, l = shapeParams.rect.l;
+    var wpx = L*scale, hpx = l*scale;
+    ctx.fillStyle = accentLight; ctx.strokeStyle = accent; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.rect(cx-wpx/2, cy-hpx/2, wpx, hpx); ctx.fill(); ctx.stroke();
+    var P = 2*(L+l), A = L*l;
+    resultText = 'P&eacute;rim&egrave;tre = 2 &times; (' + L + ' + ' + l + ') = <span>' + P + ' cm</span> &nbsp;|&nbsp; Aire = ' + L + ' &times; ' + l + ' = <span>' + A + ' cm&sup2;</span>';
+  } else if(currentShape==='circle'){
+    var r = shapeParams.circle.r;
+    var rpx = r*scale;
+    ctx.fillStyle = accentLight; ctx.strokeStyle = accent; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(cx, cy, rpx, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = border; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+rpx,cy); ctx.stroke();
+    var C = (2*Math.PI*r), A = (Math.PI*r*r);
+    resultText = 'Circonf&eacute;rence = 2 &times; &pi; &times; ' + r + ' &asymp; <span>' + C.toFixed(2) + ' cm</span> &nbsp;|&nbsp; Aire = &pi; &times; ' + r + '&sup2; &asymp; <span>' + A.toFixed(2) + ' cm&sup2;</span>';
+  } else if(currentShape==='triangle'){
+    var base = shapeParams.triangle.base, height = shapeParams.triangle.height;
+    var bpx = base*scale, hpx = height*scale;
+    var x0 = cx-bpx/2, y0 = cy+hpx/2;
+    var x1 = cx+bpx/2, y1 = cy+hpx/2;
+    var x2 = cx-bpx/4, y2 = cy-hpx/2;
+    ctx.fillStyle = accentLight; ctx.strokeStyle = accent; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.lineTo(x2,y2); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = border; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x2,y0); ctx.stroke();
+    ctx.setLineDash([]);
+    var A = (base*height)/2;
+    resultText = 'Aire = (base &times; hauteur) &divide; 2 = (' + base + ' &times; ' + height + ') &divide; 2 = <span>' + A + ' cm&sup2;</span> (base = ' + base + ' cm, hauteur = ' + height + ' cm)';
+  }
+  document.getElementById('shapeResult').innerHTML = resultText;
+}
+
+/* ---------- Visualisation : quadrillage ---------- */
+function buildGrid(){
+  var slider = document.getElementById('gridR');
+  slider.oninput = function(){
+    document.getElementById('gridRVal').textContent = slider.value;
+    drawGrid();
+  };
+  drawGrid();
+}
+function drawGrid(){
+  var canvas = document.getElementById('gridCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  var surface = cssVar('--surface');
+  var border = cssVar('--border');
+  var accent = cssVar('--accent');
+  var accentLight = cssVar('--accent-light');
+  ctx.fillStyle = surface; ctx.fillRect(0,0,w,h);
+
+  var cell = 24;
+  var cols = Math.floor(w/cell), rows = Math.floor(h/cell);
+  ctx.strokeStyle = border; ctx.lineWidth = 1;
+  for(var i=0;i<=cols;i++){ ctx.beginPath(); ctx.moveTo(i*cell,0); ctx.lineTo(i*cell,rows*cell); ctx.stroke(); }
+  for(var j=0;j<=rows;j++){ ctx.beginPath(); ctx.moveTo(0,j*cell); ctx.lineTo(cols*cell,j*cell); ctx.stroke(); }
+
+  var r = parseInt(document.getElementById('gridR').value, 10);
+  var cx = Math.floor(cols/2), cy = Math.floor(rows/2);
+  var pcx = cx*cell, pcy = cy*cell;
+  var full = 0, partial = 0;
+  for(var x=0;x<cols;x++){
+    for(var y=0;y<rows;y++){
+      var corners = [[x,y],[x+1,y],[x,y+1],[x+1,y+1]];
+      var inside = 0;
+      corners.forEach(function(pt){
+        var dx = pt[0]-cx, dy = pt[1]-cy;
+        if(dx*dx+dy*dy <= r*r) inside++;
+      });
+      if(inside===4){
+        full++;
+        ctx.fillStyle = accentLight;
+        ctx.fillRect(x*cell, y*cell, cell, cell);
+      } else if(inside>0){
+        partial++;
+        ctx.fillStyle = border;
+        ctx.globalAlpha = 0.5;
+        ctx.fillRect(x*cell, y*cell, cell, cell);
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+  ctx.strokeStyle = accent; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.arc(pcx, pcy, r*cell, 0, Math.PI*2); ctx.stroke();
+
+  var estim = full + partial/2;
+  var theorique = Math.PI*r*r;
+  document.getElementById('gridResult').innerHTML =
+    'Carreaux pleins : <span>' + full + '</span> &nbsp;|&nbsp; Carreaux partiels : <span>' + partial + '</span><br>' +
+    'Estimation (pleins + moiti&eacute; des partiels) &asymp; <span>' + estim.toFixed(1) + '</span> carreaux<br>' +
+    'Aire th&eacute;orique = &pi; &times; ' + r + '&sup2; &asymp; <span>' + theorique.toFixed(1) + '</span> carreaux (1 carreau = 1 unit&eacute;&sup2;)';
+}
+
+/* ---------- Initialisation ---------- */
+window.addEventListener('load', function(){
+  drawShape();
+});
+</script>
+</body>
+</html>

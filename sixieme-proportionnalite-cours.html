@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proportionnalité — Cours 6ème</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f2ed;--surface:#ffffff;--surface2:#ebe6de;--text:#2c2418;--heading:#8b4513;
+  --muted:#6b5a48;--border:#d4c8b8;--accent:#a0522d;--accent-light:#faf5ef;
+  --shadow:0 2px 8px rgba(139,69,19,0.07);--radius:8px;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#161210;--surface:#221c18;--surface2:#302820;--text:#ddd0c0;--heading:#e0a868;
+    --muted:#9a8878;--border:#403428;--accent:#d08840;--accent-light:#1e1610;
+    --shadow:0 2px 8px rgba(0,0,0,0.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161210;--surface:#221c18;--surface2:#302820;--text:#ddd0c0;--heading:#e0a868;
+  --muted:#9a8878;--border:#403428;--accent:#d08840;--accent-light:#1e1610;
+  --shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito Sans',system-ui,sans-serif;font-size:16px;line-height:1.65;padding-inline:16px;}
+.wrap{max-width:760px;margin:0 auto;}
+header{text-align:center;padding:32px 0 18px;position:relative;}
+header h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;color:var(--heading);font-size:clamp(1.8rem,5vw,2.6rem);margin-bottom:4px;}
+header p.sub{color:var(--muted);font-size:.95rem;}
+.badge{display:inline-block;background:var(--accent);color:#fff;font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:.85rem;padding:3px 14px;border-radius:20px;margin-bottom:10px;}
+.theme-toggle{position:absolute;top:16px;right:0;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;font-size:.82rem;color:var(--muted);font-family:'Nunito Sans',sans-serif;}
+.theme-toggle:hover{background:var(--accent-light);}
+nav.tabs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:18px 0 24px;position:sticky;top:0;z-index:10;background:var(--bg);padding:10px 0;}
+.tab-btn{font-family:'Nunito Sans',sans-serif;font-weight:600;font-size:.82rem;padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--surface);color:var(--muted);cursor:pointer;transition:all .2s;}
+.tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;box-shadow:var(--shadow);}
+h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:1.55rem;color:var(--heading);margin-bottom:14px;border-bottom:2px solid var(--border);padding-bottom:8px;}
+h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:1.2rem;color:var(--heading);margin:18px 0 8px;}
+p{margin-bottom:10px;}
+ul,ol{margin:10px 0 10px 22px;}
+li{margin-bottom:6px;}
+.def{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;border-radius:0 var(--radius) var(--radius) 0;margin:14px 0;font-size:.95rem;}
+.def strong{color:var(--accent);}
+.example{background:var(--surface2);padding:14px 18px;border-radius:var(--radius);margin:12px 0;font-size:.93rem;}
+.tip{background:var(--surface2);border-left:4px solid var(--heading);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin:12px 0;font-size:.9rem;}
+table.prop{width:100%;border-collapse:collapse;margin:12px 0;font-size:.93rem;}
+table.prop th,table.prop td{border:1px solid var(--border);padding:8px 12px;text-align:center;}
+table.prop th{background:var(--accent);color:#fff;font-weight:600;}
+table.prop td{background:var(--surface);}
+canvas{display:block;margin:16px auto;border-radius:var(--radius);max-width:100%;background:var(--surface);}
+.exercise{background:var(--surface2);padding:16px 18px;border-radius:var(--radius);margin:14px 0;}
+.exercise p{margin-bottom:8px;}
+.exercise label{font-weight:600;color:var(--heading);font-size:.92rem;}
+input[type="number"],input[type="text"]{font-family:'Nunito Sans',sans-serif;font-size:.95rem;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);width:90px;text-align:center;}
+input:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+button.btn{font-family:'Nunito Sans',sans-serif;font-weight:600;font-size:.88rem;padding:8px 18px;border:none;border-radius:6px;cursor:pointer;background:var(--accent);color:#fff;margin:6px 4px 6px 0;transition:opacity .2s;}
+button.btn:hover{opacity:.85;}
+button.btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+.feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-size:.9rem;font-weight:600;}
+.feedback.correct{background:#d4edda;color:#155724;}
+.feedback.wrong{background:#f8d7da;color:#721c24;}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .feedback.correct{background:#1a3a1a;color:#8fdf8f;}
+  :root:not([data-theme="light"]) .feedback.wrong{background:#3a1a1a;color:#df8f8f;}
+}
+:root[data-theme="dark"] .feedback.correct{background:#1a3a1a;color:#8fdf8f;}
+:root[data-theme="dark"] .feedback.wrong{background:#3a1a1a;color:#df8f8f;}
+details{margin:12px 0;}
+details summary{cursor:pointer;font-weight:600;color:var(--accent);font-size:.93rem;padding:6px 0;}
+details summary:hover{text-decoration:underline;}
+details .correction{padding:10px 14px;background:var(--accent-light);border-radius:0 0 var(--radius) var(--radius);font-size:.92rem;line-height:1.7;}
+.qcm-q{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin:12px 0;}
+.qcm-q p{font-weight:600;margin-bottom:8px;}
+.qcm-q label{display:block;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:.92rem;margin:2px 0;transition:background .15s;}
+.qcm-q label:hover{background:var(--surface2);}
+.qcm-q input[type="radio"]{margin-right:8px;accent-color:var(--accent);}
+.score-box{text-align:center;padding:24px;background:var(--accent-light);border:2px solid var(--accent);border-radius:var(--radius);margin:20px 0;}
+.score-box .big{font-family:'Cormorant Garamond',Georgia,serif;font-size:2.4rem;font-weight:700;color:var(--accent);}
+.difficulty{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;}
+.difficulty.facile{background:#d4edda;color:#155724;}
+.difficulty.moyen{background:#fff3cd;color:#856404;}
+.difficulty.difficile{background:#f8d7da;color:#721c24;}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .difficulty.facile{background:#1a3a1a;color:#8fdf8f;}
+  :root:not([data-theme="light"]) .difficulty.moyen{background:#3a2e10;color:#dfbf5f;}
+  :root:not([data-theme="light"]) .difficulty.difficile{background:#3a1a1a;color:#df8f8f;}
+}
+:root[data-theme="dark"] .difficulty.facile{background:#1a3a1a;color:#8fdf8f;}
+:root[data-theme="dark"] .difficulty.moyen{background:#3a2e10;color:#dfbf5f;}
+:root[data-theme="dark"] .difficulty.difficile{background:#3a1a1a;color:#df8f8f;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.canvas-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:10px 0;}
+.legend-item{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;margin:0 8px;}
+.legend-dot{width:12px;height:12px;border-radius:50%;display:inline-block;}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:20px 0 40px;}
+@media(max-width:600px){
+  .tab-btn{font-size:.75rem;padding:6px 10px;}
+  .card{padding:16px;}
+  .grid2{grid-template-columns:1fr;}
+  h2{font-size:1.3rem;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="badge">Classe de 6ème</span>
+  <h1>La proportionnalité</h1>
+  <p class="sub">Cours interactif — Découvrir les situations proportionnelles</p>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Changer de thème">&#9728; / &#9789;</button>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" onclick="showTab(0)">Cours</button>
+  <button class="tab-btn" onclick="showTab(1)">Méthodes</button>
+  <button class="tab-btn" onclick="showTab(2)">Exercices</button>
+  <button class="tab-btn" onclick="showTab(3)">Approfondissement</button>
+  <button class="tab-btn" onclick="showTab(4)">QCM</button>
+  <button class="tab-btn" onclick="showTab(5)">Visualisation</button>
+  <button class="tab-btn" onclick="showTab(6)">Bilan</button>
+</nav>
+
+<!-- ============ TAB 0 : COURS ============ -->
+<section class="tab-pane active">
+  <div class="card">
+    <h2>1. Qu'est-ce qu'une situation de proportionnalité ?</h2>
+    <p>Dans la vie de tous les jours, on rencontre souvent des grandeurs qui varient <strong>ensemble</strong>, dans les mêmes proportions. On parle alors de <strong>situation de proportionnalité</strong>.</p>
+    <div class="def">
+      <strong>Définition.</strong> Deux grandeurs sont <strong>proportionnelles</strong> lorsque l'on passe des valeurs de la première aux valeurs de la seconde en multipliant toujours par le <strong>même nombre</strong>, appelé <strong>coefficient de proportionnalité</strong>.
+    </div>
+    <div class="example">
+      <strong>Exemple du marché.</strong> Un marchand vend des pommes à 2&nbsp;€ le kilogramme.
+      <table class="prop">
+        <tr><th>Masse (kg)</th><td>1</td><td>2</td><td>3</td><td>5</td></tr>
+        <tr><th>Prix (€)</th><td>2</td><td>4</td><td>6</td><td>10</td></tr>
+      </table>
+      <p>Pour passer de la masse au prix, on multiplie toujours par <strong>2</strong>. Le prix est donc proportionnel à la masse : le coefficient de proportionnalité est 2.</p>
+    </div>
+
+    <h3>Des situations proportionnelles au quotidien</h3>
+    <ul>
+      <li>Le prix à payer en fonction de la quantité achetée (au poids, à l'unité...)</li>
+      <li>La quantité d'ingrédients d'une recette en fonction du nombre de personnes</li>
+      <li>La distance parcourue à vitesse constante en fonction du temps</li>
+      <li>La longueur réelle en fonction de la longueur sur un plan ou une carte (échelle)</li>
+    </ul>
+
+    <h2>2. Reconnaître une situation de proportionnalité</h2>
+    <h3>À l'aide d'un tableau</h3>
+    <p>Pour savoir si un tableau représente une situation de proportionnalité, on calcule le quotient (la division) de chaque valeur de la deuxième ligne par la valeur correspondante de la première ligne. Si on obtient <strong>toujours le même nombre</strong>, alors les deux grandeurs sont proportionnelles.</p>
+    <div class="example">
+      <strong>Exemple : tableau proportionnel</strong>
+      <table class="prop">
+        <tr><th>Nombre de bonbons</th><td>3</td><td>6</td><td>9</td></tr>
+        <tr><th>Prix (€)</th><td>1,50</td><td>3</td><td>4,50</td></tr>
+      </table>
+      <p>1,50 : 3 = 0,5 &nbsp;|&nbsp; 3 : 6 = 0,5 &nbsp;|&nbsp; 4,50 : 9 = 0,5. Le quotient est toujours 0,5&nbsp;€ : le tableau est proportionnel.</p>
+    </div>
+    <div class="example">
+      <strong>Exemple : tableau NON proportionnel</strong>
+      <table class="prop">
+        <tr><th>Âge (ans)</th><td>5</td><td>10</td><td>15</td></tr>
+        <tr><th>Taille (cm)</th><td>110</td><td>140</td><td>160</td></tr>
+      </table>
+      <p>110 : 5 = 22 mais 140 : 10 = 14. Les quotients sont différents : la taille n'est <strong>pas</strong> proportionnelle à l'âge.</p>
+    </div>
+
+    <h3>À l'aide d'un graphique</h3>
+    <div class="def">
+      <strong>Propriété.</strong> Si une situation est proportionnelle, les points représentés dans un repère sont <strong>alignés avec l'origine</strong> du repère (le point de coordonnées (0&nbsp;;&nbsp;0)).
+    </div>
+    <p>Autrement dit : quand on place les points correspondant aux couples de valeurs du tableau, on obtient une <strong>droite qui passe par l'origine</strong>. Si la droite ne passe pas par l'origine, ou si les points ne sont pas alignés, la situation n'est pas proportionnelle.</p>
+    <div class="tip">Tu peux tester cela toi-même dans l'onglet <strong>Visualisation</strong> !</div>
+
+    <h2>3. Le coefficient de proportionnalité</h2>
+    <div class="def">
+      Le <strong>coefficient de proportionnalité</strong> est le nombre par lequel on multiplie chaque valeur de la première grandeur pour obtenir la valeur correspondante de la seconde grandeur.
+    </div>
+    <p>Dans l'exemple des pommes, le coefficient est 2 (2&nbsp;€/kg). Dans l'exemple des bonbons, le coefficient est 0,5 (0,5&nbsp;€ par bonbon).</p>
+
+    <h2>4. Compléter un tableau de proportionnalité</h2>
+    <p>Une fois que l'on connaît le coefficient de proportionnalité, on peut compléter n'importe quelle case manquante du tableau : il suffit de multiplier (ou diviser) par ce coefficient.</p>
+    <div class="example">
+      <table class="prop">
+        <tr><th>Longueur (m)</th><td>4</td><td>8</td><td>?</td><td>20</td></tr>
+        <tr><th>Prix (€)</th><td>12</td><td>24</td><td>36</td><td>?</td></tr>
+      </table>
+      <p>Coefficient : 12 : 4 = 3. Donc pour 36&nbsp;€, on cherche 36 : 3 = 12&nbsp;m. Et pour 20&nbsp;m, le prix est 20 × 3 = 60&nbsp;€.</p>
+    </div>
+
+    <h2>5. Les propriétés utiles</h2>
+    <h3>La propriété d'additivité</h3>
+    <div class="def">Dans un tableau de proportionnalité, on peut <strong>additionner deux colonnes</strong> pour en obtenir une troisième.</div>
+    <div class="example">
+      <table class="prop">
+        <tr><th>Masse (kg)</th><td>2</td><td>3</td><td>2+3 = 5</td></tr>
+        <tr><th>Prix (€)</th><td>4</td><td>6</td><td>4+6 = 10</td></tr>
+      </table>
+    </div>
+    <h3>Le passage par l'unité (multiplicativité)</h3>
+    <div class="def">On peut calculer la valeur correspondant à <strong>1 unité</strong>, puis multiplier pour trouver n'importe quelle autre valeur.</div>
+    <div class="example">
+      <strong>Exemple.</strong> 5 stylos coûtent 6&nbsp;€. Combien coûtent 8 stylos ?<br>
+      Prix d'un stylo : 6 : 5 = 1,20&nbsp;€. Prix de 8 stylos : 1,20 × 8 = 9,60&nbsp;€.
+    </div>
+
+    <h2>6. Pourcentages simples</h2>
+    <p>Un pourcentage est un exemple de situation proportionnelle. Voici quelques repères simples à connaître :</p>
+    <ul>
+      <li><strong>50&nbsp;%</strong> d'une quantité, c'est la <strong>moitié</strong> (on divise par 2)</li>
+      <li><strong>25&nbsp;%</strong> d'une quantité, c'est le <strong>quart</strong> (on divise par 4)</li>
+      <li><strong>10&nbsp;%</strong> d'une quantité, c'est un <strong>dixième</strong> (on divise par 10)</li>
+    </ul>
+    <div class="example">Une chemise coûte 40&nbsp;€. Elle est soldée à -25&nbsp;%. La réduction est le quart de 40&nbsp;€, soit 10&nbsp;€. Le nouveau prix est 40 - 10 = 30&nbsp;€.</div>
+
+    <h2>7. Récapitulatif : la vitesse, une situation proportionnelle</h2>
+    <p>Quand un mobile se déplace à <strong>vitesse constante</strong>, la distance parcourue est proportionnelle à la durée du trajet.</p>
+    <div class="example">
+      <strong>Exemple.</strong> Un TGV roule à 300&nbsp;km/h (vitesse constante).
+      <table class="prop">
+        <tr><th>Durée (h)</th><td>1</td><td>2</td><td>0,5</td></tr>
+        <tr><th>Distance (km)</th><td>300</td><td>600</td><td>150</td></tr>
+      </table>
+      <p>Le coefficient de proportionnalité est ici la vitesse : 300&nbsp;km/h. On retrouve la formule <strong>distance = vitesse × temps</strong>.</p>
+    </div>
+    <div class="tip">Attention : si la vitesse n'est pas constante (un cycliste qui accélère puis freine), la distance n'est plus proportionnelle au temps !</div>
+  </div>
+</section>
+
+<!-- ============ TAB 1 : METHODES ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Méthode 1 — Reconnaître un tableau proportionnel</h2>
+    <ol>
+      <li>Je calcule le quotient (valeur du bas) : (valeur du haut), colonne par colonne.</li>
+      <li>Si tous les quotients sont <strong>égaux</strong>, le tableau est proportionnel.</li>
+      <li>Si un seul quotient est différent, le tableau n'est <strong>pas</strong> proportionnel.</li>
+    </ol>
+    <div class="example">
+      <strong>Exemple appliqué.</strong>
+      <table class="prop">
+        <tr><th>Litres d'essence</th><td>10</td><td>20</td><td>30</td></tr>
+        <tr><th>Prix (€)</th><td>18</td><td>36</td><td>54</td></tr>
+      </table>
+      18:10=1,8 &nbsp;|&nbsp; 36:20=1,8 &nbsp;|&nbsp; 54:30=1,8. Tous les quotients valent 1,8&nbsp;: c'est proportionnel, coefficient = 1,8.
+    </div>
+
+    <h2>Méthode 2 — Trouver le coefficient de proportionnalité</h2>
+    <ol>
+      <li>Je choisis <strong>une colonne complète</strong> du tableau (les deux valeurs connues).</li>
+      <li>Je divise la valeur de la deuxième grandeur par la valeur de la première.</li>
+      <li>Le résultat est le coefficient. Je peux vérifier avec une autre colonne.</li>
+    </ol>
+
+    <h2>Méthode 3 — Compléter un tableau (par le coefficient)</h2>
+    <ol>
+      <li>Je détermine le coefficient de proportionnalité (méthode 2).</li>
+      <li>Pour une case manquante dans la ligne du bas : je <strong>multiplie</strong> la valeur du haut par le coefficient.</li>
+      <li>Pour une case manquante dans la ligne du haut : je <strong>divise</strong> la valeur du bas par le coefficient.</li>
+    </ol>
+    <div class="example">
+      Coefficient trouvé : 3. Une case du haut vaut 7 → case du bas = 7 × 3 = 21.<br>
+      Une case du bas vaut 27 → case du haut = 27 : 3 = 9.
+    </div>
+
+    <h2>Méthode 4 — Le passage par l'unité</h2>
+    <ol>
+      <li>Je repère une colonne connue (par exemple « 4 objets coûtent 10&nbsp;€ »).</li>
+      <li>Je calcule le prix (ou la valeur) <strong>pour 1</strong> en divisant : 10 : 4 = 2,5.</li>
+      <li>Je multiplie ce résultat par le nombre voulu pour obtenir la réponse.</li>
+    </ol>
+    <div class="example">Combien coûtent 7 objets ? 2,5 × 7 = 17,5&nbsp;€.</div>
+
+    <h2>Méthode 5 — Utiliser l'additivité</h2>
+    <ol>
+      <li>Je repère deux colonnes du tableau dont la somme donne la colonne recherchée.</li>
+      <li>J'additionne les deux valeurs du haut, puis les deux valeurs du bas.</li>
+    </ol>
+    <div class="example">3 kg coûtent 6&nbsp;€ et 2 kg coûtent 4&nbsp;€, donc 3+2 = 5 kg coûtent 6+4 = 10&nbsp;€.</div>
+
+    <h2>Méthode 6 — Lire un graphique de proportionnalité</h2>
+    <ol>
+      <li>Je vérifie que la courbe est une <strong>droite</strong>.</li>
+      <li>Je vérifie que cette droite passe par l'<strong>origine</strong> (0&nbsp;;&nbsp;0).</li>
+      <li>Si les deux conditions sont vraies, la situation est proportionnelle. Sinon, non.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ TAB 2 : EXERCICES ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Exercices progressifs</h2>
+
+    <div class="exercise">
+      <span class="difficulty facile">Facile</span>
+      <h3>Exercice 1</h3>
+      <p>Voici un tableau. Ce tableau est-il proportionnel ?</p>
+      <table class="prop">
+        <tr><th>Nombre de cahiers</th><td>2</td><td>4</td><td>6</td></tr>
+        <tr><th>Prix (€)</th><td>3</td><td>6</td><td>9</td></tr>
+      </table>
+      <details><summary>Correction</summary>
+        <div class="correction">3:2 = 1,5 &nbsp;|&nbsp; 6:4 = 1,5 &nbsp;|&nbsp; 9:6 = 1,5. Tous les quotients sont égaux à 1,5 : <strong>le tableau est proportionnel</strong>, le coefficient est 1,5.</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty facile">Facile</span>
+      <h3>Exercice 2</h3>
+      <p>Complète le tableau de proportionnalité sachant que le coefficient est 4.</p>
+      <table class="prop">
+        <tr><th>x</th><td>2</td><td>5</td><td>...</td></tr>
+        <tr><th>y</th><td>8</td><td>...</td><td>40</td></tr>
+      </table>
+      <p>Entre tes réponses : Case 1 (ligne y, colonne 2) : <input type="number" id="ex2a"> — Case 2 (ligne x, colonne 3) : <input type="number" id="ex2b"></p>
+      <button class="btn" onclick="checkEx2()">Vérifier</button>
+      <div class="feedback" id="fb-ex2" style="display:none;"></div>
+      <details><summary>Correction</summary>
+        <div class="correction">5 × 4 = <strong>20</strong>. Et 40 : 4 = <strong>10</strong>.</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty moyen">Moyen</span>
+      <h3>Exercice 3</h3>
+      <p>Une recette pour 4 personnes demande 200&nbsp;g de farine. Combien faut-il de farine pour 6 personnes ?</p>
+      <p>Ta réponse (en g) : <input type="number" id="ex3"></p>
+      <button class="btn" onclick="checkEx3()">Vérifier</button>
+      <div class="feedback" id="fb-ex3" style="display:none;"></div>
+      <details><summary>Correction</summary>
+        <div class="correction">Pour 1 personne : 200 : 4 = 50&nbsp;g. Pour 6 personnes : 50 × 6 = <strong>300&nbsp;g</strong>.</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty moyen">Moyen</span>
+      <h3>Exercice 4</h3>
+      <p>Un cycliste roule à vitesse constante. Il parcourt 15&nbsp;km en 1 heure. Utilise l'additivité pour trouver la distance parcourue en 3 heures, en écrivant 3 = 1+1+1.</p>
+      <p>Ta réponse (en km) : <input type="number" id="ex4"></p>
+      <button class="btn" onclick="checkEx4()">Vérifier</button>
+      <div class="feedback" id="fb-ex4" style="display:none;"></div>
+      <details><summary>Correction</summary>
+        <div class="correction">15 + 15 + 15 = <strong>45&nbsp;km</strong>. On retrouve bien 15 × 3 = 45.</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty moyen">Moyen</span>
+      <h3>Exercice 5</h3>
+      <p>Ce tableau est-il proportionnel ? Justifie.</p>
+      <table class="prop">
+        <tr><th>Côté d'un carré (cm)</th><td>2</td><td>4</td><td>6</td></tr>
+        <tr><th>Périmètre (cm)</th><td>8</td><td>16</td><td>24</td></tr>
+      </table>
+      <details><summary>Correction</summary>
+        <div class="correction">8:2=4, 16:4=4, 24:6=4. Les quotients sont égaux : <strong>oui, c'est proportionnel</strong> (le périmètre d'un carré est toujours 4 fois son côté).</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty moyen">Moyen</span>
+      <h3>Exercice 6</h3>
+      <p>Un t-shirt coûte 20&nbsp;€. Il est soldé à -25&nbsp;%. Quel est le nouveau prix ?</p>
+      <p>Ta réponse (en €) : <input type="number" id="ex6"></p>
+      <button class="btn" onclick="checkEx6()">Vérifier</button>
+      <div class="feedback" id="fb-ex6" style="display:none;"></div>
+      <details><summary>Correction</summary>
+        <div class="correction">25&nbsp;% = le quart. Le quart de 20&nbsp;€ est 5&nbsp;€. Nouveau prix : 20 - 5 = <strong>15&nbsp;€</strong>.</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty moyen">Moyen</span>
+      <h3>Exercice 7</h3>
+      <p>Un robinet qui coule à débit constant remplit un seau de 8&nbsp;L en 4 minutes. Combien de litres coulent en 6 minutes ? (utilise le passage par l'unité)</p>
+      <p>Ta réponse (en L) : <input type="number" id="ex7"></p>
+      <button class="btn" onclick="checkEx7()">Vérifier</button>
+      <div class="feedback" id="fb-ex7" style="display:none;"></div>
+      <details><summary>Correction</summary>
+        <div class="correction">Débit par minute : 8 : 4 = 2&nbsp;L/min. En 6 minutes : 2 × 6 = <strong>12&nbsp;L</strong>.</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty moyen">Moyen</span>
+      <h3>Exercice 8</h3>
+      <p>Une affiche a une largeur de 30&nbsp;cm sur ordinateur et sera imprimée en respectant l'échelle : 30&nbsp;cm → 90&nbsp;cm de large sur l'affiche imprimée. Quelle sera la hauteur imprimée si la hauteur sur ordinateur est de 20&nbsp;cm ?</p>
+      <p>Ta réponse (en cm) : <input type="number" id="ex8"></p>
+      <button class="btn" onclick="checkEx8()">Vérifier</button>
+      <div class="feedback" id="fb-ex8" style="display:none;"></div>
+      <details><summary>Correction</summary>
+        <div class="correction">Coefficient d'agrandissement : 90 : 30 = 3. Hauteur imprimée : 20 × 3 = <strong>60&nbsp;cm</strong>.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TAB 3 : APPROFONDISSEMENT ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Pour aller plus loin</h2>
+
+    <div class="exercise">
+      <span class="difficulty difficile">Difficile</span>
+      <h3>Défi 1 — Comparer deux offres</h3>
+      <p>Le magasin A vend 5 stylos pour 6&nbsp;€. Le magasin B vend 8 stylos pour 9,60&nbsp;€. Ces deux tableaux (magasin, prix) sont-ils proportionnels au nombre de stylos ? Quel magasin est le plus avantageux ?</p>
+      <details><summary>Correction</summary>
+        <div class="correction">
+          Magasin A : 6 : 5 = 1,20&nbsp;€/stylo.<br>
+          Magasin B : 9,60 : 8 = 1,20&nbsp;€/stylo.<br>
+          Les deux coefficients sont égaux : les deux offres reviennent <strong>au même prix</strong> par stylo !
+        </div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty difficile">Difficile</span>
+      <h3>Défi 2 — Le plan à l'échelle</h3>
+      <p>Sur un plan, une échelle de 1/200 signifie que 1&nbsp;cm sur le plan représente 200&nbsp;cm dans la réalité. Un couloir mesure 3,5&nbsp;cm sur le plan. Quelle est sa longueur réelle, en mètres ?</p>
+      <details><summary>Correction</summary>
+        <div class="correction">La longueur réelle est proportionnelle à la longueur sur le plan, coefficient 200. 3,5 × 200 = 700&nbsp;cm = <strong>7&nbsp;m</strong>.</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty difficile">Difficile</span>
+      <h3>Défi 3 — Tableau à trous, deux inconnues</h3>
+      <table class="prop">
+        <tr><th>Quantité</th><td>3</td><td>a</td><td>15</td></tr>
+        <tr><th>Prix (€)</th><td>7,50</td><td>15</td><td>b</td></tr>
+      </table>
+      <p>Trouve les valeurs de a et b.</p>
+      <details><summary>Correction</summary>
+        <div class="correction">Coefficient : 7,50 : 3 = 2,5&nbsp;€ par unité.<br>a : 15 : 2,5 = <strong>6</strong>.<br>b : 15 × 2,5 = <strong>37,50&nbsp;€</strong>.</div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty difficile">Difficile</span>
+      <h3>Défi 4 — Vrai proportionnel ou piège ?</h3>
+      <p>L'âge d'un enfant est-il proportionnel à sa taille ? Le prix d'un taxi (avec une prise en charge fixe de 4&nbsp;€ puis 1,50&nbsp;€/km) est-il proportionnel à la distance parcourue ? Explique pourquoi dans chaque cas.</p>
+      <details><summary>Correction</summary>
+        <div class="correction">
+          Non pour les deux ! La taille n'augmente pas régulièrement avec l'âge (ce n'est pas un coefficient constant).<br>
+          Pour le taxi, il y a une partie fixe (4&nbsp;€) qui existe même pour 0&nbsp;km : le prix ne part pas de 0, donc le graphique ne passe pas par l'origine → <strong>ce n'est pas proportionnel</strong>.
+        </div>
+      </details>
+    </div>
+
+    <div class="exercise">
+      <span class="difficulty difficile">Difficile</span>
+      <h3>Défi 5 — Mélange de méthodes</h3>
+      <p>Une voiture consomme 6&nbsp;L d'essence pour 100&nbsp;km. Combien de litres consommera-t-elle pour un trajet de 250&nbsp;km ? (Utilise le passage par l'unité.)</p>
+      <details><summary>Correction</summary>
+        <div class="correction">Pour 1&nbsp;km : 6 : 100 = 0,06&nbsp;L. Pour 250&nbsp;km : 0,06 × 250 = <strong>15&nbsp;L</strong>.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TAB 4 : QCM ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>QCM — Teste tes connaissances</h2>
+    <div id="qcmContainer"></div>
+    <button class="btn" onclick="correctQcm()">Valider mes réponses</button>
+    <button class="btn secondary" onclick="resetQcm()">Recommencer</button>
+    <div id="qcmScore"></div>
+  </div>
+</section>
+
+<!-- ============ TAB 5 : VISUALISATION ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Visualiseur de tableau de proportionnalité</h2>
+    <p>Saisis quatre couples de valeurs (x&nbsp;;&nbsp;y) et clique sur « Vérifier ». L'outil calcule les quotients et te dit si le tableau est proportionnel.</p>
+    <div class="grid2" id="tableInputs">
+      <div>x1: <input type="number" id="tx1" value="2"> — y1: <input type="number" id="ty1" value="4"></div>
+      <div>x2: <input type="number" id="tx2" value="4"> — y2: <input type="number" id="ty2" value="8"></div>
+      <div>x3: <input type="number" id="tx3" value="6"> — y3: <input type="number" id="ty3" value="13"></div>
+      <div>x4: <input type="number" id="tx4" value="10"> — y4: <input type="number" id="ty4" value="20"></div>
+    </div>
+    <button class="btn" onclick="checkTable()">Vérifier le tableau</button>
+    <div class="feedback" id="fb-table" style="display:none;"></div>
+    <canvas id="tableCanvas" width="640" height="180"></canvas>
+
+    <h2>Traceur de points — droite passant par l'origine ?</h2>
+    <p>Ce graphique affiche les points (x&nbsp;;&nbsp;y) que tu as saisis ci-dessus, ainsi que l'origine (0&nbsp;;&nbsp;0). Observe s'ils sont alignés sur une droite passant par l'origine.</p>
+    <canvas id="graphCanvas" width="640" height="380"></canvas>
+    <div class="canvas-controls">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--accent);"></span>Points saisis</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--heading);"></span>Origine</span>
+    </div>
+
+    <h2>Calculette des courses — la proportionnalité en action</h2>
+    <p>Choisis un prix au kilo, puis déplace le curseur pour voir le prix total évoluer.</p>
+    <div class="slider-wrap">
+      <label for="pricePerKg">Prix au kg (€) :</label>
+      <input type="range" id="pricePerKg" min="1" max="10" step="0.5" value="3" oninput="updateShop()">
+      <span id="pricePerKgVal">3 €</span>
+    </div>
+    <div class="slider-wrap">
+      <label for="qtyKg">Quantité (kg) :</label>
+      <input type="range" id="qtyKg" min="0" max="10" step="0.5" value="2" oninput="updateShop()">
+      <span id="qtyKgVal">2 kg</span>
+    </div>
+    <canvas id="shopCanvas" width="640" height="280"></canvas>
+  </div>
+</section>
+
+<!-- ============ TAB 6 : BILAN ============ -->
+<section class="tab-pane">
+  <div class="card">
+    <h2>Bilan — Ce qu'il faut retenir</h2>
+    <div class="def">
+      <strong>1.</strong> Deux grandeurs sont <strong>proportionnelles</strong> si on passe de l'une à l'autre en multipliant toujours par le même nombre, le <strong>coefficient de proportionnalité</strong>.
+    </div>
+    <div class="def">
+      <strong>2.</strong> Dans un tableau, je vérifie la proportionnalité en calculant les <strong>quotients</strong> (valeur du bas ÷ valeur du haut) : ils doivent tous être égaux.
+    </div>
+    <div class="def">
+      <strong>3.</strong> Dans un graphique, une situation proportionnelle donne des points <strong>alignés</strong> sur une <strong>droite qui passe par l'origine</strong>.
+    </div>
+    <div class="def">
+      <strong>4.</strong> Pour compléter un tableau : je trouve le coefficient, puis je <strong>multiplie</strong> (ligne du haut vers le bas) ou je <strong>divise</strong> (ligne du bas vers le haut).
+    </div>
+    <div class="def">
+      <strong>5.</strong> Deux propriétés utiles : l'<strong>additivité</strong> (additionner deux colonnes) et le <strong>passage par l'unité</strong> (calculer la valeur pour 1, puis multiplier).
+    </div>
+    <div class="def">
+      <strong>6.</strong> 50&nbsp;% = moitié, 25&nbsp;% = quart, 10&nbsp;% = dixième.
+    </div>
+
+    <h3>Vocabulaire clé</h3>
+    <ul>
+      <li><strong>Proportionnalité</strong> : relation entre deux grandeurs qui évoluent selon un même coefficient multiplicateur.</li>
+      <li><strong>Coefficient de proportionnalité</strong> : nombre par lequel on multiplie une grandeur pour obtenir l'autre.</li>
+      <li><strong>Tableau de proportionnalité</strong> : tableau où les quotients colonne par colonne sont tous égaux.</li>
+      <li><strong>Origine du repère</strong> : point de coordonnées (0&nbsp;;&nbsp;0), par lequel passe la droite d'une situation proportionnelle.</li>
+    </ul>
+
+    <h3>Et après ?</h3>
+    <p>En 5ème, tu découvriras le <strong>produit en croix</strong>, une méthode rapide pour trouver une valeur manquante, ainsi que les <strong>pourcentages</strong> plus en détail (calculer un pourcentage quelconque, augmenter ou diminuer une quantité).</p>
+
+    <div class="tip">Avant de passer à la suite : relis la partie <strong>Cours</strong>, refais les exercices que tu as ratés, et vérifie que ton score au QCM est d'au moins 8/10.</div>
+  </div>
+</section>
+
+<footer>Cours de mathématiques — Classe de 6ème — Proportionnalité</footer>
+</div>
+
+<script>
+// ---------- Thème ----------
+function toggleTheme(){
+  var root=document.documentElement;
+  var current=root.getAttribute('data-theme');
+  if(current==='dark'){
+    root.setAttribute('data-theme','light');
+  } else if(current==='light'){
+    root.removeAttribute('data-theme');
+  } else {
+    var prefersDark=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    root.setAttribute('data-theme', prefersDark ? 'light' : 'dark');
+  }
+  drawAllCanvas();
+}
+
+// ---------- Onglets ----------
+var tabs=document.querySelectorAll('.tab-pane');
+function showTab(n){
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',i===n);});
+  document.querySelectorAll('.tab-pane').forEach(function(p,i){p.classList.toggle('active',i===n);});
+  if(!tabs[n].dataset.init){tabs[n].dataset.init='1';initSection(n);}
+}
+function initSection(n){
+  if(n===4){buildQcm();}
+  if(n===5){checkTable();updateShop();}
+}
+
+// ---------- Exercices ----------
+function showFeedback(id, ok, msg){
+  var el=document.getElementById(id);
+  el.style.display='block';
+  el.className='feedback '+(ok?'correct':'wrong');
+  el.textContent=msg;
+}
+function checkEx2(){
+  var a=parseFloat(document.getElementById('ex2a').value);
+  var b=parseFloat(document.getElementById('ex2b').value);
+  if(a===20 && b===10){
+    showFeedback('fb-ex2', true, 'Bravo ! 5×4=20 et 40:4=10.');
+  } else {
+    showFeedback('fb-ex2', false, 'Pas tout à fait. Pense au coefficient 4 : 5×4 et 40:4.');
+  }
+}
+function checkEx3(){
+  var v=parseFloat(document.getElementById('ex3').value);
+  if(v===300){
+    showFeedback('fb-ex3', true, 'Exact ! 50 g par personne × 6 = 300 g.');
+  } else {
+    showFeedback('fb-ex3', false, 'Essaie encore : calcule d\'abord la farine pour 1 personne.');
+  }
+}
+function checkEx4(){
+  var v=parseFloat(document.getElementById('ex4').value);
+  if(v===45){
+    showFeedback('fb-ex4', true, 'Bravo ! 15+15+15 = 45 km.');
+  } else {
+    showFeedback('fb-ex4', false, 'Additionne trois fois 15 km.');
+  }
+}
+function checkEx6(){
+  var v=parseFloat(document.getElementById('ex6').value);
+  if(v===15){
+    showFeedback('fb-ex6', true, 'Exact ! Le quart de 20 est 5, donc 20-5=15 €.');
+  } else {
+    showFeedback('fb-ex6', false, 'Rappel : 25% = le quart. Calcule le quart de 20€ puis soustrais-le.');
+  }
+}
+function checkEx7(){
+  var v=parseFloat(document.getElementById('ex7').value);
+  if(v===12){
+    showFeedback('fb-ex7', true, 'Bravo ! Débit de 2 L/min × 6 min = 12 L.');
+  } else {
+    showFeedback('fb-ex7', false, 'Calcule d\'abord le débit pour 1 minute (8:4), puis multiplie par 6.');
+  }
+}
+function checkEx8(){
+  var v=parseFloat(document.getElementById('ex8').value);
+  if(v===60){
+    showFeedback('fb-ex8', true, 'Exact ! Coefficient 3, donc 20×3 = 60 cm.');
+  } else {
+    showFeedback('fb-ex8', false, 'Trouve d\'abord le coefficient d\'agrandissement (90:30), puis applique-le à 20 cm.');
+  }
+}
+
+// ---------- QCM ----------
+var qcmData=[
+  {q:"Qu'est-ce qu'une situation de proportionnalité ?",
+   options:["Deux grandeurs qui augmentent toutes les deux","Deux grandeurs liées par un coefficient multiplicateur constant","Deux grandeurs égales","Deux grandeurs qui varient au hasard"], correct:1},
+  {q:"Un marchand vend des oranges à 3€/kg. Quel est le prix de 4 kg ?",
+   options:["7 €","12 €","3 €","9 €"], correct:1},
+  {q:"Dans un tableau de proportionnalité, les quotients colonne par colonne sont...",
+   options:["toujours différents","toujours égaux","parfois égaux","impossibles à calculer"], correct:1},
+  {q:"5 crayons coûtent 4€. Quel est le coefficient de proportionnalité (prix par crayon) ?",
+   options:["0,8 €","1,25 €","20 €","4 €"], correct:0},
+  {q:"Sur un graphique, une situation proportionnelle donne...",
+   options:["une courbe quelconque","une droite qui ne passe pas par l'origine","une droite qui passe par l'origine","des points dispersés"], correct:2},
+  {q:"3 kg coûtent 6€ et 2 kg coûtent 4€. Combien coûtent 5 kg (additivité) ?",
+   options:["8 €","10 €","12 €","9 €"], correct:1},
+  {q:"25 % d'une quantité, c'est...",
+   options:["la moitié","le tiers","le quart","le dixième"], correct:2},
+  {q:"Un tableau a pour quotients 2, 2, et 3. Est-il proportionnel ?",
+   options:["Oui","Non","On ne peut pas savoir","Cela dépend des unités"], correct:1},
+  {q:"8 stylos coûtent 9,60€. Quel est le prix d'un seul stylo (passage par l'unité) ?",
+   options:["1,00 €","1,10 €","1,20 €","0,96 €"], correct:2},
+  {q:"Un taxi facture 4€ de prise en charge puis 1,50€/km. Le prix est-il proportionnel à la distance ?",
+   options:["Oui, toujours","Non, à cause de la partie fixe","Oui, si on roule vite","Non, car le prix diminue"], correct:1}
+];
+function buildQcm(){
+  var c=document.getElementById('qcmContainer');
+  var html='';
+  qcmData.forEach(function(item,i){
+    html+='<div class="qcm-q"><p>'+(i+1)+'. '+item.q+'</p>';
+    item.options.forEach(function(opt,j){
+      html+='<label><input type="radio" name="q'+i+'" value="'+j+'"> '+opt+'</label>';
+    });
+    html+='</div>';
+  });
+  c.innerHTML=html;
+  document.getElementById('qcmScore').innerHTML='';
+}
+function correctQcm(){
+  var score=0;
+  var unanswered=0;
+  qcmData.forEach(function(item,i){
+    var chosen=document.querySelector('input[name="q'+i+'"]:checked');
+    var qDiv=document.querySelectorAll('.qcm-q')[i];
+    qDiv.querySelectorAll('label').forEach(function(lab,j){
+      lab.style.background='';
+      if(j===item.correct){lab.style.background='#d4edda';}
+    });
+    if(!chosen){unanswered++;return;}
+    var val=parseInt(chosen.value);
+    if(val===item.correct){
+      score++;
+    } else {
+      chosen.parentElement.style.background='#f8d7da';
+    }
+  });
+  var msg='<div class="score-box"><div class="big">'+score+' / '+qcmData.length+'</div>';
+  if(unanswered>0){msg+='<p>'+unanswered+' question(s) sans réponse.</p>';}
+  if(score===qcmData.length){msg+='<p>Excellent, tu maîtrises la proportionnalité !</p>';}
+  else if(score>=qcmData.length*0.7){msg+='<p>Très bien, encore un petit effort.</p>';}
+  else{msg+='<p>Relis le cours et réessaie.</p>';}
+  msg+='</div>';
+  document.getElementById('qcmScore').innerHTML=msg;
+}
+function resetQcm(){buildQcm();}
+
+// ---------- Canvas : couleurs dynamiques ----------
+function getCssVar(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function drawAllCanvas(){
+  drawTableCanvas();
+  drawGraphCanvas();
+  drawShopCanvas();
+}
+
+// ---------- Table check + mini canvas ----------
+function getTablePoints(){
+  var pts=[];
+  for(var i=1;i<=4;i++){
+    var x=parseFloat(document.getElementById('tx'+i).value);
+    var y=parseFloat(document.getElementById('ty'+i).value);
+    if(!isNaN(x) && !isNaN(y)){pts.push({x:x,y:y});}
+  }
+  return pts;
+}
+function checkTable(){
+  var pts=getTablePoints();
+  var quotients=pts.filter(function(p){return p.x!==0;}).map(function(p){return p.y/p.x;});
+  var allEqual=true;
+  for(var i=1;i<quotients.length;i++){
+    if(Math.abs(quotients[i]-quotients[0])>0.001){allEqual=false;break;}
+  }
+  var el=document.getElementById('fb-table');
+  el.style.display='block';
+  if(quotients.length<2){
+    el.className='feedback wrong';
+    el.textContent='Saisis au moins deux couples avec x différent de 0.';
+  } else if(allEqual){
+    el.className='feedback correct';
+    el.textContent='Tableau proportionnel ! Coefficient = '+quotients[0].toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
+  } else {
+    el.className='feedback wrong';
+    el.textContent='Ce tableau n\'est PAS proportionnel : les quotients ne sont pas tous égaux.';
+  }
+  drawTableCanvas();
+  drawGraphCanvas();
+}
+function drawTableCanvas(){
+  var canvas=document.getElementById('tableCanvas');
+  if(!canvas) return;
+  var ctx=canvas.getContext('2d');
+  var w=canvas.width, h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+  var text=getCssVar('--text'), muted=getCssVar('--muted'), accent=getCssVar('--accent'), border=getCssVar('--border');
+  var pts=getTablePoints();
+  ctx.font='13px Nunito Sans, sans-serif';
+  ctx.fillStyle=muted;
+  ctx.fillText('Quotients y/x calculés :', 12, 24);
+  var xStart=12;
+  pts.forEach(function(p,i){
+    var q=(p.x!==0)? (p.y/p.x) : NaN;
+    ctx.strokeStyle=border;
+    ctx.strokeRect(xStart+i*150, 40, 140, 100);
+    ctx.fillStyle=text;
+    ctx.font='14px Nunito Sans, sans-serif';
+    ctx.fillText('x='+p.x+'  y='+p.y, xStart+i*150+10, 65);
+    ctx.fillStyle=accent;
+    ctx.font='bold 16px Nunito Sans, sans-serif';
+    ctx.fillText(isNaN(q)?'—':('y/x = '+q.toFixed(2)), xStart+i*150+10, 100);
+  });
+}
+
+// ---------- Graph canvas ----------
+function drawGraphCanvas(){
+  var canvas=document.getElementById('graphCanvas');
+  if(!canvas) return;
+  var ctx=canvas.getContext('2d');
+  var w=canvas.width, h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+  var text=getCssVar('--text'), muted=getCssVar('--muted'), accent=getCssVar('--accent'), heading=getCssVar('--heading'), border=getCssVar('--border');
+  var pts=getTablePoints();
+  var margin=40;
+  var maxX=Math.max(1, ...pts.map(function(p){return p.x;}), 1);
+  var maxY=Math.max(1, ...pts.map(function(p){return p.y;}), 1);
+  maxX*=1.15; maxY*=1.15;
+  var plotW=w-2*margin, plotH=h-2*margin;
+  function px(x){return margin + (x/maxX)*plotW;}
+  function py(y){return h-margin - (y/maxY)*plotH;}
+
+  // axes
+  ctx.strokeStyle=border;
+  ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(margin, h-margin); ctx.lineTo(w-margin, h-margin);
+  ctx.moveTo(margin, margin); ctx.lineTo(margin, h-margin);
+  ctx.stroke();
+  ctx.fillStyle=muted;
+  ctx.font='12px Nunito Sans, sans-serif';
+  ctx.fillText('x', w-margin-5, h-margin+18);
+  ctx.fillText('y', margin-18, margin+5);
+
+  // origin marker
+  ctx.fillStyle=heading;
+  ctx.beginPath();
+  ctx.arc(px(0), py(0), 6, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle=text;
+  ctx.font='12px Nunito Sans, sans-serif';
+  ctx.fillText('O (0;0)', px(0)+8, py(0)-8);
+
+  // check alignment through origin
+  var quotients=pts.filter(function(p){return p.x!==0;}).map(function(p){return p.y/p.x;});
+  var allEqual=quotients.length>1 && quotients.every(function(q){return Math.abs(q-quotients[0])<0.001;});
+
+  if(allEqual){
+    var k=quotients[0];
+    ctx.strokeStyle=accent;
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(px(0), py(0));
+    ctx.lineTo(px(maxX), py(Math.min(maxX*k, maxY*10)));
+    ctx.stroke();
+  }
+
+  // points
+  pts.forEach(function(p){
+    ctx.fillStyle=accent;
+    ctx.beginPath();
+    ctx.arc(px(p.x), py(p.y), 5, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle=text;
+    ctx.font='11px Nunito Sans, sans-serif';
+    ctx.fillText('('+p.x+';'+p.y+')', px(p.x)+7, py(p.y)-7);
+  });
+
+  ctx.fillStyle=muted;
+  ctx.font='13px Nunito Sans, sans-serif';
+  ctx.fillText(allEqual ? 'Les points sont alignés sur une droite passant par l\'origine : proportionnel !' : 'Les points ne sont pas alignés avec l\'origine : pas proportionnel.', margin, 20);
+}
+
+// ---------- Shop canvas ----------
+function updateShop(){
+  var price=parseFloat(document.getElementById('pricePerKg').value);
+  var qty=parseFloat(document.getElementById('qtyKg').value);
+  document.getElementById('pricePerKgVal').textContent=price+' €';
+  document.getElementById('qtyKgVal').textContent=qty+' kg';
+  drawShopCanvas();
+}
+function drawShopCanvas(){
+  var canvas=document.getElementById('shopCanvas');
+  if(!canvas) return;
+  var ctx=canvas.getContext('2d');
+  var w=canvas.width, h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+  var text=getCssVar('--text'), muted=getCssVar('--muted'), accent=getCssVar('--accent'), heading=getCssVar('--heading'), border=getCssVar('--border'), surface2=getCssVar('--surface2');
+
+  var price=parseFloat(document.getElementById('pricePerKg').value);
+  var qty=parseFloat(document.getElementById('qtyKg').value);
+  var total=price*qty;
+
+  var margin=44;
+  var maxQty=10, maxTotal=10*10;
+  var plotW=w-2*margin, plotH=h-2*margin;
+  function px(x){return margin + (x/maxQty)*plotW;}
+  function py(y){return h-margin - (y/maxTotal)*plotH;}
+
+  // axes
+  ctx.strokeStyle=border;
+  ctx.beginPath();
+  ctx.moveTo(margin, h-margin); ctx.lineTo(w-margin, h-margin);
+  ctx.moveTo(margin, margin); ctx.lineTo(margin, h-margin);
+  ctx.stroke();
+  ctx.fillStyle=muted;
+  ctx.font='12px Nunito Sans, sans-serif';
+  ctx.fillText('Quantité (kg)', w-margin-70, h-margin+30);
+  ctx.save();
+  ctx.translate(14, h/2+30);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText('Prix total (€)', 0, 0);
+  ctx.restore();
+
+  // proportionality line
+  ctx.strokeStyle=accent;
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(px(0), py(0));
+  ctx.lineTo(px(maxQty), py(Math.min(price*maxQty, maxTotal)));
+  ctx.stroke();
+
+  // current point
+  ctx.fillStyle=heading;
+  ctx.beginPath();
+  ctx.arc(px(qty), py(Math.min(total,maxTotal)), 7, 0, Math.PI*2);
+  ctx.fill();
+
+  // dashed guides
+  ctx.setLineDash([4,4]);
+  ctx.strokeStyle=muted;
+  ctx.beginPath();
+  ctx.moveTo(px(qty), h-margin); ctx.lineTo(px(qty), py(Math.min(total,maxTotal)));
+  ctx.moveTo(margin, py(Math.min(total,maxTotal))); ctx.lineTo(px(qty), py(Math.min(total,maxTotal)));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // text summary
+  ctx.fillStyle=text;
+  ctx.font='bold 15px Nunito Sans, sans-serif';
+  ctx.fillText(qty+' kg × '+price+' €/kg = '+total.toFixed(2)+' €', margin, margin-14);
+}
+
+// ---------- Init ----------
+window.addEventListener('load', function(){
+  drawAllCanvas();
+});
+window.addEventListener('resize', function(){
+  drawAllCanvas();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fractions &ndash; Cours de 6&egrave;me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f2ed; --surface:#ffffff; --surface2:#ebe6de; --text:#2c2418; --heading:#8b4513;
+  --muted:#6b5a48; --border:#d4c8b8; --accent:#a0522d; --accent-light:#faf5ef;
+  --shadow:0 2px 8px rgba(139,69,19,0.07); --radius:8px;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0; --heading:#e0a868;
+    --muted:#9a8878; --border:#403428; --accent:#d08840; --accent-light:#1e1610;
+    --shadow:0 2px 8px rgba(0,0,0,0.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0; --heading:#e0a868;
+  --muted:#9a8878; --border:#403428; --accent:#d08840; --accent-light:#1e1610;
+  --shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Nunito Sans',system-ui,sans-serif; font-size:16px; line-height:1.65;
+  padding-inline:16px;
+}
+.wrap{max-width:760px; margin:0 auto; padding-bottom:60px;}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif; color:var(--heading); line-height:1.2;}
+h1{font-size:2.3rem; margin:0.4em 0 0.2em;}
+h2{font-size:1.6rem; margin-top:1.4em; border-bottom:2px solid var(--border); padding-bottom:0.2em;}
+h3{font-size:1.3rem; margin-top:1.2em;}
+p{margin:0.7em 0;}
+header{padding-top:24px; text-align:center;}
+.badge{
+  display:inline-block; background:var(--accent); color:#fff; border-radius:20px;
+  padding:4px 16px; font-weight:700; font-size:0.85rem; letter-spacing:0.03em; margin-bottom:10px;
+}
+.subtitle{color:var(--muted); font-size:1.05rem; margin-top:-4px;}
+
+/* Tabs */
+.tabbar{
+  display:flex; flex-wrap:wrap; gap:6px; margin:22px 0 18px; position:sticky; top:0;
+  background:var(--bg); padding:10px 0; z-index:5; border-bottom:1px solid var(--border);
+}
+.tab-btn{
+  font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:0.85rem; cursor:pointer;
+  background:var(--surface2); color:var(--text); border:1px solid var(--border);
+  border-radius:20px; padding:7px 14px; transition:all .15s ease;
+}
+.tab-btn:hover{background:var(--accent-light); border-color:var(--accent);}
+.tab-btn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+.tab-pane{display:none; animation:fadein .25s ease;}
+.tab-pane.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+/* Cards / boxes */
+.card{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px 20px; margin:16px 0; box-shadow:var(--shadow);
+}
+.def{
+  background:var(--accent-light); border-left:4px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0;
+  padding:14px 18px; margin:16px 0;
+}
+.def strong{color:var(--heading);}
+.tip{
+  background:var(--surface2); border-radius:var(--radius); padding:14px 18px; margin:16px 0;
+  border:1px dashed var(--accent);
+}
+.example{
+  background:var(--surface); border:1px solid var(--border); border-left:4px solid #6b8e6b;
+  border-radius:0 var(--radius) var(--radius) 0; padding:14px 18px; margin:16px 0;
+}
+.warn{
+  background:var(--surface); border-left:4px solid #b5533c; border-radius:0 var(--radius) var(--radius) 0;
+  padding:14px 18px; margin:16px 0;
+}
+.method-step{
+  display:flex; gap:12px; margin:12px 0; align-items:flex-start;
+}
+.method-num{
+  flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Cormorant Garamond',serif; font-size:1.1rem;
+}
+
+/* Fraction rendering */
+.frac{display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 3px; font-weight:600;}
+.frac .num{border-bottom:1.5px solid currentColor; padding:0 4px 2px;}
+.frac .den{padding:2px 4px 0;}
+
+table{border-collapse:collapse; width:100%; margin:14px 0;}
+th,td{border:1px solid var(--border); padding:8px 10px; text-align:center;}
+th{background:var(--surface2); color:var(--heading); font-family:'Cormorant Garamond',serif;}
+
+/* Exercises */
+.exo{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:16px 18px; margin:16px 0;
+}
+.exo h4{margin-top:0;}
+details{
+  margin-top:10px; background:var(--accent-light); border-radius:var(--radius); padding:8px 14px;
+  border:1px solid var(--border);
+}
+summary{
+  cursor:pointer; font-weight:700; color:var(--accent); padding:6px 0; list-style:revert;
+}
+details[open] summary{margin-bottom:6px;}
+.diff{
+  display:inline-block; font-size:0.75rem; font-weight:700; padding:2px 10px; border-radius:12px;
+  margin-left:6px; vertical-align:middle;
+}
+.diff-1{background:#dcebd6; color:#3a6b34;}
+.diff-2{background:#f5e6c8; color:#8a6a1f;}
+.diff-3{background:#f2d6d0; color:#a13f2e;}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .diff-1{background:#264024; color:#a8d69e;}
+  :root:not([data-theme="light"]) .diff-2{background:#4a3a1a; color:#e8c878;}
+  :root:not([data-theme="light"]) .diff-3{background:#4a2620; color:#e8a898;}
+}
+:root[data-theme="dark"] .diff-1{background:#264024; color:#a8d69e;}
+:root[data-theme="dark"] .diff-2{background:#4a3a1a; color:#e8c878;}
+:root[data-theme="dark"] .diff-3{background:#4a2620; color:#e8a898;}
+
+/* QCM */
+.qcm-q{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; margin:14px 0;}
+.qcm-q p.question{font-weight:700; margin-top:0;}
+.qcm-opts{display:flex; flex-direction:column; gap:8px;}
+.qcm-opt{
+  display:flex; align-items:center; gap:10px; padding:9px 12px; border:1px solid var(--border);
+  border-radius:var(--radius); cursor:pointer; background:var(--surface2); transition:background .15s;
+}
+.qcm-opt:hover{background:var(--accent-light);}
+.qcm-opt.correct{background:#dcebd6; border-color:#3a6b34;}
+.qcm-opt.wrong{background:#f2d6d0; border-color:#a13f2e;}
+.qcm-opt input{accent-color:var(--accent);}
+.qcm-opt.disabled{cursor:default; pointer-events:none;}
+#qcm-result{
+  text-align:center; padding:20px; margin-top:18px; border-radius:var(--radius);
+  background:var(--accent-light); border:1px solid var(--accent); display:none;
+}
+#qcm-result.show{display:block;}
+#qcm-result .score{font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--heading); font-weight:700;}
+button{
+  font-family:'Nunito Sans',sans-serif; font-weight:700; background:var(--accent); color:#fff; border:none;
+  border-radius:20px; padding:9px 20px; cursor:pointer; font-size:0.9rem;
+}
+button:hover{opacity:0.9;}
+button:disabled{opacity:0.5; cursor:not-allowed;}
+button.secondary{background:var(--surface2); color:var(--text); border:1px solid var(--border);}
+
+/* Visualisation */
+.viz-controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:12px 0;}
+.viz-controls label{font-weight:700; font-size:0.9rem; color:var(--muted);}
+select{
+  font-family:'Nunito Sans',sans-serif; padding:6px 10px; border-radius:var(--radius); border:1px solid var(--border);
+  background:var(--surface); color:var(--text);
+}
+canvas{display:block; margin:14px auto; max-width:100%; touch-action:none;}
+.viz-readout{
+  text-align:center; font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--heading);
+  min-height:1.8em; font-weight:700;
+}
+.line-readout{text-align:center; color:var(--muted); font-size:0.9rem; margin-top:4px;}
+
+/* Bilan */
+.checklist{list-style:none; padding:0; margin:0;}
+.checklist li{
+  display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px dashed var(--border);
+}
+.checklist li:last-child{border-bottom:none;}
+.checklist .ok{color:#3a6b34; font-weight:700; flex:0 0 auto;}
+.vocab-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0;}
+@media(max-width:520px){.vocab-grid{grid-template-columns:1fr;}}
+.vocab-card{background:var(--surface2); border-radius:var(--radius); padding:10px 14px;}
+.vocab-card strong{color:var(--heading); font-family:'Cormorant Garamond',serif; font-size:1.15rem;}
+footer{text-align:center; color:var(--muted); font-size:0.85rem; margin-top:40px; padding-top:16px; border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="badge">Classe de 6&egrave;me</span>
+  <h1>Les Fractions</h1>
+  <p class="subtitle">D&eacute;couvrir, repr&eacute;senter et comparer les fractions</p>
+</header>
+
+<nav class="tabbar" id="tabbar">
+  <button class="tab-btn active" onclick="showTab(0)">1. Cours</button>
+  <button class="tab-btn" onclick="showTab(1)">2. M&eacute;thodes</button>
+  <button class="tab-btn" onclick="showTab(2)">3. Exercices</button>
+  <button class="tab-btn" onclick="showTab(3)">4. Approfondissement</button>
+  <button class="tab-btn" onclick="showTab(4)">5. QCM</button>
+  <button class="tab-btn" onclick="showTab(5)">6. Visualisation</button>
+  <button class="tab-btn" onclick="showTab(6)">7. Bilan</button>
+</nav>
+
+<!-- ============ 1. COURS ============ -->
+<section class="tab-pane active" id="tab0">
+  <h2>1. Qu'est-ce qu'une fraction ?</h2>
+  <p>Quand on partage un objet ou une quantit&eacute; en parts &eacute;gales, chaque part peut se noter sous la forme d'une <strong>fraction</strong>.</p>
+
+  <div class="def">
+    <strong>D&eacute;finition.</strong> Une fraction s'&eacute;crit <span class="frac"><span class="num">a</span><span class="den">b</span></span> (on lit &laquo;&nbsp;a sur b&nbsp;&raquo;) o&ugrave; :
+    <ul>
+      <li><strong>a</strong> est le <strong>num&eacute;rateur</strong> (en haut) : il indique combien de parts on prend.</li>
+      <li><strong>b</strong> est le <strong>d&eacute;nominateur</strong> (en bas) : il indique en combien de parts &eacute;gales on a partag&eacute; le tout. (b ne peut jamais &ecirc;tre &eacute;gal &agrave; 0.)</li>
+    </ul>
+  </div>
+
+  <div class="example">
+    <strong>Exemple.</strong> Une pizza est coup&eacute;e en 8 parts &eacute;gales. Marie mange 3 parts. Elle a mang&eacute; <span class="frac"><span class="num">3</span><span class="den">8</span></span> de la pizza : le d&eacute;nominateur 8 est le nombre total de parts, le num&eacute;rateur 3 est le nombre de parts mang&eacute;es.
+  </div>
+
+  <div class="tip">
+    <strong>Astuce pour retenir.</strong> Le <strong>D</strong>&eacute;nominateur est en b<strong>as</strong>, comme le mot &laquo;&nbsp;<strong>D</strong>essous&nbsp;&raquo;. Le num&eacute;rateur est en haut.
+  </div>
+
+  <h2>2. Fraction d'une quantit&eacute;</h2>
+  <p>Une fraction permet aussi de calculer une partie d'une quantit&eacute;. Pour calculer <span class="frac"><span class="num">a</span><span class="den">b</span></span> d'une quantit&eacute; Q, on partage Q en b parts &eacute;gales, puis on en prend a.</p>
+
+  <div class="example">
+    <strong>Exemple.</strong> Calculer <span class="frac"><span class="num">3</span><span class="den">4</span></span> de 20 bonbons.
+    <p>On partage 20 bonbons en 4 parts &eacute;gales : 20 &divide; 4 = 5 bonbons par part.<br>
+    On en prend 3 parts : 5 &times; 3 = 15.<br>
+    Donc <span class="frac"><span class="num">3</span><span class="den">4</span></span> de 20 = <strong>15</strong>.</p>
+  </div>
+
+  <div class="def">
+    <strong>M&eacute;thode g&eacute;n&eacute;rale.</strong> Pour calculer <span class="frac"><span class="num">a</span><span class="den">b</span></span> d'une quantit&eacute; Q : on calcule (Q &divide; b) &times; a.
+  </div>
+
+  <h2>3. Fractions et droite gradu&eacute;e</h2>
+  <p>On peut placer une fraction sur une droite gradu&eacute;e. On partage chaque unit&eacute; en autant de parts &eacute;gales que l'indique le d&eacute;nominateur.</p>
+
+  <div class="example">
+    <strong>Exemple.</strong> Pour placer <span class="frac"><span class="num">5</span><span class="den">3</span></span>, on partage chaque unit&eacute; en 3 parts &eacute;gales (tiers), puis on avance de 5 petites graduations depuis 0. Comme 5 &divide; 3 = 1 reste 2, ce nombre se trouve entre 1 et 2, plus pr&eacute;cis&eacute;ment &agrave; 1 unit&eacute; + 2 tiers.
+  </div>
+
+  <p>Une fraction dont le num&eacute;rateur est plus grand que le d&eacute;nominateur (comme <span class="frac"><span class="num">5</span><span class="den">3</span></span>) est sup&eacute;rieure &agrave; 1. Une fraction dont le num&eacute;rateur est plus petit que le d&eacute;nominateur (comme <span class="frac"><span class="num">2</span><span class="den">3</span></span>) est inf&eacute;rieure &agrave; 1.</p>
+
+  <h2>4. Fractions &eacute;gales</h2>
+  <p>Deux fractions qui repr&eacute;sentent la m&ecirc;me quantit&eacute; sont dites <strong>&eacute;gales</strong>, m&ecirc;me si elles s'&eacute;crivent diff&eacute;remment.</p>
+
+  <div class="def">
+    <strong>R&egrave;gle.</strong> On ne change pas la valeur d'une fraction si on multiplie (ou on divise) le num&eacute;rateur ET le d&eacute;nominateur par le m&ecirc;me nombre (non nul).
+  </div>
+
+  <div class="example">
+    <strong>Exemple.</strong> <span class="frac"><span class="num">1</span><span class="den">2</span></span> = <span class="frac"><span class="num">2</span><span class="den">4</span></span> = <span class="frac"><span class="num">3</span><span class="den">6</span></span> = <span class="frac"><span class="num">50</span><span class="den">100</span></span>. Toutes ces fractions repr&eacute;sentent la moiti&eacute; d'un tout.
+  </div>
+
+  <p>Quand on ne peut plus simplifier une fraction, on dit qu'elle est <strong>irr&eacute;ductible</strong>.</p>
+
+  <h2>5. Comparer des fractions</h2>
+  <div class="def">
+    <strong>M&ecirc;me d&eacute;nominateur.</strong> Si deux fractions ont le m&ecirc;me d&eacute;nominateur, la plus grande est celle qui a le plus grand num&eacute;rateur.<br>
+    Exemple : <span class="frac"><span class="num">5</span><span class="den">7</span></span> &gt; <span class="frac"><span class="num">3</span><span class="den">7</span></span> car 5 &gt; 3.
+  </div>
+  <div class="def">
+    <strong>M&ecirc;me num&eacute;rateur.</strong> Si deux fractions ont le m&ecirc;me num&eacute;rateur, la plus grande est celle qui a le plus <strong>petit</strong> d&eacute;nominateur (les parts sont plus grandes).<br>
+    Exemple : <span class="frac"><span class="num">3</span><span class="den">4</span></span> &gt; <span class="frac"><span class="num">3</span><span class="den">8</span></span> car 4 &lt; 8 (les quarts sont plus grands que les huiti&egrave;mes).
+  </div>
+
+  <h2>6. Fractions et nombres d&eacute;cimaux</h2>
+  <p>Certaines fractions peuvent s'&eacute;crire sous forme de nombre d&eacute;cimal : il suffit de diviser le num&eacute;rateur par le d&eacute;nominateur.</p>
+  <table>
+    <tr><th>Fraction</th><th>Division</th><th>&Eacute;criture d&eacute;cimale</th></tr>
+    <tr><td><span class="frac"><span class="num">1</span><span class="den">2</span></span></td><td>1 &divide; 2</td><td>0,5</td></tr>
+    <tr><td><span class="frac"><span class="num">1</span><span class="den">4</span></span></td><td>1 &divide; 4</td><td>0,25</td></tr>
+    <tr><td><span class="frac"><span class="num">3</span><span class="den">10</span></span></td><td>3 &divide; 10</td><td>0,3</td></tr>
+    <tr><td><span class="frac"><span class="num">7</span><span class="den">100</span></span></td><td>7 &divide; 100</td><td>0,07</td></tr>
+  </table>
+  <div class="tip">
+    Les fractions dont le d&eacute;nominateur est 10, 100 ou 1000 se transforment tr&egrave;s facilement en nombres d&eacute;cimaux : <span class="frac"><span class="num">37</span><span class="den">100</span></span> = 0,37.
+  </div>
+</section>
+
+<!-- ============ 2. METHODES ============ -->
+<section class="tab-pane" id="tab1">
+  <h2>M&eacute;thode 1 &mdash; Lire et &eacute;crire une fraction</h2>
+  <div class="method-step"><div class="method-num">1</div><div>Compter le nombre total de parts &eacute;gales : c'est le <strong>d&eacute;nominateur</strong>.</div></div>
+  <div class="method-step"><div class="method-num">2</div><div>Compter le nombre de parts consid&eacute;r&eacute;es (color&eacute;es, mang&eacute;es...) : c'est le <strong>num&eacute;rateur</strong>.</div></div>
+  <div class="method-step"><div class="method-num">3</div><div>&Eacute;crire la fraction num&eacute;rateur/d&eacute;nominateur.</div></div>
+  <div class="example">Un g&acirc;teau coup&eacute; en 6 parts, dont 4 sont mang&eacute;es &rarr; <span class="frac"><span class="num">4</span><span class="den">6</span></span> du g&acirc;teau a &eacute;t&eacute; mang&eacute;.</div>
+
+  <h2>M&eacute;thode 2 &mdash; Calculer une fraction d'une quantit&eacute;</h2>
+  <div class="method-step"><div class="method-num">1</div><div>Diviser la quantit&eacute; totale par le d&eacute;nominateur (on trouve la valeur d'une part).</div></div>
+  <div class="method-step"><div class="method-num">2</div><div>Multiplier le r&eacute;sultat par le num&eacute;rateur.</div></div>
+  <div class="example">
+    <span class="frac"><span class="num">2</span><span class="den">5</span></span> de 30 &euro; : 30 &divide; 5 = 6, puis 6 &times; 2 = <strong>12 &euro;</strong>.
+  </div>
+
+  <h2>M&eacute;thode 3 &mdash; Placer une fraction sur une droite gradu&eacute;e</h2>
+  <div class="method-step"><div class="method-num">1</div><div>Partager chaque unit&eacute; en autant de segments &eacute;gaux que le d&eacute;nominateur.</div></div>
+  <div class="method-step"><div class="method-num">2</div><div>Compter, depuis 0, le nombre de segments indiqu&eacute; par le num&eacute;rateur.</div></div>
+  <div class="method-step"><div class="method-num">3</div><div>Marquer le point obtenu.</div></div>
+  <div class="example">Pour <span class="frac"><span class="num">7</span><span class="den">4</span></span> : on partage chaque unit&eacute; en 4 (quarts), on avance de 7 quarts &agrave; partir de 0 &rarr; le point tombe entre 1 et 2.</div>
+
+  <h2>M&eacute;thode 4 &mdash; V&eacute;rifier que deux fractions sont &eacute;gales</h2>
+  <div class="method-step"><div class="method-num">1</div><div>Chercher un nombre par lequel multiplier (ou diviser) le num&eacute;rateur ET le d&eacute;nominateur de l'une pour retrouver l'autre.</div></div>
+  <div class="method-step"><div class="method-num">2</div><div>Si ce m&ecirc;me nombre fonctionne pour les deux termes, les fractions sont &eacute;gales.</div></div>
+  <div class="example">
+    <span class="frac"><span class="num">3</span><span class="den">5</span></span> et <span class="frac"><span class="num">12</span><span class="den">20</span></span> : 3 &times; 4 = 12 et 5 &times; 4 = 20. Le m&ecirc;me nombre (4) fonctionne &rarr; les fractions sont &eacute;gales.
+  </div>
+
+  <h2>M&eacute;thode 5 &mdash; Comparer deux fractions</h2>
+  <div class="method-step"><div class="method-num">1</div><div>M&ecirc;me d&eacute;nominateur ? Comparer directement les num&eacute;rateurs.</div></div>
+  <div class="method-step"><div class="method-num">2</div><div>M&ecirc;me num&eacute;rateur ? La fraction avec le plus petit d&eacute;nominateur est la plus grande.</div></div>
+  <div class="method-step"><div class="method-num">3</div><div>Sinon, essayer de transformer une fraction pour obtenir le m&ecirc;me d&eacute;nominateur ou le m&ecirc;me num&eacute;rateur que l'autre.</div></div>
+  <div class="example">
+    Comparer <span class="frac"><span class="num">2</span><span class="den">3</span></span> et <span class="frac"><span class="num">5</span><span class="den">6</span></span> : on transforme <span class="frac"><span class="num">2</span><span class="den">3</span></span> en <span class="frac"><span class="num">4</span><span class="den">6</span></span> (&times;2/&times;2). Comme 4 &lt; 5, alors <span class="frac"><span class="num">2</span><span class="den">3</span></span> &lt; <span class="frac"><span class="num">5</span><span class="den">6</span></span>.
+  </div>
+
+  <h2>M&eacute;thode 6 &mdash; Passer d'une fraction &agrave; l'&eacute;criture d&eacute;cimale</h2>
+  <div class="method-step"><div class="method-num">1</div><div>Poser la division du num&eacute;rateur par le d&eacute;nominateur.</div></div>
+  <div class="method-step"><div class="method-num">2</div><div>&Eacute;crire le r&eacute;sultat sous forme de nombre d&eacute;cimal.</div></div>
+  <div class="example"><span class="frac"><span class="num">9</span><span class="den">4</span></span> : 9 &divide; 4 = 2,25</div>
+</section>
+
+<!-- ============ 3. EXERCICES ============ -->
+<section class="tab-pane" id="tab2">
+  <h2>Exercices d'entra&icirc;nement</h2>
+
+  <div class="exo">
+    <h4>Exercice 1 <span class="diff diff-1">Facile</span></h4>
+    <p>Une tablette de chocolat est divis&eacute;e en 12 carr&eacute;s &eacute;gaux. Paul mange 5 carr&eacute;s. Quelle fraction de la tablette a-t-il mang&eacute;e ?</p>
+    <details><summary>Correction</summary>
+      <p>Nombre total de parts = 12 (d&eacute;nominateur). Parts mang&eacute;es = 5 (num&eacute;rateur).<br>
+      Paul a mang&eacute; <span class="frac"><span class="num">5</span><span class="den">12</span></span> de la tablette.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 2 <span class="diff diff-1">Facile</span></h4>
+    <p>&Eacute;cris la fraction correspondant &agrave; chaque situation :</p>
+    <p>a) 3 parts color&eacute;es sur 8 parts &eacute;gales.<br>b) 7 &eacute;l&egrave;ves absents sur une classe de 25.<br>c) 1 part sur 2.</p>
+    <details><summary>Correction</summary>
+      <p>a) <span class="frac"><span class="num">3</span><span class="den">8</span></span> &nbsp; b) <span class="frac"><span class="num">7</span><span class="den">25</span></span> &nbsp; c) <span class="frac"><span class="num">1</span><span class="den">2</span></span></p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 3 <span class="diff diff-1">Facile</span></h4>
+    <p>Calcule : <span class="frac"><span class="num">1</span><span class="den">4</span></span> de 24, puis <span class="frac"><span class="num">2</span><span class="den">3</span></span> de 18.</p>
+    <details><summary>Correction</summary>
+      <p><span class="frac"><span class="num">1</span><span class="den">4</span></span> de 24 : 24 &divide; 4 = 6, puis 6 &times; 1 = <strong>6</strong>.<br>
+      <span class="frac"><span class="num">2</span><span class="den">3</span></span> de 18 : 18 &divide; 3 = 6, puis 6 &times; 2 = <strong>12</strong>.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 4 <span class="diff diff-2">Moyen</span></h4>
+    <p>Dans un panier de 40 fruits, <span class="frac"><span class="num">3</span><span class="den">8</span></span> sont des pommes. Combien y a-t-il de pommes ?</p>
+    <details><summary>Correction</summary>
+      <p>40 &divide; 8 = 5 (valeur d'une part).<br>5 &times; 3 = <strong>15 pommes</strong>.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 5 <span class="diff diff-2">Moyen</span></h4>
+    <p>Compare les fractions suivantes en utilisant les symboles &lt;, &gt; ou = :</p>
+    <p>a) <span class="frac"><span class="num">4</span><span class="den">9</span></span> et <span class="frac"><span class="num">7</span><span class="den">9</span></span> &nbsp; b) <span class="frac"><span class="num">5</span><span class="den">6</span></span> et <span class="frac"><span class="num">5</span><span class="den">11</span></span> &nbsp; c) <span class="frac"><span class="num">2</span><span class="den">3</span></span> et <span class="frac"><span class="num">6</span><span class="den">9</span></span></p>
+    <details><summary>Correction</summary>
+      <p>a) M&ecirc;me d&eacute;nominateur (9) &rarr; on compare les num&eacute;rateurs : 4 &lt; 7, donc <span class="frac"><span class="num">4</span><span class="den">9</span></span> &lt; <span class="frac"><span class="num">7</span><span class="den">9</span></span>.<br>
+      b) M&ecirc;me num&eacute;rateur (5) &rarr; le plus petit d&eacute;nominateur donne la plus grande fraction : 6 &lt; 11, donc <span class="frac"><span class="num">5</span><span class="den">6</span></span> &gt; <span class="frac"><span class="num">5</span><span class="den">11</span></span>.<br>
+      c) 2 &times; 3 = 6 et 3 &times; 3 = 9, donc <span class="frac"><span class="num">2</span><span class="den">3</span></span> = <span class="frac"><span class="num">6</span><span class="den">9</span></span> : elles sont &eacute;gales.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 6 <span class="diff diff-2">Moyen</span></h4>
+    <p>Place les fractions <span class="frac"><span class="num">1</span><span class="den">2</span></span>, <span class="frac"><span class="num">3</span><span class="den">2</span></span> et <span class="frac"><span class="num">5</span><span class="den">2</span></span> sur une droite gradu&eacute;e allant de 0 &agrave; 3. D&eacute;cris leur position.</p>
+    <details><summary>Correction</summary>
+      <p>On partage chaque unit&eacute; en 2 (demis).<br>
+      <span class="frac"><span class="num">1</span><span class="den">2</span></span> est &agrave; mi-chemin entre 0 et 1.<br>
+      <span class="frac"><span class="num">3</span><span class="den">2</span></span> est &agrave; mi-chemin entre 1 et 2 (car 3 &divide; 2 = 1,5).<br>
+      <span class="frac"><span class="num">5</span><span class="den">2</span></span> est &agrave; mi-chemin entre 2 et 3 (car 5 &divide; 2 = 2,5).</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Exercice 7 <span class="diff diff-3">Difficile</span></h4>
+    <p>&Eacute;cris chaque fraction sous forme d&eacute;cimale : <span class="frac"><span class="num">3</span><span class="den">4</span></span>, <span class="frac"><span class="num">21</span><span class="den">10</span></span>, <span class="frac"><span class="num">9</span><span class="den">100</span></span>, <span class="frac"><span class="num">1</span><span class="den">5</span></span>.</p>
+    <details><summary>Correction</summary>
+      <p><span class="frac"><span class="num">3</span><span class="den">4</span></span> = 0,75 &nbsp;&bull;&nbsp; <span class="frac"><span class="num">21</span><span class="den">10</span></span> = 2,1 &nbsp;&bull;&nbsp; <span class="frac"><span class="num">9</span><span class="den">100</span></span> = 0,09 &nbsp;&bull;&nbsp; <span class="frac"><span class="num">1</span><span class="den">5</span></span> = 0,2</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============ 4. APPROFONDISSEMENT ============ -->
+<section class="tab-pane" id="tab3">
+  <h2>Pour aller plus loin</h2>
+  <p>Ces exercices demandent de combiner plusieurs id&eacute;es vues dans le cours. Prends ton temps !</p>
+
+  <div class="exo">
+    <h4>Approfondissement 1 <span class="diff diff-2">Moyen</span></h4>
+    <p>Dans une classe de 28 &eacute;l&egrave;ves, <span class="frac"><span class="num">3</span><span class="den">7</span></span> des &eacute;l&egrave;ves pratiquent un sport le mercredi. Parmi eux, <span class="frac"><span class="num">1</span><span class="den">3</span></span> jouent au football. Combien d'&eacute;l&egrave;ves jouent au football ?</p>
+    <details><summary>Correction</summary>
+      <p>&Eacute;l&egrave;ves sportifs : 28 &divide; 7 = 4, puis 4 &times; 3 = 12 &eacute;l&egrave;ves.<br>
+      Parmi eux, joueurs de foot : 12 &divide; 3 = 4, puis 4 &times; 1 = <strong>4 &eacute;l&egrave;ves</strong>.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Approfondissement 2 <span class="diff diff-3">Difficile</span></h4>
+    <p>Range dans l'ordre croissant les fractions suivantes : <span class="frac"><span class="num">7</span><span class="den">10</span></span>, <span class="frac"><span class="num">3</span><span class="den">10</span></span>, <span class="frac"><span class="num">9</span><span class="den">10</span></span>, <span class="frac"><span class="num">1</span><span class="den">2</span></span>.</p>
+    <details><summary>Correction</summary>
+      <p>On transforme <span class="frac"><span class="num">1</span><span class="den">2</span></span> en dixi&egrave;mes : <span class="frac"><span class="num">1</span><span class="den">2</span></span> = <span class="frac"><span class="num">5</span><span class="den">10</span></span> (&times;5/&times;5).<br>
+      Toutes les fractions ont maintenant le m&ecirc;me d&eacute;nominateur (10). On compare les num&eacute;rateurs : 3 &lt; 5 &lt; 7 &lt; 9.<br>
+      Ordre croissant : <span class="frac"><span class="num">3</span><span class="den">10</span></span> &lt; <span class="frac"><span class="num">1</span><span class="den">2</span></span> &lt; <span class="frac"><span class="num">7</span><span class="den">10</span></span> &lt; <span class="frac"><span class="num">9</span><span class="den">10</span></span>.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Approfondissement 3 <span class="diff diff-3">Difficile</span></h4>
+    <p>Un r&eacute;servoir contient 60 litres d'eau. On en utilise <span class="frac"><span class="num">2</span><span class="den">5</span></span> pour arroser le jardin, puis <span class="frac"><span class="num">1</span><span class="den">4</span></span> du reste pour laver la voiture. Combien de litres reste-t-il &agrave; la fin ?</p>
+    <details><summary>Correction</summary>
+      <p>Eau utilis&eacute;e pour le jardin : 60 &divide; 5 = 12, puis 12 &times; 2 = 24 L.<br>
+      Reste apr&egrave;s le jardin : 60 &minus; 24 = 36 L.<br>
+      Eau utilis&eacute;e pour la voiture : 36 &divide; 4 = 9, puis 9 &times; 1 = 9 L.<br>
+      Il reste : 36 &minus; 9 = <strong>27 litres</strong>.</p>
+    </details>
+  </div>
+
+  <div class="exo">
+    <h4>Approfondissement 4 <span class="diff diff-3">Difficile</span></h4>
+    <p>Trouve deux fractions diff&eacute;rentes, toutes deux &eacute;gales &agrave; <span class="frac"><span class="num">4</span><span class="den">6</span></span>, l'une avec un d&eacute;nominateur plus petit (fraction irr&eacute;ductible) et l'une avec un d&eacute;nominateur plus grand.</p>
+    <details><summary>Correction</summary>
+      <p>Plus petit d&eacute;nominateur : on divise par 2 &rarr; <span class="frac"><span class="num">2</span><span class="den">3</span></span> (irr&eacute;ductible, car on ne peut plus diviser).<br>
+      Plus grand d&eacute;nominateur : on multiplie par exemple par 3 &rarr; <span class="frac"><span class="num">12</span><span class="den">18</span></span>.<br>
+      On v&eacute;rifie : <span class="frac"><span class="num">2</span><span class="den">3</span></span> = <span class="frac"><span class="num">4</span><span class="den">6</span></span> = <span class="frac"><span class="num">12</span><span class="den">18</span></span>.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============ 5. QCM ============ -->
+<section class="tab-pane" id="tab4">
+  <h2>Quiz &mdash; teste tes connaissances</h2>
+  <p>R&eacute;ponds aux questions puis clique sur &laquo;&nbsp;Valider mes r&eacute;ponses&nbsp;&raquo; pour voir ton score.</p>
+  <div id="qcm-container"></div>
+  <div style="text-align:center; margin-top:16px;">
+    <button id="qcm-submit" onclick="checkQCM()">Valider mes r&eacute;ponses</button>
+    <button class="secondary" onclick="resetQCM()">Recommencer</button>
+  </div>
+  <div id="qcm-result"></div>
+</section>
+
+<!-- ============ 6. VISUALISATION ============ -->
+<section class="tab-pane" id="tab5">
+  <h2>Visualise les fractions</h2>
+
+  <h3>Partage une figure</h3>
+  <p>Choisis un nombre de parts, puis clique sur les parts pour les colorer. Observe la fraction correspondante !</p>
+  <div class="viz-controls">
+    <label for="shape-select">Figure :</label>
+    <select id="shape-select" onchange="rebuildShape()">
+      <option value="circle">Cercle (pizza)</option>
+      <option value="rect">Rectangle (tablette)</option>
+    </select>
+    <label for="parts-select">Nombre de parts :</label>
+    <select id="parts-select" onchange="rebuildShape()">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4" selected>4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="8">8</option>
+      <option value="10">10</option>
+      <option value="12">12</option>
+    </select>
+    <button class="secondary" onclick="clearShape()">R&eacute;initialiser</button>
+  </div>
+  <canvas id="shapeCanvas" width="360" height="360"></canvas>
+  <div class="viz-readout" id="shapeReadout">0 / 4</div>
+
+  <h3>Place une fraction sur la droite gradu&eacute;e</h3>
+  <div class="viz-controls">
+    <label for="num-input">Num&eacute;rateur :</label>
+    <select id="num-input" onchange="updateLine()"></select>
+    <label for="den-input">D&eacute;nominateur :</label>
+    <select id="den-input" onchange="updateLine()">
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4" selected>4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="8">8</option>
+    </select>
+  </div>
+  <canvas id="lineCanvas" width="680" height="140"></canvas>
+  <div class="line-readout" id="lineReadout"></div>
+</section>
+
+<!-- ============ 7. BILAN ============ -->
+<section class="tab-pane" id="tab6">
+  <h2>Bilan du chapitre</h2>
+  <p>Voici l'essentiel &agrave; retenir sur les fractions.</p>
+
+  <ul class="checklist">
+    <li><span class="ok">&check;</span> Une fraction <span class="frac"><span class="num">a</span><span class="den">b</span></span> repr&eacute;sente a parts prises parmi b parts &eacute;gales (b &ne; 0).</li>
+    <li><span class="ok">&check;</span> Le num&eacute;rateur (haut) compte les parts prises, le d&eacute;nominateur (bas) le nombre total de parts.</li>
+    <li><span class="ok">&check;</span> Pour calculer <span class="frac"><span class="num">a</span><span class="den">b</span></span> d'une quantit&eacute; Q : (Q &divide; b) &times; a.</li>
+    <li><span class="ok">&check;</span> On ne change pas la valeur d'une fraction en multipliant/divisant num&eacute;rateur et d&eacute;nominateur par le m&ecirc;me nombre.</li>
+    <li><span class="ok">&check;</span> M&ecirc;me d&eacute;nominateur &rarr; on compare les num&eacute;rateurs. M&ecirc;me num&eacute;rateur &rarr; le plus petit d&eacute;nominateur donne la plus grande fraction.</li>
+    <li><span class="ok">&check;</span> Une fraction se transforme en nombre d&eacute;cimal en divisant le num&eacute;rateur par le d&eacute;nominateur.</li>
+  </ul>
+
+  <h3>Vocabulaire &agrave; conna&icirc;tre</h3>
+  <div class="vocab-grid">
+    <div class="vocab-card"><strong>Num&eacute;rateur</strong><br>Nombre du haut, indique les parts prises.</div>
+    <div class="vocab-card"><strong>D&eacute;nominateur</strong><br>Nombre du bas, indique le total de parts.</div>
+    <div class="vocab-card"><strong>Fractions &eacute;gales</strong><br>Fractions repr&eacute;sentant la m&ecirc;me valeur.</div>
+    <div class="vocab-card"><strong>Fraction irr&eacute;ductible</strong><br>Fraction qu'on ne peut plus simplifier.</div>
+  </div>
+
+  <div class="tip">
+    <strong>Prochaine &eacute;tape (5&egrave;me).</strong> Tu apprendras &agrave; additionner et soustraire des fractions, m&ecirc;me avec des d&eacute;nominateurs diff&eacute;rents !
+  </div>
+</section>
+
+<footer>Cours de math&eacute;matiques &mdash; Fractions &mdash; Classe de 6&egrave;me</footer>
+</div>
+
+<script>
+var tabs = [];
+function showTab(n){
+  var btns = document.querySelectorAll('.tab-btn');
+  var panes = document.querySelectorAll('.tab-pane');
+  btns.forEach(function(b,i){ b.classList.toggle('active', i===n); });
+  panes.forEach(function(p,i){ p.classList.toggle('active', i===n); });
+  if(!tabs[n].dataset.init){
+    tabs[n].dataset.init = '1';
+    initSection(n);
+  }
+}
+
+function initSection(n){
+  if(n===4){ buildQCM(); }
+  if(n===5){ initShape(); initLine(); }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  tabs = document.querySelectorAll('.tab-pane');
+  initSection(0);
+});
+
+/* ========== QCM ========== */
+var qcmData = [
+  {q:"Dans la fraction 5/8, quel est le numérateur ?", opts:["5","8","13","3"], correct:0},
+  {q:"Dans la fraction 3/7, quel est le dénominateur ?", opts:["3","7","4","10"], correct:1},
+  {q:"Quelle fraction représente 2 parts colorées sur un total de 5 parts égales ?", opts:["5/2","2/5","2/3","3/5"], correct:1},
+  {q:"Combien font 3/4 de 20 ?", opts:["10","5","15","24"], correct:2},
+  {q:"Combien font 2/5 de 30 ?", opts:["12","6","15","10"], correct:0},
+  {q:"Laquelle de ces fractions est égale à 1/2 ?", opts:["2/3","3/5","4/8","5/9"], correct:2},
+  {q:"Que vaut 3/10 en écriture décimale ?", opts:["0,3","3,0","0,03","30"], correct:0},
+  {q:"Parmi 4/9 et 7/9, laquelle est la plus grande ?", opts:["4/9","7/9","Elles sont égales","On ne peut pas savoir"], correct:1},
+  {q:"Parmi 3/5 et 3/8, laquelle est la plus grande ?", opts:["3/5","3/8","Elles sont égales","On ne peut pas savoir"], correct:0},
+  {q:"Une fraction dont le numérateur est plus grand que le dénominateur est...", opts:["toujours inférieure à 1","toujours supérieure à 1","toujours égale à 1","impossible à écrire"], correct:1}
+];
+
+function buildQCM(){
+  var c = document.getElementById('qcm-container');
+  c.innerHTML = '';
+  qcmData.forEach(function(item, qi){
+    var div = document.createElement('div');
+    div.className = 'qcm-q';
+    div.id = 'qcm-q'+qi;
+    var p = document.createElement('p');
+    p.className = 'question';
+    p.textContent = (qi+1) + '. ' + item.q;
+    div.appendChild(p);
+    var optsWrap = document.createElement('div');
+    optsWrap.className = 'qcm-opts';
+    item.opts.forEach(function(opt, oi){
+      var label = document.createElement('label');
+      label.className = 'qcm-opt';
+      label.id = 'qcm-q'+qi+'-o'+oi;
+      var input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'qcm-q'+qi;
+      input.value = oi;
+      var span = document.createElement('span');
+      span.textContent = opt;
+      label.appendChild(input);
+      label.appendChild(span);
+      optsWrap.appendChild(label);
+    });
+    div.appendChild(optsWrap);
+    c.appendChild(div);
+  });
+  document.getElementById('qcm-result').classList.remove('show');
+  document.getElementById('qcm-submit').disabled = false;
+}
+
+function checkQCM(){
+  var score = 0;
+  var allAnswered = true;
+  qcmData.forEach(function(item, qi){
+    var radios = document.querySelectorAll('input[name="qcm-q'+qi+'"]');
+    var selected = -1;
+    radios.forEach(function(r){ if(r.checked) selected = parseInt(r.value,10); });
+    if(selected === -1){ allAnswered = false; }
+    radios.forEach(function(r){ r.disabled = true; });
+    item.opts.forEach(function(opt, oi){
+      var label = document.getElementById('qcm-q'+qi+'-o'+oi);
+      label.classList.add('disabled');
+      if(oi === item.correct){ label.classList.add('correct'); }
+      else if(oi === selected){ label.classList.add('wrong'); }
+    });
+    if(selected === item.correct){ score++; }
+  });
+  var resultDiv = document.getElementById('qcm-result');
+  var msg = '';
+  var pct = Math.round((score/qcmData.length)*100);
+  if(pct >= 80){ msg = 'Excellent travail !'; }
+  else if(pct >= 60){ msg = 'Bien joué, continue à t\'entraîner !'; }
+  else if(pct >= 40){ msg = 'Pas mal, revois le cours pour progresser.'; }
+  else { msg = 'Relis le cours et les méthodes, puis réessaie !'; }
+  var note = allAnswered ? '' : '<p style="color:var(--muted);font-size:0.85rem;">(Certaines questions n\'étaient pas répondues.)</p>';
+  resultDiv.innerHTML = '<div class="score">'+score+' / '+qcmData.length+'</div><p>'+msg+'</p>'+note;
+  resultDiv.classList.add('show');
+  document.getElementById('qcm-submit').disabled = true;
+}
+
+function resetQCM(){
+  buildQCM();
+}
+
+/* ========== VISUALISATION : figure partagee ========== */
+var shapeState = { parts: 4, colored: [], shape: 'circle' };
+
+function cssVar(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function initShape(){
+  rebuildShape();
+  var canvas = document.getElementById('shapeCanvas');
+  canvas.addEventListener('click', onShapeClick);
+}
+
+function rebuildShape(){
+  var partsSel = document.getElementById('parts-select');
+  var shapeSel = document.getElementById('shape-select');
+  shapeState.parts = parseInt(partsSel.value, 10);
+  shapeState.shape = shapeSel.value;
+  shapeState.colored = new Array(shapeState.parts).fill(false);
+  drawShape();
+}
+
+function clearShape(){
+  shapeState.colored = new Array(shapeState.parts).fill(false);
+  drawShape();
+}
+
+function drawShape(){
+  var canvas = document.getElementById('shapeCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+
+  var accent = cssVar('--accent') || '#a0522d';
+  var border = cssVar('--border') || '#d4c8b8';
+  var text = cssVar('--text') || '#2c2418';
+  var surface = cssVar('--surface') || '#ffffff';
+
+  if(shapeState.shape === 'circle'){
+    var cx = w/2, cy = h/2, r = Math.min(w,h)/2 - 20;
+    var n = shapeState.parts;
+    var start = -Math.PI/2;
+    var step = (2*Math.PI)/n;
+    for(var i=0;i<n;i++){
+      var a0 = start + i*step;
+      var a1 = a0 + step;
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,r,a0,a1);
+      ctx.closePath();
+      ctx.fillStyle = shapeState.colored[i] ? accent : surface;
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = border;
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,0,2*Math.PI);
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = text;
+    ctx.stroke();
+  } else {
+    var n2 = shapeState.parts;
+    var margin = 20;
+    var totalW = w - margin*2;
+    var totalH = h/2;
+    var top = h/2 - totalH/2;
+    var pieceW = totalW/n2;
+    for(var j=0;j<n2;j++){
+      var x = margin + j*pieceW;
+      ctx.fillStyle = shapeState.colored[j] ? accent : surface;
+      ctx.fillRect(x, top, pieceW, totalH);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = border;
+      ctx.strokeRect(x, top, pieceW, totalH);
+    }
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = text;
+    ctx.strokeRect(margin, top, totalW, totalH);
+  }
+  updateShapeReadout();
+}
+
+function onShapeClick(evt){
+  var canvas = document.getElementById('shapeCanvas');
+  var rect = canvas.getBoundingClientRect();
+  var scaleX = canvas.width/rect.width;
+  var scaleY = canvas.height/rect.height;
+  var x = (evt.clientX - rect.left) * scaleX;
+  var y = (evt.clientY - rect.top) * scaleY;
+  var n = shapeState.parts;
+
+  if(shapeState.shape === 'circle'){
+    var cx = canvas.width/2, cy = canvas.height/2;
+    var r = Math.min(canvas.width, canvas.height)/2 - 20;
+    var dx = x-cx, dy = y-cy;
+    var dist = Math.sqrt(dx*dx+dy*dy);
+    if(dist > r) return;
+    var angle = Math.atan2(dy,dx) + Math.PI/2;
+    if(angle < 0) angle += 2*Math.PI;
+    var step = (2*Math.PI)/n;
+    var idx = Math.floor(angle/step) % n;
+    shapeState.colored[idx] = !shapeState.colored[idx];
+  } else {
+    var margin = 20;
+    var totalW = canvas.width - margin*2;
+    var totalH = canvas.height/2;
+    var top = canvas.height/2 - totalH/2;
+    if(y < top || y > top+totalH) return;
+    if(x < margin || x > margin+totalW) return;
+    var pieceW = totalW/n;
+    var idx2 = Math.floor((x-margin)/pieceW);
+    if(idx2 >= 0 && idx2 < n){ shapeState.colored[idx2] = !shapeState.colored[idx2]; }
+  }
+  drawShape();
+}
+
+function updateShapeReadout(){
+  var count = shapeState.colored.filter(Boolean).length;
+  document.getElementById('shapeReadout').textContent = count + ' / ' + shapeState.parts;
+}
+
+/* ========== VISUALISATION : droite graduee ========== */
+function initLine(){
+  var numSel = document.getElementById('num-input');
+  var denSel = document.getElementById('den-input');
+  function fillNum(){
+    var maxNum = 12;
+    var current = numSel.value;
+    numSel.innerHTML = '';
+    for(var i=0;i<=maxNum;i++){
+      var opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = i;
+      if(i===5) opt.selected = true;
+      numSel.appendChild(opt);
+    }
+    if(current !== ''){ numSel.value = current; }
+  }
+  fillNum();
+  numSel.addEventListener('change', updateLine);
+  updateLine();
+}
+
+function updateLine(){
+  var num = parseInt(document.getElementById('num-input').value, 10);
+  var den = parseInt(document.getElementById('den-input').value, 10);
+  var canvas = document.getElementById('lineCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+
+  var text = cssVar('--text') || '#2c2418';
+  var accent = cssVar('--accent') || '#a0522d';
+  var muted = cssVar('--muted') || '#6b5a48';
+
+  var maxUnits = 4;
+  var marginL = 30, marginR = 30;
+  var usableW = w - marginL - marginR;
+  var unitW = usableW / maxUnits;
+  var midY = h/2;
+
+  ctx.strokeStyle = text;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(marginL, midY);
+  ctx.lineTo(w - marginR + 10, midY);
+  ctx.stroke();
+  // arrow
+  ctx.beginPath();
+  ctx.moveTo(w - marginR + 10, midY);
+  ctx.lineTo(w - marginR, midY-5);
+  ctx.lineTo(w - marginR, midY+5);
+  ctx.closePath();
+  ctx.fillStyle = text;
+  ctx.fill();
+
+  ctx.font = '14px Nunito Sans, sans-serif';
+  ctx.fillStyle = text;
+  ctx.textAlign = 'center';
+  for(var u=0; u<=maxUnits; u++){
+    var x = marginL + u*unitW;
+    ctx.beginPath();
+    ctx.moveTo(x, midY-10);
+    ctx.lineTo(x, midY+10);
+    ctx.stroke();
+    ctx.fillText(String(u), x, midY+28);
+  }
+
+  ctx.strokeStyle = muted;
+  ctx.lineWidth = 1;
+  var totalTicks = maxUnits*den;
+  for(var t=0; t<=totalTicks; t++){
+    var xt = marginL + (t/den)*unitW;
+    ctx.beginPath();
+    ctx.moveTo(xt, midY-5);
+    ctx.lineTo(xt, midY+5);
+    ctx.stroke();
+  }
+
+  var pos = marginL + (num/den)*unitW;
+  if(pos <= w - marginR + 10){
+    ctx.beginPath();
+    ctx.arc(pos, midY, 7, 0, 2*Math.PI);
+    ctx.fillStyle = accent;
+    ctx.fill();
+    ctx.strokeStyle = text;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.fillStyle = accent;
+    ctx.font = 'bold 15px Cormorant Garamond, serif';
+    ctx.fillText(num + '/' + den, pos, midY-16);
+  }
+
+  var readout = document.getElementById('lineReadout');
+  var value = (num/den).toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
+  var outOfRange = pos > w - marginR + 10;
+  if(outOfRange){
+    readout.textContent = num+'/'+den+' = '+value+' (hors de la portion affichée, essaie un dénominateur ou numérateur différent)';
+  } else {
+    readout.textContent = num+'/'+den+' ≈ '+value;
+  }
+}
+</script>
+</body>
+</html>

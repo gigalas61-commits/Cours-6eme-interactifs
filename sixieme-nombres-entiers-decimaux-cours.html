@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nombres entiers et d&eacute;cimaux - 6&egrave;me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f5f2ed; --surface:#ffffff; --surface2:#ebe6de; --text:#2c2418;
+  --heading:#8b4513; --muted:#6b5a48; --border:#d4c8b8; --accent:#a0522d;
+  --accent-light:#faf5ef; --shadow:0 2px 8px rgba(139,69,19,0.07); --radius:8px;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0;
+    --heading:#e0a868; --muted:#9a8878; --border:#403428; --accent:#d08840;
+    --accent-light:#1e1610; --shadow:0 2px 8px rgba(0,0,0,0.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161210; --surface:#221c18; --surface2:#302820; --text:#ddd0c0;
+  --heading:#e0a868; --muted:#9a8878; --border:#403428; --accent:#d08840;
+  --accent-light:#1e1610; --shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Nunito Sans',system-ui,sans-serif; font-size:16px; line-height:1.65;
+  padding-inline:16px;
+}
+.wrap{max-width:760px; margin:0 auto; padding-bottom:60px;}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif; color:var(--heading); line-height:1.2;}
+h1{font-size:2.3rem; margin-bottom:.2em;}
+h2{font-size:1.6rem; margin-top:1.6em; border-bottom:2px solid var(--border); padding-bottom:.25em;}
+h3{font-size:1.3rem; color:var(--accent); margin-top:1.3em;}
+p{margin:.8em 0;}
+header{padding-top:28px; text-align:center;}
+.badge{
+  display:inline-block; background:var(--accent); color:#fff; border-radius:20px;
+  padding:5px 16px; font-size:.85rem; font-weight:700; letter-spacing:.3px; margin-bottom:10px;
+}
+.subtitle{color:var(--muted); font-size:1.05rem; margin-top:0;}
+nav.tabs{
+  display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:22px 0 18px;
+  position:sticky; top:0; background:var(--bg); padding:10px 0; z-index:10; border-bottom:1px solid var(--border);
+}
+.tab-btn{
+  background:var(--surface); color:var(--muted); border:1px solid var(--border);
+  border-radius:20px; padding:8px 14px; font-family:'Nunito Sans',sans-serif; font-weight:700;
+  font-size:.82rem; cursor:pointer; transition:all .15s ease;
+}
+.tab-btn:hover{color:var(--accent); border-color:var(--accent);}
+.tab-btn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+.tab-pane{display:none; animation:fade .25s ease;}
+.tab-pane.active{display:block;}
+@keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+.card{
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px 20px; margin:16px 0; box-shadow:var(--shadow);
+}
+.def{background:var(--accent-light); border-left:4px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; padding:14px 18px; margin:16px 0;}
+.def h4{margin:0 0 6px; color:var(--accent); font-size:1.1rem;}
+.example{background:var(--surface2); border-radius:var(--radius); padding:14px 18px; margin:14px 0;}
+.example h4{margin:0 0 6px; font-size:1rem; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;}
+.tip{border:1px dashed var(--accent); border-radius:var(--radius); padding:12px 16px; margin:14px 0; background:var(--accent-light);}
+table{width:100%; border-collapse:collapse; margin:14px 0; font-size:.95rem;}
+th,td{border:1px solid var(--border); padding:8px 6px; text-align:center;}
+th{background:var(--surface2); color:var(--heading); font-family:'Cormorant Garamond',serif; font-size:1.05rem;}
+details{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:10px 14px; margin:10px 0;}
+summary{cursor:pointer; font-weight:700; color:var(--accent); font-size:.95rem;}
+details[open] summary{margin-bottom:8px;}
+.exo{margin:18px 0; padding:14px 18px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);}
+.exo .num{display:inline-block; background:var(--accent); color:#fff; border-radius:50%; width:26px; height:26px; text-align:center; line-height:26px; font-weight:700; margin-right:8px; font-size:.85rem;}
+.diff{font-size:.75rem; color:var(--muted); float:right; border:1px solid var(--border); border-radius:12px; padding:2px 10px;}
+canvas{width:100%; max-width:700px; display:block; margin:14px auto; background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); touch-action:none;}
+.qcm-q{margin:18px 0; padding:14px 18px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);}
+.qcm-opts{display:flex; flex-direction:column; gap:8px; margin-top:10px;}
+.qcm-opt{
+  text-align:left; background:var(--surface2); border:1px solid var(--border); border-radius:6px;
+  padding:9px 14px; cursor:pointer; font-family:'Nunito Sans',sans-serif; font-size:.95rem; color:var(--text);
+}
+.qcm-opt:hover{border-color:var(--accent);}
+.qcm-opt.correct{background:#3f7d3f; color:#fff; border-color:#3f7d3f;}
+.qcm-opt.wrong{background:#a04040; color:#fff; border-color:#a04040;}
+.qcm-opt.disabled{pointer-events:none; opacity:.75;}
+#qcm-score{
+  text-align:center; font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--heading);
+  margin:18px 0; padding:14px; background:var(--accent-light); border-radius:var(--radius); display:none;
+}
+button.action{
+  background:var(--accent); color:#fff; border:none; border-radius:6px; padding:9px 18px;
+  font-weight:700; cursor:pointer; font-family:'Nunito Sans',sans-serif; font-size:.9rem; margin:6px 4px 0 0;
+}
+button.action:hover{opacity:.9;}
+.controls{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:10px 0;}
+input[type=text],input[type=number]{
+  padding:7px 10px; border:1px solid var(--border); border-radius:6px; background:var(--surface);
+  color:var(--text); font-family:'Nunito Sans',sans-serif; font-size:.95rem; width:110px;
+}
+.digit-tile{
+  display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px;
+  background:var(--accent); color:#fff; border-radius:6px; font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem; font-weight:700; cursor:grab; margin:3px; user-select:none;
+}
+.grid-cols{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.feedback{margin-top:8px; font-weight:700; font-size:.9rem;}
+.feedback.ok{color:#3f7d3f;}
+.feedback.ko{color:#a04040;}
+footer{text-align:center; color:var(--muted); font-size:.82rem; margin-top:40px; padding-top:16px; border-top:1px solid var(--border);}
+ul,ol{padding-left:22px;}
+li{margin:.35em 0;}
+.two-col{display:flex; gap:16px; flex-wrap:wrap;}
+.two-col>div{flex:1 1 260px;}
+@media(max-width:600px){
+  h1{font-size:1.8rem;}
+  .tab-btn{font-size:.72rem; padding:7px 10px;}
+  .grid-cols{grid-template-columns:1fr;}
+  .card,.exo,.qcm-q{padding:14px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="badge">Classe de 6&egrave;me</span>
+  <h1>Nombres entiers et d&eacute;cimaux</h1>
+  <p class="subtitle">Lire, comparer, ranger, arrondir et calculer avec les nombres</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" onclick="showTab(0)">Cours</button>
+  <button class="tab-btn" onclick="showTab(1)">M&eacute;thodes</button>
+  <button class="tab-btn" onclick="showTab(2)">Exercices</button>
+  <button class="tab-btn" onclick="showTab(3)">Approfondissement</button>
+  <button class="tab-btn" onclick="showTab(4)">QCM</button>
+  <button class="tab-btn" onclick="showTab(5)">Visualisation</button>
+  <button class="tab-btn" onclick="showTab(6)">Bilan</button>
+</nav>
+
+<!-- ============ TAB 0 : COURS ============ -->
+<div class="tab-pane active">
+  <h2>1. Le syst&egrave;me de num&eacute;ration</h2>
+  <p>Notre syst&egrave;me de num&eacute;ration est <strong>d&eacute;cimal</strong> (base 10) et <strong>positionnel</strong> : la valeur d'un chiffre d&eacute;pend de sa position dans le nombre.</p>
+
+  <div class="def">
+    <h4>D&eacute;finition</h4>
+    <p>Un nombre entier s'&eacute;crit avec les 10 chiffres <strong>0,1,2,3,4,5,6,7,8,9</strong>. Chaque position correspond &agrave; une puissance de 10 : unit&eacute;s, dizaines, centaines, milliers, puis on regroupe par classes de 3 chiffres (milliers, millions, milliards).</p>
+  </div>
+
+  <table>
+    <tr><th>Milliards</th><th colspan="3">Millions</th><th colspan="3">Milliers</th><th colspan="3">Unit&eacute;s simples</th></tr>
+    <tr><td>&nbsp;</td><td>C</td><td>D</td><td>U</td><td>C</td><td>D</td><td>U</td><td>C</td><td>D</td><td>U</td></tr>
+    <tr><td>&nbsp;</td><td>&nbsp;</td><td>3</td><td>2</td><td>4</td><td>1</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>
+  </table>
+  <p>Ce tableau repr&eacute;sente le nombre <strong>32 415 678</strong> : trente-deux millions quatre cent quinze mille six cent soixante-dix-huit.</p>
+
+  <div class="example">
+    <h4>Exemple</h4>
+    <p>Dans le nombre <strong>4 806 052</strong>, le chiffre 8 repr&eacute;sente <strong>8 centaines de mille</strong>, soit une valeur de <strong>800 000</strong>.</p>
+  </div>
+
+  <div class="tip">
+    <strong>Astuce :</strong> pour lire un grand nombre, s&eacute;parez-le en tranches de 3 chiffres en partant de la droite (espace ins&eacute;cable), puis lisez chaque tranche en ajoutant son nom de classe (milliard, million, mille).
+  </div>
+
+  <h2>2. Comparer et ranger les nombres entiers</h2>
+  <p>Pour comparer deux nombres entiers :</p>
+  <ol>
+    <li>Celui qui a <strong>le plus de chiffres</strong> est le plus grand (si aucun z&eacute;ro inutile devant).</li>
+    <li>&Agrave; nombre de chiffres &eacute;gal, on compare les chiffres <strong>de gauche &agrave; droite</strong>, position par position.</li>
+  </ol>
+  <p>On utilise les symboles : <strong>&lt;</strong> (plus petit que), <strong>&gt;</strong> (plus grand que), <strong>=</strong> (&eacute;gal).</p>
+
+  <div class="example">
+    <h4>Exemple</h4>
+    <p>Comparons 45 302 et 45 320.<br>
+    Les deux nombres ont 5 chiffres et commencent par 45 3. On regarde les dizaines : 0 &lt; 2 donc <strong>45 302 &lt; 45 320</strong>.</p>
+  </div>
+
+  <h2>3. Les nombres d&eacute;cimaux</h2>
+  <div class="def">
+    <h4>D&eacute;finition</h4>
+    <p>Un nombre d&eacute;cimal est compos&eacute; d'une <strong>partie enti&egrave;re</strong> et d'une <strong>partie d&eacute;cimale</strong>, s&eacute;par&eacute;es par une virgule. Apr&egrave;s la virgule, les positions sont les <strong>dixi&egrave;mes</strong>, <strong>centi&egrave;mes</strong>, <strong>milli&egrave;mes</strong>...</p>
+  </div>
+
+  <table>
+    <tr><th>Centaines</th><th>Dizaines</th><th>Unit&eacute;s</th><th>,</th><th>Dixi&egrave;mes</th><th>Centi&egrave;mes</th><th>Milli&egrave;mes</th></tr>
+    <tr><td>3</td><td>0</td><td>7</td><td>,</td><td>4</td><td>2</td><td>9</td></tr>
+  </table>
+  <p>Ce nombre se lit <strong>307,429</strong> = trois cent sept virgule quatre cent vingt-neuf.</p>
+
+  <div class="tip">
+    <strong>&Agrave; retenir :</strong> 0,5 = 0,50 = 0,500. Ajouter des z&eacute;ros &agrave; la fin d'une partie d&eacute;cimale ne change pas sa valeur ! Mais 0,5 et 0,05 sont tr&egrave;s diff&eacute;rents (dixi&egrave;me contre centi&egrave;me).</p>
+  </div>
+
+  <h3>Comparer des d&eacute;cimaux</h3>
+  <p>On compare d'abord les parties enti&egrave;res. Si elles sont &eacute;gales, on compare les parties d&eacute;cimales chiffre par chiffre, en partant de la virgule &mdash; <strong>attention</strong>, ne comptez jamais juste le nombre de chiffres apr&egrave;s la virgule !</p>
+  <div class="example">
+    <h4>Exemple</h4>
+    <p>Comparons 6,8 et 6,75. On &eacute;crit 6,8 = 6,80. Dixi&egrave;mes : 8 &gt; 7, donc <strong>6,8 &gt; 6,75</strong> (m&ecirc;me si 6,75 "a plus de chiffres").</p>
+  </div>
+
+  <h2>4. Arrondir un nombre</h2>
+  <div class="def">
+    <h4>M&eacute;thode</h4>
+    <p>Pour arrondir &agrave; une position donn&eacute;e, on regarde le chiffre juste apr&egrave;s :</p>
+    <ul>
+      <li>s'il est <strong>0,1,2,3,4</strong> &rarr; on garde le chiffre de la position (on arrondit "en dessous")</li>
+      <li>s'il est <strong>5,6,7,8,9</strong> &rarr; on augmente le chiffre de la position de 1 (on arrondit "au-dessus")</li>
+    </ul>
+    <p>Tous les chiffres suivants deviennent des z&eacute;ros (ou disparaissent apr&egrave;s la virgule).</p>
+  </div>
+  <div class="example">
+    <h4>Exemple</h4>
+    <p>Arrondir 4 738 &agrave; la centaine pr&egrave;s : le chiffre des dizaines est 3 (&lt;5) &rarr; on garde &rarr; <strong>4 700</strong>.<br>
+    Arrondir 12,647 au centi&egrave;me pr&egrave;s : le chiffre des milli&egrave;mes est 7 (&ge;5) &rarr; on augmente &rarr; <strong>12,65</strong>.</p>
+  </div>
+
+  <h2>5. Les quatre op&eacute;rations</h2>
+  <div class="two-col">
+    <div class="card">
+      <h4>Addition / Soustraction</h4>
+      <p>On aligne les chiffres selon leur position (unit&eacute;s sous unit&eacute;s, virgule sous virgule). On peut compl&eacute;ter avec des z&eacute;ros pour avoir le m&ecirc;me nombre de d&eacute;cimales.</p>
+    </div>
+    <div class="card">
+      <h4>Multiplication</h4>
+      <p>On multiplie comme des entiers, puis on compte le nombre total de chiffres apr&egrave;s la virgule dans les deux facteurs pour placer la virgule dans le r&eacute;sultat.</p>
+    </div>
+  </div>
+  <div class="def">
+    <h4>Division euclidienne</h4>
+    <p>Diviser un entier <em>a</em> (dividende) par un entier <em>b</em> (diviseur) non nul, c'est trouver un quotient <em>q</em> et un reste <em>r</em> tels que :</p>
+    <p style="text-align:center; font-size:1.2rem;"><strong>a = b &times; q + r</strong> avec <strong>0 &le; r &lt; b</strong></p>
+  </div>
+
+  <h2>6. Priorit&eacute;s op&eacute;ratoires</h2>
+  <div class="def">
+    <h4>R&egrave;gle</h4>
+    <ol>
+      <li>On effectue d'abord ce qui est <strong>entre parenth&egrave;ses</strong>.</li>
+      <li>Puis les <strong>multiplications et divisions</strong>, de gauche &agrave; droite.</li>
+      <li>Puis les <strong>additions et soustractions</strong>, de gauche &agrave; droite.</li>
+    </ol>
+  </div>
+  <div class="example">
+    <h4>Exemple</h4>
+    <p>5 + 3 &times; (8 &minus; 2) = 5 + 3 &times; 6 = 5 + 18 = <strong>23</strong></p>
+  </div>
+
+  <h2>7. Crit&egrave;res de divisibilit&eacute;</h2>
+  <table>
+    <tr><th>Divisible par</th><th>Crit&egrave;re</th></tr>
+    <tr><td>2</td><td>Le chiffre des unit&eacute;s est 0, 2, 4, 6 ou 8 (nombre pair)</td></tr>
+    <tr><td>5</td><td>Le chiffre des unit&eacute;s est 0 ou 5</td></tr>
+    <tr><td>10</td><td>Le chiffre des unit&eacute;s est 0</td></tr>
+    <tr><td>3</td><td>La somme des chiffres est divisible par 3</td></tr>
+    <tr><td>9</td><td>La somme des chiffres est divisible par 9</td></tr>
+  </table>
+  <div class="example">
+    <h4>Exemple</h4>
+    <p>243 : 2+4+3 = 9, divisible par 9 et par 3 &rarr; 243 est divisible par 3 et par 9. Il ne se termine pas par 0 ni 5 ni chiffre pair &rarr; pas divisible par 2, 5 ni 10.</p>
+  </div>
+
+  <h2>8. Un peu d'histoire des nombres</h2>
+  <p>Le syst&egrave;me de num&eacute;ration que nous utilisons aujourd'hui s'appelle le <strong>syst&egrave;me d&eacute;cimal indo-arabe</strong>. Il a &eacute;t&eacute; invent&eacute; en Inde puis transmis en Europe par les math&eacute;maticiens arabes, notamment gr&acirc;ce au savant <strong>Al-Khw&#257;rizm&#299;</strong> (IXe si&egrave;cle), dont le nom a donn&eacute; le mot "algorithme".</p>
+  <p>Avant ce syst&egrave;me, les Romains utilisaient des lettres (I, V, X, L, C, D, M) qui ne permettaient pas de calculer facilement. Le grand avantage du syst&egrave;me d&eacute;cimal est l'utilisation du <strong>z&eacute;ro</strong>, qui permet de repr&eacute;senter n'importe quel nombre, aussi grand soit-il, avec seulement 10 symboles.</p>
+  <div class="tip">
+    <strong>Le saviez-vous ?</strong> Le mot "chiffre" vient de l'arabe <em>sifr</em>, qui signifie... "z&eacute;ro" ou "vide" !
+  </div>
+
+  <h2>9. Vocabulaire &agrave; conna&icirc;tre</h2>
+  <table>
+    <tr><th>Mot</th><th>Signification</th></tr>
+    <tr><td>Chiffre</td><td>Un des 10 symboles : 0,1,2,...,9</td></tr>
+    <tr><td>Nombre</td><td>Une valeur, form&eacute;e d'un ou plusieurs chiffres</td></tr>
+    <tr><td>Dividende</td><td>Le nombre que l'on divise (a dans a &divide; b)</td></tr>
+    <tr><td>Diviseur</td><td>Le nombre par lequel on divise (b dans a &divide; b)</td></tr>
+    <tr><td>Quotient</td><td>Le r&eacute;sultat entier d'une division</td></tr>
+    <tr><td>Reste</td><td>Ce qu'il reste apr&egrave;s une division euclidienne</td></tr>
+    <tr><td>Multiple</td><td>R&eacute;sultat de la multiplication d'un nombre par un entier</td></tr>
+    <tr><td>Diviseur d'un nombre</td><td>Nombre qui divise exactement (reste 0) un autre nombre</td></tr>
+  </table>
+</div>
+
+<!-- ============ TAB 1 : METHODES ============ -->
+<div class="tab-pane">
+  <h2>M&eacute;thode 1 &mdash; Lire un grand nombre</h2>
+  <div class="card">
+    <ol>
+      <li>Partir de la droite et faire des groupes de 3 chiffres (espaces ins&eacute;cables).</li>
+      <li>Nommer chaque groupe : unit&eacute;s simples, mille, million, milliard.</li>
+      <li>Lire chaque groupe comme un nombre &agrave; 3 chiffres, en ajoutant son nom de classe.</li>
+    </ol>
+    <div class="example">
+      <h4>Exemple guid&eacute;</h4>
+      <p><strong>7245830</strong> &rarr; on groupe : 7 245 830 &rarr; 7 (millions) / 245 (mille) / 830.<br>
+      Lecture : <strong>sept millions deux cent quarante-cinq mille huit cent trente</strong>.</p>
+    </div>
+  </div>
+
+  <h2>M&eacute;thode 2 &mdash; Comparer deux d&eacute;cimaux</h2>
+  <div class="card">
+    <ol>
+      <li>Comparer les parties enti&egrave;res : la plus grande l'emporte.</li>
+      <li>Si &eacute;galit&eacute;, compl&eacute;ter les parties d&eacute;cimales avec des z&eacute;ros pour qu'elles aient la m&ecirc;me longueur.</li>
+      <li>Comparer chiffre par chiffre apr&egrave;s la virgule, de gauche &agrave; droite.</li>
+    </ol>
+    <div class="example">
+      <h4>Exemple guid&eacute;</h4>
+      <p>Comparer 15,3 et 15,29.<br>15,3 = 15,30. Dixi&egrave;mes &eacute;gaux (3=3). Centi&egrave;mes : 0 &lt; 9 &rarr; <strong>15,29 &lt; 15,30</strong> donc 15,29 &lt; 15,3.</p>
+    </div>
+  </div>
+
+  <h2>M&eacute;thode 3 &mdash; Poser une multiplication d&eacute;cimale</h2>
+  <div class="card">
+    <ol>
+      <li>Effectuer la multiplication comme si c'&eacute;taient des nombres entiers (ignorer les virgules).</li>
+      <li>Compter le nombre total de chiffres apr&egrave;s la virgule dans les deux nombres de d&eacute;part.</li>
+      <li>Placer la virgule dans le r&eacute;sultat en comptant ce m&ecirc;me nombre de chiffres depuis la droite.</li>
+    </ol>
+    <div class="example">
+      <h4>Exemple guid&eacute;</h4>
+      <p>2,3 &times; 1,4 : on calcule 23 &times; 14 = 322. Il y a 1+1 = 2 chiffres apr&egrave;s la virgule au total &rarr; <strong>3,22</strong>.</p>
+    </div>
+  </div>
+
+  <h2>M&eacute;thode 4 &mdash; Poser une division euclidienne</h2>
+  <div class="card">
+    <ol>
+      <li>On cherche combien de fois le diviseur "entre" dans le d&eacute;but du dividende.</li>
+      <li>On multiplie, on soustrait pour trouver le reste partiel, on abaisse le chiffre suivant.</li>
+      <li>On r&eacute;p&egrave;te jusqu'&agrave; &eacute;puisement des chiffres du dividende.</li>
+      <li>On v&eacute;rifie : dividende = diviseur &times; quotient + reste, et reste &lt; diviseur.</li>
+    </ol>
+    <div class="example">
+      <h4>Exemple guid&eacute;</h4>
+      <p>257 &divide; 6 : 6 dans 25 &rarr; 4 fois (24), reste 1. On abaisse le 7 &rarr; 17. 6 dans 17 &rarr; 2 fois (12), reste 5.<br>
+      Quotient = <strong>42</strong>, reste = <strong>5</strong>. V&eacute;rification : 6&times;42+5 = 252+5 = 257. &#10003;</p>
+    </div>
+  </div>
+
+  <h2>M&eacute;thode 5 &mdash; Appliquer les priorit&eacute;s op&eacute;ratoires</h2>
+  <div class="card">
+    <p>Surligner ou encadrer d'abord les parenth&egrave;ses, puis reep&eacute;rer les &times; et &divide;, puis finir par + et &minus;, toujours de gauche &agrave; droite &agrave; chaque &eacute;tape.</p>
+    <div class="example">
+      <h4>Exemple guid&eacute;</h4>
+      <p>12 &minus; 3 &times; 2 + (7 &minus; 4)<br>
+      = 12 &minus; 3 &times; 2 + 3 (parenth&egrave;se faite)<br>
+      = 12 &minus; 6 + 3 (multiplication faite)<br>
+      = 6 + 3 = <strong>9</strong> (de gauche &agrave; droite)</p>
+    </div>
+  </div>
+
+  <h2>M&eacute;thode 6 &mdash; Tester une divisibilit&eacute; rapidement</h2>
+  <div class="card">
+    <ol>
+      <li>Regarder le <strong>dernier chiffre</strong> pour tester 2, 5 et 10.</li>
+      <li>Additionner <strong>tous les chiffres</strong> du nombre pour tester 3 et 9 (si la somme est encore grande, on peut recommencer &agrave; additionner ses chiffres).</li>
+      <li>Conclure en comparant au crit&egrave;re correspondant.</li>
+    </ol>
+    <div class="example">
+      <h4>Exemple guid&eacute;</h4>
+      <p>Le nombre 4 572 est-il divisible par 9 ?<br>
+      Somme des chiffres : 4+5+7+2 = 18. Est-ce que 18 est divisible par 9 ? Oui (18 = 9&times;2).<br>
+      Donc <strong>4 572 est divisible par 9</strong> (et donc aussi par 3, car tout multiple de 9 est multiple de 3).</p>
+    </div>
+  </div>
+
+  <h2>M&eacute;thode 7 &mdash; Passer d'une &eacute;criture fractionnaire &agrave; une &eacute;criture d&eacute;cimale simple</h2>
+  <div class="card">
+    <p>Certaines &eacute;critures avec dixi&egrave;mes, centi&egrave;mes ou milli&egrave;mes se retrouvent aussi &eacute;crites "en lettres" ou sous forme de fraction d&eacute;cimale. Il faut savoir les relier au nombre &agrave; virgule correspondant.</p>
+    <div class="example">
+      <h4>Exemple guid&eacute;</h4>
+      <p>"3 unit&eacute;s et 25 centi&egrave;mes" s'&eacute;crit <strong>3,25</strong>.<br>
+      "127 dixi&egrave;mes" = 12 unit&eacute;s et 7 dixi&egrave;mes = <strong>12,7</strong> (on divise 127 par 10).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 2 : EXERCICES ============ -->
+<div class="tab-pane">
+  <h2>Exercices progressifs</h2>
+
+  <div class="exo"><span class="diff">Niveau 1</span><span class="num">1</span><strong>&Eacute;criture des nombres</strong>
+    <p>&Eacute;cris en chiffres : "quatre cent cinq mille douze".</p>
+    <details><summary>Correction</summary><p><strong>405 012</strong></p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 1</span><span class="num">2</span><strong>Valeur d'un chiffre</strong>
+    <p>Dans le nombre 87 430, que repr&eacute;sente le chiffre 4 ?</p>
+    <details><summary>Correction</summary><p>Le chiffre 4 est &agrave; la position des centaines, il repr&eacute;sente donc <strong>4 centaines = 400</strong>.</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 1</span><span class="num">3</span><strong>Comparaison simple</strong>
+    <p>Compare : 5 302 ... 5 320 (utilise &lt;, &gt; ou =).</p>
+    <details><summary>Correction</summary><p>5 302 <strong>&lt;</strong> 5 320 (dizaines : 0 &lt; 2).</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 2</span><span class="num">4</span><strong>Comparaison de d&eacute;cimaux</strong>
+    <p>Range dans l'ordre croissant : 3,4 &nbsp; 3,04 &nbsp; 3,45 &nbsp; 3,099</p>
+    <details><summary>Correction</summary><p><strong>3,04 &lt; 3,099 &lt; 3,4 &lt; 3,45</strong></p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 2</span><span class="num">5</span><strong>Arrondir</strong>
+    <p>Arrondis 6 482 &agrave; la centaine pr&egrave;s, puis 3,672 au dixi&egrave;me pr&egrave;s.</p>
+    <details><summary>Correction</summary><p>6 482 &rarr; chiffre des dizaines 8&ge;5 &rarr; <strong>6 500</strong>.<br>3,672 &rarr; chiffre des centi&egrave;mes 7&ge;5 &rarr; <strong>3,7</strong>.</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 2</span><span class="num">6</span><strong>Addition de d&eacute;cimaux</strong>
+    <p>Calcule 12,7 + 3,45</p>
+    <details><summary>Correction</summary><p>12,70 + 3,45 = <strong>16,15</strong></p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 2</span><span class="num">7</span><strong>Priorit&eacute;s op&eacute;ratoires</strong>
+    <p>Calcule : 4 + 6 &times; 3</p>
+    <details><summary>Correction</summary><p>4 + 18 = <strong>22</strong> (la multiplication d'abord)</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 3</span><span class="num">8</span><strong>Division euclidienne</strong>
+    <p>Effectue la division euclidienne de 143 par 8. V&eacute;rifie ton r&eacute;sultat.</p>
+    <details><summary>Correction</summary><p>143 = 8 &times; 17 + 7 &nbsp; (quotient 17, reste 7).<br>V&eacute;rification : 8&times;17 = 136, 136+7 = 143. &#10003;</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 3</span><span class="num">9</span><strong>Priorit&eacute;s avec parenth&egrave;ses</strong>
+    <p>Calcule : (15 &minus; 7) &times; 3 + 2 &times; 5</p>
+    <details><summary>Correction</summary><p>8 &times; 3 + 2 &times; 5 = 24 + 10 = <strong>34</strong></p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 3</span><span class="num">10</span><strong>Divisibilit&eacute;</strong>
+    <p>Le nombre 738 est-il divisible par 2, par 3, par 9 ? Justifie.</p>
+    <details><summary>Correction</summary><p>Se termine par 8 (pair) &rarr; divisible par <strong>2</strong>.<br>7+3+8 = 18, divisible par 9 (et par 3) &rarr; divisible par <strong>3 et 9</strong>.</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 3</span><span class="num">11</span><strong>Soustraction de d&eacute;cimaux</strong>
+    <p>Calcule 25,3 &minus; 8,47</p>
+    <details><summary>Correction</summary><p>25,30 &minus; 8,47 = <strong>16,83</strong></p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Niveau 3</span><span class="num">12</span><strong>Probl&egrave;me court</strong>
+    <p>Un cycliste parcourt 12,5 km le matin et 8,75 km l'apr&egrave;s-midi. Quelle distance totale a-t-il parcourue ?</p>
+    <details><summary>Correction</summary><p>12,50 + 8,75 = <strong>21,25 km</strong></p></details>
+  </div>
+</div>
+
+<!-- ============ TAB 3 : APPROFONDISSEMENT ============ -->
+<div class="tab-pane">
+  <h2>Pour aller plus loin</h2>
+
+  <div class="exo"><span class="diff">Difficile</span><span class="num">1</span><strong>Probl&egrave;me &mdash; Partage</strong>
+    <p>Une biblioth&egrave;que re&ccedil;oit 347 livres &agrave; ranger sur des &eacute;tag&egrave;res pouvant contenir 12 livres chacune. Combien d'&eacute;tag&egrave;res compl&egrave;tes peut-on remplir ? Combien de livres restera-t-il ?</p>
+    <details><summary>Correction</summary><p>347 = 12 &times; 28 + 11.<br>On peut remplir <strong>28 &eacute;tag&egrave;res compl&egrave;tes</strong>, et il restera <strong>11 livres</strong> (qui n&eacute;cessiteront une 29&egrave;me &eacute;tag&egrave;re incompl&egrave;te).</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Difficile</span><span class="num">2</span><strong>Calcul avec priorit&eacute;s complexes</strong>
+    <p>Calcule : 100 &minus; (4 + 6) &times; (12 &minus; 2 &times; 5) + 3</p>
+    <details><summary>Correction</summary><p>100 &minus; 10 &times; (12 &minus; 10) + 3<br>= 100 &minus; 10 &times; 2 + 3<br>= 100 &minus; 20 + 3<br>= 80 + 3 = <strong>83</strong></p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Difficile</span><span class="num">3</span><strong>Nombre myst&egrave;re</strong>
+    <p>Je suis un nombre entier de 3 chiffres. Je suis divisible par 5 et par 9. La somme de mes chiffres est 18. Mon chiffre des centaines est 4. Qui suis-je ? (il y a plusieurs r&eacute;ponses possibles, trouve-les toutes)</p>
+    <details><summary>Correction</summary><p>Centaines = 4, somme des chiffres = 18 &rarr; dizaine+unit&eacute; = 14. Divisible par 5 &rarr; unit&eacute; = 0 ou 5.<br>Si unit&eacute;=0 : dizaine=14 impossible.<br>Si unit&eacute;=5 : dizaine=9 &rarr; nombre = <strong>495</strong>.<br>V&eacute;rification : 4+9+5=18 &#10003;, divisible par 5 &#10003; et par 9 (18/9=2) &#10003;.</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Difficile</span><span class="num">4</span><strong>Encadrement de d&eacute;cimal</strong>
+    <p>Trouve un nombre d&eacute;cimal compris strictement entre 7,42 et 7,43, avec 3 chiffres apr&egrave;s la virgule.</p>
+    <details><summary>Correction</summary><p>Par exemple <strong>7,425</strong> (toute r&eacute;ponse entre 7,421 et 7,429 convient).</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Difficile</span><span class="num">5</span><strong>Probl&egrave;me &agrave; &eacute;tapes</strong>
+    <p>Un artisan ach&egrave;te 8 planches de bois &agrave; 14,50&euro; l'unit&eacute; et 3 pots de peinture &agrave; 9,90&euro; l'unit&eacute;. Il paie avec un billet de 200&euro;. Combien lui rend-on ?</p>
+    <details><summary>Correction</summary><p>Planches : 8 &times; 14,50 = 116&euro;<br>Peinture : 3 &times; 9,90 = 29,70&euro;<br>Total : 116 + 29,70 = 145,70&euro;<br>Rendu : 200 &minus; 145,70 = <strong>54,30&euro;</strong></p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Difficile</span><span class="num">6</span><strong>Divisibilit&eacute; combin&eacute;e</strong>
+    <p>Trouve tous les nombres de 2 chiffres, multiples de 6, dont la somme des chiffres est 9.</p>
+    <details><summary>Correction</summary><p>Multiples de 6 &agrave; 2 chiffres dont la somme des chiffres vaut 9 : il faut &ecirc;tre divisible par 2 <em>et</em> par 3 (car 6 = 2&times;3), la somme des chiffres &eacute;tant 9 (divisible par 3, donc par 9 aussi).<br>
+    Candidats avec somme 9 : 18, 27, 36, 45, 54, 63, 72, 81, 90. Parmi eux, ceux qui sont pairs (donc divisibles par 6) : <strong>18, 36, 54, 72, 90</strong>.</p></details>
+  </div>
+
+  <div class="exo"><span class="diff">Difficile</span><span class="num">7</span><strong>Retrouver le dividende</strong>
+    <p>Dans une division euclidienne, le diviseur est 7, le quotient est 15 et le reste est 4. Quel est le dividende ?</p>
+    <details><summary>Correction</summary><p>a = b &times; q + r = 7 &times; 15 + 4 = 105 + 4 = <strong>109</strong></p></details>
+  </div>
+</div>
+
+<!-- ============ TAB 4 : QCM ============ -->
+<div class="tab-pane">
+  <h2>Quiz &mdash; teste tes connaissances</h2>
+  <p>Choisis la bonne r&eacute;ponse pour chaque question. Ton score s'affichera &agrave; la fin.</p>
+  <div id="qcm-container"></div>
+  <div class="controls">
+    <button class="action" onclick="resetQCM()">Recommencer le quiz</button>
+  </div>
+  <div id="qcm-score"></div>
+</div>
+
+<!-- ============ TAB 5 : VISUALISATION ============ -->
+<div class="tab-pane">
+  <h2>Tableau de num&eacute;ration interactif</h2>
+  <p>Clique sur une case pour saisir un chiffre et voir le nombre form&eacute; se construire automatiquement.</p>
+  <canvas id="placeValueCanvas" width="700" height="220"></canvas>
+  <div class="controls">
+    <button class="action" onclick="clearPlaceValue()">Effacer</button>
+    <span id="pvNumberDisplay" style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--heading);"></span>
+  </div>
+
+  <h2>Droite gradu&eacute;e &mdash; place le nombre d&eacute;cimal</h2>
+  <p>Saisis un nombre d&eacute;cimal entre 0 et 10, puis clique sur "Placer" pour voir sa position sur la droite gradu&eacute;e.</p>
+  <div class="controls">
+    <input type="text" id="decimalInput" placeholder="ex: 4,7">
+    <button class="action" onclick="placeOnLine()">Placer sur la droite</button>
+  </div>
+  <canvas id="numberLineCanvas" width="700" height="160"></canvas>
+  <div id="lineFeedback" class="feedback"></div>
+
+  <h2>Simulateur d'arrondi</h2>
+  <p>Saisis un nombre et choisis la position d'arrondi pour voir le r&eacute;sultat expliqu&eacute; &eacute;tape par &eacute;tape.</p>
+  <div class="controls">
+    <input type="text" id="roundInput" placeholder="ex: 4728,63">
+    <select id="roundPos" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; background:var(--surface); color:var(--text); font-family:'Nunito Sans',sans-serif;">
+      <option value="1000">Millier</option>
+      <option value="100">Centaine</option>
+      <option value="10">Dizaine</option>
+      <option value="1" selected>Unit&eacute;</option>
+      <option value="0.1">Dixi&egrave;me</option>
+      <option value="0.01">Centi&egrave;me</option>
+    </select>
+    <button class="action" onclick="doRound()">Arrondir</button>
+  </div>
+  <div id="roundResult" class="card" style="display:none;"></div>
+
+  <h2>Grille de multiplication</h2>
+  <p>Choisis deux nombres pour visualiser leur produit sous forme de grille.</p>
+  <div class="controls">
+    <input type="number" id="multA" value="4" min="1" max="12" style="width:70px;">
+    <span>&times;</span>
+    <input type="number" id="multB" value="6" min="1" max="12" style="width:70px;">
+    <button class="action" onclick="drawMultGrid()">Afficher la grille</button>
+  </div>
+  <canvas id="multCanvas" width="700" height="320"></canvas>
+  <div id="multResult" style="text-align:center; font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--heading);"></div>
+</div>
+
+<!-- ============ TAB 6 : BILAN ============ -->
+<div class="tab-pane">
+  <h2>Bilan &mdash; ce qu'il faut retenir</h2>
+
+  <div class="def">
+    <h4>Num&eacute;ration</h4>
+    <p>Un nombre s'&eacute;crit en base 10 ; chaque position vaut 10 fois la position &agrave; sa droite. On groupe les chiffres par 3 pour lire les grands nombres (unit&eacute;s, mille, million, milliard).</p>
+  </div>
+
+  <div class="def">
+    <h4>Comparaison</h4>
+    <p>Entiers : le plus de chiffres gagne, sinon on compare de gauche &agrave; droite. D&eacute;cimaux : comparer d'abord les parties enti&egrave;res, puis chiffre par chiffre apr&egrave;s la virgule (compl&eacute;ter avec des z&eacute;ros si besoin).</p>
+  </div>
+
+  <div class="def">
+    <h4>Arrondir</h4>
+    <p>Regarder le chiffre juste apr&egrave;s la position vis&eacute;e : 0-4 on garde, 5-9 on augmente de 1.</p>
+  </div>
+
+  <div class="def">
+    <h4>Op&eacute;rations</h4>
+    <p>Addition/soustraction : aligner les virgules. Multiplication d&eacute;cimale : multiplier comme des entiers puis placer la virgule. Division euclidienne : a = b &times; q + r avec r &lt; b.</p>
+  </div>
+
+  <div class="def">
+    <h4>Priorit&eacute;s</h4>
+    <p>Parenth&egrave;ses &rarr; multiplications/divisions &rarr; additions/soustractions, toujours de gauche &agrave; droite au sein d'une m&ecirc;me &eacute;tape.</p>
+  </div>
+
+  <div class="def">
+    <h4>Divisibilit&eacute;</h4>
+    <p>Par 2 : chiffre des unit&eacute;s pair. Par 5 : unit&eacute; 0 ou 5. Par 10 : unit&eacute; 0. Par 3 et 9 : somme des chiffres divisible par 3 (ou 9).</p>
+  </div>
+
+  <h2>Erreurs fr&eacute;quentes &agrave; &eacute;viter</h2>
+  <table>
+    <tr><th>Erreur</th><th>Pourquoi c'est faux</th><th>Ce qu'il faut faire</th></tr>
+    <tr><td>Penser que 3,7 &lt; 3,45 car "45 &gt; 7"</td><td>On compare le nombre de chiffres, pas leur valeur de position</td><td>&Eacute;crire 3,70 et 3,45, comparer les dixi&egrave;mes : 7 &gt; 4</td></tr>
+    <tr><td>Additionner 12,3 + 4,56 = 16,86 sans aligner</td><td>Les unit&eacute;s ne sont pas align&eacute;es avec les unit&eacute;s</td><td>&Eacute;crire 12,30 + 4,56 en alignant les virgules = 16,86 (ici correct par hasard, toujours v&eacute;rifier l'alignement !)</td></tr>
+    <tr><td>Calculer 4 + 3 &times; 2 = 14</td><td>On a fait l'addition avant la multiplication</td><td>Faire la multiplication d'abord : 4 + 6 = 10</td></tr>
+    <tr><td>Dire que le reste peut &ecirc;tre &eacute;gal au diviseur</td><td>Cela signifierait qu'on peut encore diviser une fois de plus</td><td>Le reste doit toujours &ecirc;tre strictement inf&eacute;rieur au diviseur</td></tr>
+  </table>
+
+  <h2>Auto-&eacute;valuation</h2>
+  <ul>
+    <li>Je sais lire et &eacute;crire un nombre entier jusqu'au milliard.</li>
+    <li>Je sais comparer et ranger des nombres entiers et d&eacute;cimaux.</li>
+    <li>Je sais arrondir un nombre &agrave; une position donn&eacute;e.</li>
+    <li>Je sais poser et effectuer les 4 op&eacute;rations, y compris avec des d&eacute;cimaux.</li>
+    <li>Je connais et applique les priorit&eacute;s op&eacute;ratoires.</li>
+    <li>Je connais les crit&egrave;res de divisibilit&eacute; par 2, 3, 5, 9, 10.</li>
+  </ul>
+
+  <div class="tip">
+    <strong>Prochaine &eacute;tape :</strong> une fois ce chapitre ma&icirc;tris&eacute;, tu es pr&ecirc;t(e) &agrave; aborder les fractions et la proportionnalit&eacute; !
+  </div>
+</div>
+
+</div>
+
+<footer>Cours de math&eacute;matiques &mdash; Classe de 6&egrave;me &mdash; Nombres entiers et d&eacute;cimaux</footer>
+
+<script>
+var tabs = document.querySelectorAll('.tab-pane');
+
+function showTab(n){
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active', i===n);});
+  tabs.forEach(function(p,i){p.classList.toggle('active', i===n);});
+  if(!tabs[n].dataset.init){
+    tabs[n].dataset.init = '1';
+    initSection(n);
+  }
+}
+
+function initSection(n){
+  if(n===4){ buildQCM(); }
+  if(n===5){
+    drawPlaceValueGrid();
+    drawNumberLine();
+    drawMultGrid();
+  }
+}
+
+/* ================= QCM ================= */
+var qcmData = [
+  {q:"Comment s'écrit en chiffres « deux cent trente mille quatre » ?", opts:["230 004","230 400","23 004","203 004"], a:0},
+  {q:"Dans le nombre 587 214, que représente le chiffre 8 ?", opts:["8 unités","8 dizaines de mille","8 centaines de mille","8 millions"], a:1},
+  {q:"Quel est le plus grand des deux nombres : 6,8 ou 6,75 ?", opts:["6,8","6,75","Ils sont égaux","Impossible à savoir"], a:0},
+  {q:"Arrondis 3 456 à la centaine près.", opts:["3 400","3 500","3 460","3 000"], a:1},
+  {q:"Calcule : 5 + 2 × 4", opts:["28","13","20","11"], a:1},
+  {q:"Dans une division euclidienne, que doit toujours vérifier le reste ?", opts:["reste = 0", "reste > diviseur", "reste < diviseur", "reste = diviseur"], a:2},
+  {q:"Quel nombre est divisible par 9 ?", opts:["124","342","230","715"], a:1},
+  {q:"Combien vaut 2,3 × 1,4 ?", opts:["3,22","32,2","0,322","3,2"], a:0},
+  {q:"Range dans l'ordre croissant : lequel est le plus petit ?", opts:["4,05","4,5","4,15","4,505"], a:0},
+  {q:"Quel est le quotient de la division euclidienne de 257 par 6 ?", opts:["41","42","43","40"], a:1}
+];
+var qcmAnswered = new Array(qcmData.length).fill(false);
+var qcmScore = 0;
+
+function buildQCM(){
+  var c = document.getElementById('qcm-container');
+  c.innerHTML = '';
+  qcmData.forEach(function(item, idx){
+    var div = document.createElement('div');
+    div.className = 'qcm-q';
+    var h = document.createElement('div');
+    h.innerHTML = '<strong>Question ' + (idx+1) + '.</strong> ' + item.q;
+    div.appendChild(h);
+    var optsDiv = document.createElement('div');
+    optsDiv.className = 'qcm-opts';
+    item.opts.forEach(function(opt, oi){
+      var btn = document.createElement('button');
+      btn.className = 'qcm-opt';
+      btn.textContent = opt;
+      btn.onclick = function(){ answerQCM(idx, oi, div); };
+      optsDiv.appendChild(btn);
+    });
+    div.appendChild(optsDiv);
+    c.appendChild(div);
+  });
+  document.getElementById('qcm-score').style.display = 'none';
+}
+
+function answerQCM(qIdx, optIdx, div){
+  if(qcmAnswered[qIdx]) return;
+  qcmAnswered[qIdx] = true;
+  var buttons = div.querySelectorAll('.qcm-opt');
+  buttons.forEach(function(b, i){
+    b.classList.add('disabled');
+    if(i === qcmData[qIdx].a) b.classList.add('correct');
+    else if(i === optIdx) b.classList.add('wrong');
+  });
+  if(optIdx === qcmData[qIdx].a) qcmScore++;
+  if(qcmAnswered.every(Boolean)){
+    var sc = document.getElementById('qcm-score');
+    sc.style.display = 'block';
+    sc.textContent = 'Score final : ' + qcmScore + ' / ' + qcmData.length;
+  }
+}
+
+function resetQCM(){
+  qcmAnswered = new Array(qcmData.length).fill(false);
+  qcmScore = 0;
+  buildQCM();
+}
+
+/* ================= Place value canvas ================= */
+var pvDigits = ['', '', '', '', '', '', ''];
+var pvLabels = ['CM','DM','UM','C','D','U'];
+function cssVar(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function drawPlaceValueGrid(){
+  var canvas = document.getElementById('placeValueCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = cssVar('--surface');
+  ctx.fillRect(0,0,w,h);
+  var n = pvLabels.length;
+  var cellW = w / n;
+  var cellY = 40, cellH = 80;
+  ctx.strokeStyle = cssVar('--border');
+  ctx.font = "16px 'Cormorant Garamond', serif";
+  ctx.textAlign = 'center';
+  for(var i=0;i<n;i++){
+    var x = i*cellW;
+    ctx.strokeRect(x, cellY, cellW, cellH);
+    ctx.fillStyle = cssVar('--muted');
+    ctx.font = "13px 'Nunito Sans', sans-serif";
+    ctx.fillText(pvLabels[i], x+cellW/2, cellY-12);
+    ctx.font = "bold 30px 'Cormorant Garamond', serif";
+    ctx.fillStyle = cssVar('--accent');
+    ctx.fillText(pvDigits[i] || '?', x+cellW/2, cellY+cellH/2+10);
+  }
+  updatePvDisplay();
+}
+function clearPlaceValue(){
+  pvDigits = ['', '', '', '', '', ''];
+  drawPlaceValueGrid();
+}
+function updatePvDisplay(){
+  var str = pvDigits.join('').replace(/^0+(?=\d)/, '');
+  var display = document.getElementById('pvNumberDisplay');
+  if(pvDigits.some(function(d){return d!=='';})){
+    var padded = pvDigits.map(function(d){return d===''?'0':d;}).join('');
+    display.textContent = 'Nombre : ' + Number(padded).toLocaleString('fr-FR');
+  } else {
+    display.textContent = '';
+  }
+}
+(function attachPvClick(){
+  document.addEventListener('DOMContentLoaded', function(){
+    var canvas = document.getElementById('placeValueCanvas');
+    if(!canvas) return;
+    canvas.addEventListener('click', function(e){
+      var rect = canvas.getBoundingClientRect();
+      var scaleX = canvas.width / rect.width;
+      var x = (e.clientX - rect.left) * scaleX;
+      var n = pvLabels.length;
+      var cellW = canvas.width / n;
+      var idx = Math.floor(x / cellW);
+      if(idx>=0 && idx<n){
+        var val = prompt('Entre un chiffre (0-9) pour la position ' + pvLabels[idx] + ' :');
+        if(val !== null && /^[0-9]$/.test(val.trim())){
+          pvDigits[idx] = val.trim();
+          drawPlaceValueGrid();
+        }
+      }
+    });
+  });
+})();
+
+/* ================= Number line canvas ================= */
+function drawNumberLine(highlightVal){
+  var canvas = document.getElementById('numberLineCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = cssVar('--surface');
+  ctx.fillRect(0,0,w,h);
+  var marginX = 40;
+  var lineY = h/2;
+  var usableW = w - 2*marginX;
+  ctx.strokeStyle = cssVar('--text');
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(marginX, lineY);
+  ctx.lineTo(w-marginX, lineY);
+  ctx.stroke();
+  ctx.font = "13px 'Nunito Sans', sans-serif";
+  ctx.fillStyle = cssVar('--muted');
+  ctx.textAlign = 'center';
+  for(var i=0;i<=10;i++){
+    var x = marginX + (usableW*i/10);
+    var tickH = (i%1===0) ? 10 : 5;
+    ctx.beginPath();
+    ctx.moveTo(x, lineY-tickH);
+    ctx.lineTo(x, lineY+tickH);
+    ctx.strokeStyle = cssVar('--border');
+    ctx.stroke();
+    ctx.fillText(String(i), x, lineY+28);
+  }
+  if(typeof highlightVal === 'number' && highlightVal>=0 && highlightVal<=10){
+    var hx = marginX + (usableW*highlightVal/10);
+    ctx.beginPath();
+    ctx.arc(hx, lineY, 7, 0, 2*Math.PI);
+    ctx.fillStyle = cssVar('--accent');
+    ctx.fill();
+    ctx.strokeStyle = cssVar('--surface');
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.font = "bold 15px 'Cormorant Garamond', serif";
+    ctx.fillStyle = cssVar('--heading');
+    ctx.fillText(String(highlightVal).replace('.', ','), hx, lineY-16);
+  }
+}
+function placeOnLine(){
+  var input = document.getElementById('decimalInput').value.trim().replace(',', '.');
+  var fb = document.getElementById('lineFeedback');
+  var val = parseFloat(input);
+  if(isNaN(val) || val<0 || val>10){
+    fb.textContent = 'Entre un nombre décimal valide entre 0 et 10 (ex: 4,7).';
+    fb.className = 'feedback ko';
+    drawNumberLine();
+    return;
+  }
+  drawNumberLine(val);
+  fb.textContent = 'Le nombre ' + input.replace('.',',') + ' est placé sur la droite graduée.';
+  fb.className = 'feedback ok';
+}
+
+/* ================= Multiplication grid canvas ================= */
+function drawMultGrid(){
+  var canvas = document.getElementById('multCanvas');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = cssVar('--surface');
+  ctx.fillRect(0,0,w,h);
+  var a = parseInt(document.getElementById('multA').value, 10);
+  var b = parseInt(document.getElementById('multB').value, 10);
+  if(!a || !b || a<1 || b<1 || a>12 || b>12){
+    document.getElementById('multResult').textContent = 'Entre deux nombres entre 1 et 12.';
+    return;
+  }
+  var marginX = 40, marginY = 30;
+  var maxW = w - 2*marginX, maxH = h - 2*marginY;
+  var cellSize = Math.min(maxW/b, maxH/a, 40);
+  var gridW = cellSize*b, gridH = cellSize*a;
+  var startX = (w-gridW)/2, startY = marginY;
+  ctx.strokeStyle = cssVar('--border');
+  ctx.fillStyle = cssVar('--accent-light');
+  for(var i=0;i<a;i++){
+    for(var j=0;j<b;j++){
+      var x = startX + j*cellSize, y = startY + i*cellSize;
+      ctx.fillRect(x, y, cellSize, cellSize);
+      ctx.strokeRect(x, y, cellSize, cellSize);
+    }
+  }
+  ctx.font = "13px 'Nunito Sans', sans-serif";
+  ctx.fillStyle = cssVar('--muted');
+  ctx.textAlign = 'center';
+  ctx.fillText(b + ' colonnes', startX+gridW/2, startY+gridH+22);
+  ctx.save();
+  ctx.translate(startX-22, startY+gridH/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText(a + ' lignes', 0, 0);
+  ctx.restore();
+  document.getElementById('multResult').textContent = a + ' × ' + b + ' = ' + (a*b) + ' (soit ' + (a*b) + ' petits carrés)';
+}
+
+/* ================= Rounding simulator ================= */
+function doRound(){
+  var raw = document.getElementById('roundInput').value.trim().replace(',', '.');
+  var pos = parseFloat(document.getElementById('roundPos').value);
+  var box = document.getElementById('roundResult');
+  var val = parseFloat(raw);
+  if(isNaN(val)){
+    box.style.display = 'block';
+    box.innerHTML = '<p class="feedback ko">Entre un nombre valide (ex: 4728,63).</p>';
+    return;
+  }
+  var scaled = val / pos;
+  var rounded = Math.round(scaled) * pos;
+  // fix floating point artefacts
+  var decimals = (String(pos).split('.')[1] || '').length;
+  rounded = parseFloat(rounded.toFixed(Math.max(decimals,0)));
+  var posNames = {1000:'au millier', 100:'à la centaine', 10:'à la dizaine', 1:"à l'unité", 0.1:'au dixième', 0.01:'au centième'};
+  var label = posNames[pos] || '';
+  box.style.display = 'block';
+  box.innerHTML = '<h4>Résultat</h4>' +
+    '<p>Nombre de départ : <strong>' + raw.replace('.',',') + '</strong></p>' +
+    '<p>Arrondi ' + label + ' : <strong style="color:var(--accent); font-size:1.2rem;">' + String(rounded).replace('.',',') + '</strong></p>';
+}
+
+/* Init first tab explicitly not needed since Cours has no canvas */
+</script>
+</body>
+</html>
